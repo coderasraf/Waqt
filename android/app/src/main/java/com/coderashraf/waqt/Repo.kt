@@ -72,6 +72,15 @@ object Repo {
         Widget.updateAll(app)
     }
 
+    /** After a restore: read the settings and state again, and reschedule. */
+    @Synchronized
+    fun reload() {
+        cfg = Config.load(configFile)
+        store = Store(File(app.filesDir, "state.json"))
+        Scheduler.reschedule(app)
+        Widget.updateAll(app)
+    }
+
     fun today(): LocalDate = Schedule.localDate(cfg, System.currentTimeMillis())
 
     fun mutedToday(): Boolean = store.muted == today().toString()

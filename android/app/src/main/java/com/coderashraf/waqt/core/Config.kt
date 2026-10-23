@@ -44,7 +44,7 @@ class Config(val json: JSONObject) {
                         "asr": {"mode": "adhan", "sound": "makkah", "reminder": 0},
                         "maghrib": {"mode": "adhan", "sound": "makkah", "reminder": 0},
                         "isha": {"mode": "adhan", "sound": "makkah", "reminder": 0}},
-              "alerts": {"sunrise_warning": 20, "sehri": "ramadan", "sehri_minutes": 45, "jumuah": true, "tahajjud": false},
+              "alerts": {"sunrise_warning": 20, "sehri": "ramadan", "sehri_minutes": 45, "jumuah": true, "tahajjud": false, "azkar": true, "quran_time": ""},
               "startup": {"autostart": true, "close_to_tray": true},
               "phone": {
                 "adhan_in_silent": true,

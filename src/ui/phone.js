@@ -16,6 +16,13 @@ const PT = {
     tb_after: 'After-prayer tasbih', tb_after_d: '33 · 33 · 34', round: 'Round', target: 'Target', no_limit: 'No limit', default_t: 'Default',
     tb_today: 'Today', tb_streak: 'Streak', tb_days: 'days', tb_day: 'day', tb_all: 'All time', tb_stats: 'Your dhikr', tb_30: 'Last 30 days', tb_sound: 'Sound',
     m_adhan: 'Adhan', m_chime: 'Chime', m_notify: 'Notify', m_off: 'Off',
+    g_data: 'Your data', backup: 'Backup & restore', backup_d: 'Keep your progress when you change phones',
+    bk_hero: 'Everything you keep in Waqt, saved in one small file.', bk_save: 'Save a backup', bk_load: 'Restore from a backup',
+    bk_where: 'Choose Google Drive or any folder. To restore, open the same file on your new phone.', bk_what: 'What is saved',
+    bk_i1: 'Settings, location, adhan voices and themes', bk_i2: 'Quran bookmarks, last read, khatm goal and hifz', bk_i3: 'Hadith bookmarks and reading',
+    bk_i4: 'Prayer tracker, tasbih counts and azkar progress', bk_i5: 'Fasts, missed fasts, zakat and sadaqah', bk_i6: 'Every other choice you made in the app',
+    bk_auto: 'Android also backs up Waqt to your Google account by itself when backup is on in your phone settings. Downloaded audio and hadith books download again.',
+    bk_confirm: 'Restore this backup? What is on this phone now will be replaced.', bk_done: 'Restored — opening Waqt again…',
     tb_hint: 'Tap anywhere in the circle', tb_swipe: 'Swipe to change dhikr', complete: 'Complete', sets: 'sets',
   },
   bn: {
@@ -29,6 +36,13 @@ const PT = {
     tb_after: 'নামাজের পরের তাসবিহ', tb_after_d: '৩৩ · ৩৩ · ৩৪', round: 'রাউন্ড', target: 'লক্ষ্য', no_limit: 'সীমা নেই', default_t: 'স্বাভাবিক',
     tb_today: 'আজ', tb_streak: 'ধারাবাহিক', tb_days: 'দিন', tb_day: 'দিন', tb_all: 'মোট', tb_stats: 'আপনার যিকির', tb_30: 'গত ৩০ দিন', tb_sound: 'শব্দ',
     m_adhan: 'আজান', m_chime: 'চাইম', m_notify: 'নোটিফাই', m_off: 'বন্ধ',
+    g_data: 'আপনার তথ্য', backup: 'ব্যাকআপ ও রিস্টোর', backup_d: 'ফোন বদলালেও অগ্রগতি থাকবে',
+    bk_hero: 'ওয়াক্তে আপনার সবকিছু একটি ছোট ফাইলে সংরক্ষণ।', bk_save: 'ব্যাকআপ সংরক্ষণ করুন', bk_load: 'ব্যাকআপ থেকে ফিরিয়ে আনুন',
+    bk_where: 'গুগল ড্রাইভ বা যেকোনো ফোল্ডার বেছে নিন। নতুন ফোনে একই ফাইল খুলে ফিরিয়ে আনুন।', bk_what: 'যা সংরক্ষিত হয়',
+    bk_i1: 'সেটিংস, লোকেশন, আজানের কণ্ঠ ও থিম', bk_i2: 'কুরআনের বুকমার্ক, শেষ পড়া, খতমের লক্ষ্য ও হিফজ', bk_i3: 'হাদীসের বুকমার্ক ও পড়া',
+    bk_i4: 'নামাজ ট্র্যাকার, তাসবিহ ও যিকিরের অগ্রগতি', bk_i5: 'রোজা, কাযা রোজা, যাকাত ও সদকা', bk_i6: 'অ্যাপে আপনার অন্য সব পছন্দ',
+    bk_auto: 'ফোনের সেটিংসে ব্যাকআপ চালু থাকলে অ্যান্ড্রয়েড নিজেই ওয়াক্ত আপনার গুগল অ্যাকাউন্টে ব্যাকআপ রাখে। ডাউনলোড করা অডিও ও হাদীসের কিতাব আবার ডাউনলোড হবে।',
+    bk_confirm: 'এই ব্যাকআপ ফিরিয়ে আনবেন? ফোনের বর্তমান তথ্য বদলে যাবে।', bk_done: 'ফিরিয়ে আনা হয়েছে — ওয়াক্ত আবার খুলছে…',
     tb_hint: 'বৃত্তের যেকোনো জায়গায় চাপুন', tb_swipe: 'যিকির বদলাতে সোয়াইপ করুন', complete: 'সম্পূর্ণ', sets: 'বার',
   },
 };
@@ -160,7 +174,7 @@ VIEWS.settings = async (tok) => {
   if (!live(tok)) return;
   const parts = location.hash.replace(/^#\/?settings\/?/, '').split('/').filter(Boolean);
   const page = parts[0] || '';
-  const pages = { location: sLocation, calc: sCalc, adhan: sAdhan, alerts: sAlerts, mosque: sMosque, travel: sTravel, hijri: sHijri, theme: sTheme, about: sAbout };
+  const pages = { backup: sBackup, location: sLocation, calc: sCalc, adhan: sAdhan, alerts: sAlerts, mosque: sMosque, travel: sTravel, hijri: sHijri, theme: sTheme, about: sAbout };
   if (page === 'adhan' && parts[1]) return sPrayer(parts[1]);
   return (pages[page] || sIndex)(tok);
 };
@@ -197,6 +211,7 @@ function sIndex() {
       prow({ ic: 'clock', color: '#6b7690', label: t('clock'), control: pseg('clock', [[12, '12h'], [24, '24h']], c.clock, true) }),
       prow({ ic: 'hash', color: '#6b7690', label: t('bn_digits'), help: '০১২৩', control: ptog('bangla_digits', c.bangla_digits) }),
     ])}
+    ${group(pt('g_data'), [prow({ ic: 'shield', color: '#30a46c', label: pt('backup'), help: pt('backup_d'), href: '#/settings/backup' })])}
     ${group('', [prow({ ic: 'info', color: '#6b7690', label: pt('about'), href: '#/settings/about' })])}
   </div>`;
 }
@@ -329,6 +344,17 @@ function sHijri() {
 
 function sTheme() {
   view.innerHTML = `<div class="p-page">${ptitle(pt('theme'), '#/settings')}<div class="p-group pad">${themeRow()}</div></div>`;
+}
+
+function sBackup() {
+  const items = [['star', pt('bk_i1')], ['book', pt('bk_i2')], ['scroll', pt('bk_i3')], ['tracker', pt('bk_i4')], ['moon', pt('bk_i5')], ['palette', pt('bk_i6')]];
+  view.innerHTML = `<div class="p-page">${ptitle(pt('backup'), '#/settings')}
+    <div class="bk-hero">${tile('shield', '#30a46c').replace('p-tile', 'p-tile big')}<b>${esc(pt('backup'))}</b><small>${esc(pt('bk_hero'))}</small></div>
+    <div class="p-group pad bk-acts"><button class="btn gold" data-pa="bk-save">${icon('download')}${esc(pt('bk_save'))}</button><button class="btn" data-pa="bk-load">${icon('undo')}${esc(pt('bk_load'))}</button></div>
+    <div class="p-foot">${esc(pt('bk_where'))}</div>
+    <div class="p-head">${esc(pt('bk_what'))}</div>
+    <div class="p-group">${items.map(([ic, l]) => `<div class="p-row">${tile(ic, '#6b7690')}<span class="p-lab"><b>${esc(l)}</b></span></div>`).join('')}</div>
+    <div class="p-foot">${esc(pt('bk_auto'))}</div></div>`;
 }
 
 function sAbout() {
@@ -514,6 +540,21 @@ document.addEventListener('click', async (e) => {
   const d = a.dataset;
   switch (d.pa) {
     case 'tt-mode': TT.mode = d.v; render(); break;
+    case 'bk-save': {
+      try { const r = await post('/api/backup/export', {}); if (r?.ok) toast(`✓ ${r.name}`, 4000); } catch (err) { toast(err.message, 5000); }
+      break;
+    }
+    case 'bk-load': {
+      if (!confirm(pt('bk_confirm'))) break;
+      try {
+        const r = await post('/api/backup/import', {});
+        if (r?.cancelled) break;
+        webStore.loading = true; webStore.load(r.web); webStore.loading = false;
+        toast(pt('bk_done'), 3000);
+        setTimeout(() => location.reload(), 900);
+      } catch (err) { toast(err.message, 5000); }
+      break;
+    }
     case 'tt-day': ttDay(TT.days[+d.i]); break;
     case 'voice': {
       if (e.target.closest('[data-pa="vplay"]')) return;

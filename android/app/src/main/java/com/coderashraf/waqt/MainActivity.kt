@@ -61,6 +61,9 @@ class MainActivity : ComponentActivity(), Api.Host, SensorEventListener {
     private val docLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("text/csv")) { uri ->
         docDone?.invoke(uri); docDone = null
     }
+    private val jsonLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+        docDone?.invoke(uri); docDone = null
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,6 +90,7 @@ class MainActivity : ComponentActivity(), Api.Host, SensorEventListener {
         val loader = WebViewAssetLoader.Builder()
             // The bundled Quran and its fonts.
             .addPathHandler("/quran/", WebViewAssetLoader.AssetsPathHandler(this).let { h -> WebViewAssetLoader.PathHandler { h.handle("quran/$it") } })
+            .addPathHandler("/azkar/", WebViewAssetLoader.AssetsPathHandler(this).let { h -> WebViewAssetLoader.PathHandler { h.handle("azkar/$it") } })
             .addPathHandler("/hadith/", WebViewAssetLoader.AssetsPathHandler(this).let { h -> WebViewAssetLoader.PathHandler { h.handle("hadith/$it") } })
             // Hadith chapters saved on the phone.
             .addPathHandler("/hcache/", WebViewAssetLoader.InternalStoragePathHandler(this, HadithFiles.root(this)))
@@ -268,7 +272,12 @@ class MainActivity : ComponentActivity(), Api.Host, SensorEventListener {
 
     override fun pickAudio(done: (Uri?) -> Unit) = main.post { audioDone = done; audioLauncher.launch(arrayOf("audio/*")) }.let {}
 
-    override fun createDocument(name: String, mime: String, done: (Uri?) -> Unit) = main.post { docDone = done; docLauncher.launch(name) }.let {}
+    override fun createDocument(name: String, mime: String, done: (Uri?) -> Unit) = main.post {
+        docDone = done
+        if (mime == "application/json") jsonLauncher.launch(name) else docLauncher.launch(name)
+    }.let {}
+
+    override fun openDocument(mimes: Array<String>, done: (Uri?) -> Unit) = main.post { audioDone = done; audioLauncher.launch(mimes) }.let {}
 
     @SuppressLint("MissingPermission")
     override fun currentLocation(done: (Location?) -> Unit) {

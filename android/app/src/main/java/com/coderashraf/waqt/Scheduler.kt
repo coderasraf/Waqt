@@ -133,6 +133,18 @@ object Scheduler {
                 if (bn) Notifier.post(ctx, Notifier.ID_REMINDER, Notifier.CH_QUIET, "তাহাজ্জুদ", "রাতের শেষ তৃতীয়াংশ শুরু হয়েছে — তাহাজ্জুদ ও দোয়ার উত্তম সময়।")
                 else Notifier.post(ctx, Notifier.ID_REMINDER, Notifier.CH_QUIET, "Tahajjud", "The last third of the night has begun — a blessed time for Tahajjud and du'a.")
             }
+            Kind.QURAN_GOAL -> {
+                if (bn) Notifier.post(ctx, Notifier.ID_REMINDER, Notifier.CH_QUIET, "আজকের তিলাওয়াত", "আপনার খতমের আজকের অংশ পড়ার সময়।", "quran/goal")
+                else Notifier.post(ctx, Notifier.ID_REMINDER, Notifier.CH_QUIET, "Today's Quran reading", "Time for today's portion of your khatm.", "quran/goal")
+            }
+            Kind.AZKAR_MORNING -> {
+                if (bn) Notifier.post(ctx, Notifier.ID_REMINDER, Notifier.CH_QUIET, "সকালের যিকির", "সকালের যিকির পড়ার সময় — কয়েক মিনিটেই দিনের সুরক্ষা।", "azkar/s/morning")
+                else Notifier.post(ctx, Notifier.ID_REMINDER, Notifier.CH_QUIET, "Morning adhkar", "Time for the morning remembrance — a few minutes of protection for the day.", "azkar/s/morning")
+            }
+            Kind.AZKAR_EVENING -> {
+                if (bn) Notifier.post(ctx, Notifier.ID_REMINDER, Notifier.CH_QUIET, "সন্ধ্যার যিকির", "সন্ধ্যার যিকির পড়ার সময় — রাতের জন্য সুরক্ষা।", "azkar/s/evening")
+                else Notifier.post(ctx, Notifier.ID_REMINDER, Notifier.CH_QUIET, "Evening adhkar", "Time for the evening remembrance — protection for the night.", "azkar/s/evening")
+            }
             Kind.LEAVE -> {
                 val name = Text.prayer(due.prayer, cfg.language, day.friday)
                 if (bn) Notifier.post(ctx, Notifier.ID_REMINDER, Notifier.CH_REMINDERS, "মসজিদে রওনা দিন", "$name-এর জামাত ${t(due.extra)} — হেঁটে ${n(due.minutes)} মিনিট")

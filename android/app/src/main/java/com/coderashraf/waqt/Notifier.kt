@@ -47,7 +47,7 @@ object Notifier {
         PendingIntent.getActivity(ctx, route.hashCode(), Intent(ctx, MainActivity::class.java).putExtra("route", route).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
-    fun post(ctx: Context, id: Int, channel: String, title: String, body: String) {
+    fun post(ctx: Context, id: Int, channel: String, title: String, body: String, route: String = "today") {
         val nm = ctx.getSystemService(NotificationManager::class.java)
         if (!nm.areNotificationsEnabled()) return
         val n = Notification.Builder(ctx, channel)
@@ -56,7 +56,7 @@ object Notifier {
             .setContentTitle(title)
             .setContentText(body)
             .setStyle(Notification.BigTextStyle().bigText(body))
-            .setContentIntent(openApp(ctx))
+            .setContentIntent(openApp(ctx, route))
             .setAutoCancel(true)
             .build()
         nm.notify(id, n)

@@ -269,7 +269,7 @@ function qWatchReading(s) {
     for (const e of ents) { if (e.isIntersecting) seen.add(+e.target.dataset.v); else seen.delete(+e.target.dataset.v); }
     if (!seen.size || Q.view?.s !== s) return;
     const v = Math.min(...seen);
-    if (Q.st.last?.s !== s || Q.st.last?.v !== v) { Q.st.last = { s, v }; qSave(); }
+    if (Q.st.last?.s !== s || Q.st.last?.v !== v) { Q.st.last = { s, v }; qSave(); window.qOnRead?.(s, v); }
   }, { root: $('#scroll'), rootMargin: '-20% 0px -60% 0px' });
   $$('.qv').forEach((el) => Q.obs.observe(el));
 }

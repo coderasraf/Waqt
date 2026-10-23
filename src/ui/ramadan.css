@@ -1,0 +1,64 @@
+/* Waqt Ramadan, fasting and Zakat (phones). */
+.rm-hero { position: relative; overflow: hidden; margin-top: 12px; border-radius: 26px; color: #fff; min-height: 220px; display: flex; align-items: flex-end; isolation: isolate; }
+.rm-hero > svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+.rm-hero.day { background: linear-gradient(165deg, #3e7fd1, #8db8e6 55%, #f5cf8f); }
+.rm-hero.night { background: linear-gradient(165deg, #0b1438, #2c2b6e 60%, #6b4b86); }
+.rm-hero-t { width: 100%; padding: 18px; display: flex; flex-direction: column; gap: 2px; text-shadow: 0 1px 12px rgba(0,0,0,.3); }
+.rm-hero-t small { font-size: 12.5px; opacity: .9; }
+.rm-hero-t span { font-size: 15px; font-weight: 600; }
+.rm-hero-t > b { font-size: 52px; font-weight: 300; line-height: 1.05; font-variant-numeric: tabular-nums; letter-spacing: -1px; }
+.rm-two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.rm-two div { padding: 10px 12px; border-radius: 14px; background: rgba(0,0,0,.22); backdrop-filter: blur(10px); }
+.rm-two small { display: block; font-size: 11.5px; opacity: .85; text-transform: uppercase; letter-spacing: .5px; }
+.rm-two b { font-size: 19px; font-variant-numeric: tabular-nums; }
+.rm-month { margin: 12px 4px 0; }
+.rm-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.rm-day { position: relative; aspect-ratio: 1; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); display: grid; place-items: center; font-variant-numeric: tabular-nums; }
+.rm-day b { font-size: 14px; font-weight: 600; }
+.rm-day.l10 { border-color: rgba(var(--acc), .35); }
+.rm-day.ok { background: linear-gradient(135deg, var(--g1), var(--g2)); color: #1d1405; border-color: transparent; }
+.rm-day.miss { background: rgba(255,125,142,.16); color: var(--rose); border-color: rgba(255,125,142,.4); }
+.rm-day.today { box-shadow: 0 0 0 2px var(--gold); }
+.rm-day.f { opacity: .4; }
+.rm-day i { position: absolute; bottom: 5px; width: 6px; height: 6px; border-radius: 50%; background: #5b5bd6; }
+.rm-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 4px 0; font-size: 12px; color: var(--muted); }
+.rm-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.rm-legend i { width: 10px; height: 10px; border-radius: 3px; }
+.rm-legend i.ok { background: var(--g2); } .rm-legend i.miss { background: var(--rose); } .rm-legend i.tw { background: #5b5bd6; border-radius: 50%; }
+.rm-qadr { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 14px; border-radius: 18px; background: radial-gradient(300px 140px at 0 0, rgba(var(--acc), .2), transparent), var(--panel); border: 1px solid rgba(var(--acc), .35); }
+.rm-qadr > svg { width: 26px; height: 26px; stroke: var(--gold); fill: none; stroke-width: 1.8; flex: none; }
+.rm-qadr b { display: block; }
+.rm-qadr small { color: var(--muted); font-size: 12.5px; }
+.rm .qp-cont { margin-top: 14px; }
+
+/* Zakat */
+.zk-result { margin-top: 12px; padding: 20px; border-radius: 26px; text-align: center; border: 1px solid var(--line); background: var(--panel); }
+.zk-result.due { border-color: rgba(var(--acc), .45); background: radial-gradient(360px 180px at 50% 0, rgba(var(--acc), .18), transparent), linear-gradient(160deg, var(--hero-a), var(--hero-b)); }
+.zk-result > small { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); font-weight: 650; }
+.zk-result > b { display: block; font-size: 44px; font-weight: 700; letter-spacing: -1px; margin: 2px 0 10px; font-variant-numeric: tabular-nums; }
+.zk-result.due > b { color: var(--gold-2); }
+.zk-two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.zk-two div { padding: 10px; border-radius: 14px; background: rgba(var(--ink), .05); }
+.zk-two small { display: block; font-size: 11.5px; color: var(--muted); }
+.zk-two span { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.zk-result p { margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+.zk-in { display: flex; align-items: center; gap: 4px; }
+.zk-in i { font-style: normal; color: var(--muted); font-size: 13px; }
+.zk-in input { width: 120px; text-align: right; padding: 7px 10px; }
+.zk-in.sm input { width: 72px; }
+.zk-metal { flex-wrap: wrap; }
+.zk-metal .p-lab { min-width: 40%; }
+.zk-sad { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: center; }
+.zk-sad input { width: 100%; min-width: 0; }
+.rm-hero-t { align-items: flex-start; text-align: left; }
+.rm-two { width: 100%; }
+.rm-two div { background: rgba(0,0,0,.34); }
+.rm-two small { opacity: 1; color: rgba(255,255,255,.88); }
+.rm-hero.day .rm-hero-t small { color: #fff; opacity: 1; }
+.zk-m { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.zk-m b { font-weight: 550; font-size: 15.5px; }
+.zk-m small { color: var(--muted); font-size: 12px; }
+.zk-mrow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.zk-x { font-style: normal; color: var(--muted); }
+.zk-mrow .zk-in input { width: 110px; }
+.zk-mrow .zk-in.sm input { width: 64px; }

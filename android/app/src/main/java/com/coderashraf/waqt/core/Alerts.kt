@@ -4,7 +4,7 @@ import java.time.LocalTime
 
 /** Everything that should sound, notify or act on a day. */
 object Alerts {
-    enum class Kind { ADHAN, REMINDER, SUNRISE_WARNING, SEHRI, JUMUAH, TAHAJJUD, LEAVE, SILENT_ON, SILENT_OFF, REFRESH }
+    enum class Kind { ADHAN, REMINDER, SUNRISE_WARNING, SEHRI, JUMUAH, TAHAJJUD, AZKAR_MORNING, AZKAR_EVENING, QURAN_GOAL, LEAVE, SILENT_ON, SILENT_OFF, REFRESH }
 
     data class Due(val key: String, val at: Long, val kind: Kind, val prayer: String = "", val minutes: Int = 0, val extra: Long = 0) {
         /** Alarms that must ring exactly even in deep sleep (use setAlarmClock). */
@@ -53,6 +53,17 @@ object Alerts {
         }
         if (al.optBoolean("jumuah", true) && day.friday) out += Due("$date|jumuah", day.dhuhr - 2 * 3_600_000L, Kind.JUMUAH, "dhuhr")
         if (al.optBoolean("tahajjud")) out += Due("$date|tahajjud", day.lastThird, Kind.TAHAJJUD)
+        // The daily Quran reading reminder, at the time the user chose ("HH:MM").
+        al.optString("quran_time").takeIf { it.length >= 4 }?.let { v ->
+            runCatching { LocalTime.parse(if (v.length == 4) "0$v" else v) }.getOrNull()?.let { tm ->
+                out += Due("$date|quran", date.atTime(tm).atZone(Schedule.zone(cfg)).toInstant().toEpochMilli(), Kind.QURAN_GOAL)
+            }
+        }
+        // Morning adhkar after Fajr (before sunrise), evening adhkar after Asr.
+        if (al.optBoolean("azkar", true)) {
+            out += Due("$date|azkar-m", minOf(day.fajr + 15 * 60_000L, day.sunrise - 10 * 60_000L), Kind.AZKAR_MORNING, "fajr")
+            out += Due("$date|azkar-e", day.asr + 15 * 60_000L, Kind.AZKAR_EVENING, "asr")
+        }
 
         // Phone extras: leave-for-the-mosque reminders and silencing the phone
         // for the jamaat.

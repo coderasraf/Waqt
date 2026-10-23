@@ -6,6 +6,9 @@
 // breakers and special prayers. Loaded after phone.js (uses its list helpers).
 
 const SG = { flow: null, i: 0 };
+/// Who the guide shows: a man (m) or a woman (f).
+const sgWho = () => { try { return localStorage.getItem('salah-who') === 'f' ? 'f' : 'm'; } catch { return 'm'; } };
+const sgFemale = () => sgWho() === 'f';
 const sgDone = () => { try { return JSON.parse(localStorage.getItem('salah-done') || '{}'); } catch { return {}; } };
 const sgMark = (k) => { const d = sgDone(); d[k] = Date.now(); try { localStorage.setItem('salah-done', JSON.stringify(d)); } catch { /* ignore */ } };
 const B = () => L() === 'bn';
@@ -23,6 +26,7 @@ const SGT = {
   surahs_d: ['Short surahs to recite after Al-Fatiha. Tap ▶ to hear one on repeat.', 'সূরা ফাতিহার পর পড়ার ছোট সূরা। ▶ চাপলে বারবার শোনা যাবে।'],
   recitations: ['All recitations', 'নামাজের সব দোয়া'], recitations_d: ['Every word said in salah, in one place', 'নামাজে যা পড়া হয় সব এক জায়গায়'],
   fard: ['Fard', 'ফরজ'], sunnah: ['Sunnah', 'সুন্নত'], wajib: ['Wajib', 'ওয়াজিব'], nafl: ['Nafl', 'নফল'], sunnah_g: ['Sunnah (optional)', 'সুন্নত (গায়রে মুয়াক্কাদা)'],
+  men: ['Men', 'পুরুষ'], women: ['Women', 'নারী'], who_d: ['Show the method for', 'কার নিয়ম দেখাবে'],
   well_done: ['Masha\'Allah — well done', 'মাশাআল্লাহ — চমৎকার'], open_quran: ['Open in Quran', 'কুরআনে খুলুন'],
 };
 const sgt = (k) => tr2(SGT[k]);
@@ -69,79 +73,67 @@ const REC = {
     bn: 'হে আল্লাহ! আমি আপনার জ্ঞানের ভিত্তিতে আপনার কাছে কল্যাণ চাই, আপনার শক্তির মাধ্যমে শক্তি চাই এবং আপনার মহা অনুগ্রহ প্রার্থনা করি। আপনি সক্ষম, আমি অক্ষম; আপনি জানেন, আমি জানি না; আপনি গায়েবের সব জানেন। হে আল্লাহ! যদি আপনি জানেন এই কাজটি আমার দ্বীন, জীবিকা ও পরিণামে আমার জন্য কল্যাণকর, তবে তা আমার জন্য নির্ধারণ করুন, সহজ করুন এবং তাতে বরকত দিন। আর যদি জানেন এটি আমার দ্বীন, জীবিকা ও পরিণামে অকল্যাণকর, তবে তা আমার থেকে ফিরিয়ে দিন এবং আমাকেও তা থেকে ফিরিয়ে রাখুন; আর যেখানে কল্যাণ আছে তা আমার জন্য নির্ধারণ করুন এবং তাতে আমাকে সন্তুষ্ট রাখুন।', src: 'Bukhari 1162' },
 };
 
-// ---------- The figure: one person whose limbs move between postures ----------
-// Parts keep the same shape of path in every posture, so CSS can morph them.
-const POSE = {
-  stand: { h: [100, 38, 12], t: 'M100 106 L100 80 L100 56', an: 'M100 60 L104 84 L118 94', af: 'M100 60 L100 84 L114 96', ln: 'M100 106 L101 137 L100 166 L114 166', lf: 'M100 106 L97 137 L95 166 L109 166', fi: 'M118 94 L118 94' },
-  rest: { h: [100, 38, 12], t: 'M100 106 L100 80 L100 56', an: 'M100 60 L102 84 L103 104', af: 'M100 60 L98 84 L98 104', ln: 'M100 106 L101 137 L100 166 L114 166', lf: 'M100 106 L97 137 L95 166 L109 166', fi: 'M103 104 L103 104' },
-  takbir: { h: [100, 38, 12], t: 'M100 106 L100 80 L100 56', an: 'M100 60 L113 70 L112 40', af: 'M100 60 L109 72 L108 42', ln: 'M100 106 L101 137 L100 166 L114 166', lf: 'M100 106 L97 137 L95 166 L109 166', fi: 'M112 40 L112 40' },
-  ruku: { h: [153, 103, 11], t: 'M92 106 L116 105 L140 104', an: 'M138 106 L118 122 L98 136', af: 'M136 106 L116 124 L95 138', ln: 'M92 106 L95 137 L94 166 L108 166', lf: 'M92 106 L91 137 L89 166 L103 166', fi: 'M98 136 L98 136' },
-  sujud: { h: [142, 157, 10], t: 'M84 130 L108 140 L128 150', an: 'M128 150 L122 162 L140 167', af: 'M126 150 L119 163 L136 167', ln: 'M84 130 L94 166 L66 160 L62 168', lf: 'M84 130 L90 166 L62 160 L58 168', fi: 'M140 167 L140 167' },
-  sit: { h: [90, 82, 12], t: 'M82 154 L85 126 L88 98', an: 'M88 102 L100 126 L120 148', af: 'M86 102 L96 128 L116 150', ln: 'M82 154 L122 160 L84 166 L74 166', lf: 'M82 154 L118 164 L80 166 L68 166', fi: 'M120 148 L120 148' },
-  tashahhud: { h: [90, 82, 12], t: 'M82 154 L85 126 L88 98', an: 'M88 102 L100 126 L120 148', af: 'M86 102 L96 128 L116 150', ln: 'M82 154 L122 160 L84 166 L74 166', lf: 'M82 154 L118 164 L80 166 L68 166', fi: 'M120 148 L127 139' },
-};
-POSE.niyyah = { ...POSE.rest };
-POSE.salam = { ...POSE.sit, h: [92, 82, 12] };
+// ---------- The figure: illustrated postures that crossfade ----------
+/// Each step's posture, and the picture that shows it.
+const POSE_IMG = { stand: 'qiyam', niyyah: 'rest', rest: 'rest', takbir: 'takbir', ruku: 'ruku', sujud: 'sujud', sit: 'sit', tashahhud: 'tashahhud', salam: 'salam' };
+const poseSrc = (name) => `/salah/${sgFemale() ? 'f-' : ''}${POSE_IMG[name] || 'qiyam'}.webp`;
+// Load them all once, so moving between steps is instant.
+let posesLoaded = '';
+function preloadPoses() {
+  if (posesLoaded === sgWho()) return;
+  posesLoaded = sgWho();
+  for (const f of new Set(Object.values(POSE_IMG))) { const im = new Image(); im.src = `/salah/${sgFemale() ? 'f-' : ''}${f}.webp`; }
+}
 
 function sgFigure() {
-  return `<svg class="sg-fig" viewBox="0 0 200 200" aria-hidden="true">
-    <defs><radialGradient id="sgglow"><stop offset="0" stop-color="var(--gold)" stop-opacity=".35"/><stop offset="1" stop-color="var(--gold)" stop-opacity="0"/></radialGradient></defs>
-    <circle class="sg-cue niyyah" cx="102" cy="74" r="20" fill="url(#sgglow)"/>
-    <path class="sg-cue salam" d="M108 70 Q120 74 116 88" fill="none" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round" marker-end=""/>
-    <rect x="34" y="169" width="132" height="7" rx="3.5" class="sg-mat"/>
-    <g class="sg-qibla"><rect x="174" y="152" width="14" height="16" rx="1.5" fill="#151515"/><rect x="174" y="156" width="14" height="2.6" fill="#d4a841"/></g>
-    <path id="sg-lf" class="sg-far"/><path id="sg-af" class="sg-far"/>
-    <path id="sg-t" class="sg-near"/><path id="sg-ln" class="sg-near"/><path id="sg-an" class="sg-near"/><path id="sg-fi" class="sg-near thin"/>
-    <circle id="sg-h" class="sg-head"/></svg>`;
+  preloadPoses();
+  return `<div class="sg-photo" aria-hidden="true"><div class="sg-floor"></div><img class="on" alt="" src="${poseSrc('stand')}"><img alt=""></div>`;
 }
 
 function sgPose(name) {
-  const p = POSE[name] || POSE.stand;
-  for (const k of ['t', 'an', 'af', 'ln', 'lf', 'fi']) { const el = document.getElementById(`sg-${k}`); if (el) el.style.d = `path('${p[k]}')`; }
-  const h = document.getElementById('sg-h');
-  if (h) { h.style.cx = `${p.h[0]}px`; h.style.cy = `${p.h[1]}px`; h.style.r = `${p.h[2]}px`; }
-  const fig = $('.sg-fig');
-  if (fig) fig.dataset.pose = name;
+  const box = $('.sg-photo');
+  if (!box) return;
+  const src = poseSrc(name);
+  const [a, b] = $$('img', box);
+  const front = a.classList.contains('on') ? a : b, back = front === a ? b : a;
+  if (front.getAttribute('src') === src) return;
+  box.dataset.pose = name;
+  back.onload = () => { back.classList.add('on'); front.classList.remove('on'); };
+  back.src = src;
+  if (back.complete && back.naturalWidth) back.onload();
 }
 
-// ---------- Wudu, ghusl, tayammum art: a body part with water ----------
-const ART = {
-  hands: '<path d="M70 120 C70 92 76 78 84 78 C90 78 90 92 90 100 L90 70 C90 62 100 62 100 70 L100 98 L100 64 C100 56 110 56 110 64 L110 98 L110 70 C110 62 120 62 120 70 L120 108 C120 132 108 146 92 146 C80 146 70 136 70 120Z"/>',
-  mouth: '<path d="M60 104 Q100 82 140 104 Q100 138 60 104Z"/><path d="M64 104 Q100 112 136 104" class="ln"/>',
-  nose: '<path d="M96 60 C96 84 82 112 80 122 C78 132 90 136 100 132 C110 136 122 132 120 122"/><circle cx="90" cy="126" r="3" class="dot"/><circle cx="110" cy="126" r="3" class="dot"/>',
-  face: '<ellipse cx="100" cy="102" rx="38" ry="50"/><circle cx="86" cy="96" r="3" class="dot"/><circle cx="114" cy="96" r="3" class="dot"/><path d="M90 126 Q100 132 110 126" class="ln"/>',
-  arm: '<path d="M54 84 L116 84 C126 84 132 90 132 100 L132 104 C132 114 126 120 116 120 L54 120Z"/><path d="M132 92 C146 88 156 92 156 102 C156 112 146 116 132 112"/>',
-  head: '<circle cx="100" cy="104" r="40"/><path d="M68 78 Q100 52 132 78" class="ln arrow"/>',
-  ear: '<path d="M88 68 C112 60 130 76 128 100 C126 120 112 124 108 136 C104 146 92 146 88 138"/><path d="M100 86 C112 86 116 100 108 108" class="ln"/>',
-  feet: '<path d="M70 70 C84 66 92 80 92 100 L92 126 C92 138 104 140 120 140 C138 140 142 152 128 156 L80 156 C68 156 64 146 66 132Z"/>',
-  intent: '<path d="M100 146 C66 122 56 104 56 88 C56 72 68 62 82 62 C90 62 96 66 100 74 C104 66 110 62 118 62 C132 62 144 72 144 88 C144 104 134 122 100 146Z"/>',
-  body: '<circle cx="100" cy="52" r="14"/><path d="M80 74 L120 74 L126 120 L112 120 L112 158 L88 158 L88 120 L74 120Z"/>',
-  earth: '<path d="M44 140 Q100 120 156 140 L156 152 L44 152Z"/><path d="M76 108 C76 96 82 90 88 90 L112 90 C118 90 124 96 124 108 L124 120 L76 120Z"/>',
-  dua: '<path d="M72 132 C64 108 66 88 74 78 L82 84 L82 112"/><path d="M128 132 C136 108 134 88 126 78 L118 84 L118 112"/>',
-};
+// ---------- Wudu, ghusl and tayammum: illustrated steps ----------
+/// Each step's picture (ghusl's whole-body wash reuses the arm).
+const ART_IMG = { body: 'arm' };
+/// Women's pictures: for the head and ears only the wet hands are shown.
+const ART_IMG_F = { body: 'arm', head: 'wet', ear: 'wet' };
 function sgArt(kind, n) {
-  return `<svg class="sg-art" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="86" class="sg-art-bg"/>
-    <g class="sg-art-part">${ART[kind] || ART.hands}</g>
-    <g class="sg-drops">${[[58, 44], [146, 52], [140, 150], [52, 140], [100, 30]].map(([x, y], i) => `<path d="M${x} ${y} c-5 7 -5 12 0 12 c5 0 5 -5 0 -12z" style="animation-delay:${i * 0.35}s"/>`).join('')}</g>
-    ${n ? `<text x="160" y="178" class="sg-n">×${N(n)}</text>` : ''}</svg>`;
+  return `<div class="sg-photo"><div class="sg-floor"></div><img class="on" alt="" src="/salah/${sgFemale() ? `fw-${ART_IMG_F[kind] || kind}` : `w-${ART_IMG[kind] || kind}`}.webp"></div>${n ? `<span class="sg-times">×${N(n)}</span>` : ''}`;
 }
 
 // ---------- The guided flows ----------
 const FLOWS = {
   prayer: { key: 'learn', title: SGT.learn, steps: [
     { pose: 'niyyah', t: ['Intention', 'নিয়ত'], ar: 'النِّيَّة', d: ['Stand facing the Qibla, clean and in wudu. Make the intention in your heart for the prayer you are about to pray — for example, two rak\'ah fard of Fajr. No set words are needed.', 'পবিত্র অবস্থায়, অজু করে কিবলার দিকে মুখ করে দাঁড়ান। মনে মনে নিয়ত করুন কোন নামাজ পড়ছেন — যেমন ফজরের দুই রাকাত ফরজ। নির্দিষ্ট শব্দ বলা জরুরি নয়।'] },
-    { pose: 'takbir', t: ['Opening takbir', 'তাকবিরে তাহরিমা'], ar: 'تَكْبِيرَةُ الْإِحْرَام', d: ['Raise both hands, palms towards the Qibla, thumbs near the earlobes (women: to the shoulders), and say:', 'দুই হাত তুলুন, হাতের তালু কিবলার দিকে, বৃদ্ধাঙ্গুল কানের লতির কাছে (নারীরা কাঁধ পর্যন্ত), এবং বলুন:'], rec: ['takbir'] },
-    { pose: 'stand', t: ['Standing: Thana', 'কিয়াম: সানা'], ar: 'الثَّنَاء', d: ['Fold your hands, right over left, below the navel (women: on the chest). Look at the place of sujud, and quietly recite:', 'ডান হাত বাম হাতের উপর রেখে নাভির নিচে বাঁধুন (নারীরা বুকের উপর)। সিজদার জায়গায় দৃষ্টি রেখে নীরবে পড়ুন:'], rec: ['thana'] },
+    { pose: 'takbir', t: ['Opening takbir', 'তাকবিরে তাহরিমা'], ar: 'تَكْبِيرَةُ الْإِحْرَام', d: ['Raise both hands, palms towards the Qibla, thumbs near the earlobes, and say:', 'দুই হাত তুলুন, হাতের তালু কিবলার দিকে, বৃদ্ধাঙ্গুল কানের লতির কাছে, এবং বলুন:'],
+      dw: ['Raise both hands to the shoulders, palms towards the Qibla and fingers together, keeping them inside your scarf, and say:', 'দুই হাত কাঁধ পর্যন্ত তুলুন, হাতের তালু কিবলার দিকে, আঙুল মিলিয়ে, ওড়নার ভেতরে রেখে, এবং বলুন:'], rec: ['takbir'] },
+    { pose: 'stand', t: ['Standing: Thana', 'কিয়াম: সানা'], ar: 'الثَّنَاء', d: ['Fold your hands, right over left, below the navel. Look at the place of sujud, and quietly recite:', 'ডান হাত বাম হাতের উপর রেখে নাভির নিচে বাঁধুন। সিজদার জায়গায় দৃষ্টি রেখে নীরবে পড়ুন:'],
+      dw: ['Place your right hand over the left on your chest. Look at the place of sujud, and quietly recite:', 'ডান হাত বাম হাতের উপর রেখে বুকের উপর রাখুন। সিজদার জায়গায় দৃষ্টি রেখে নীরবে পড়ুন:'], rec: ['thana'] },
     { pose: 'stand', t: ['Seeking refuge', 'আউযুবিল্লাহ ও বিসমিল্লাহ'], ar: 'التَّعَوُّذ وَالْبَسْمَلَة', d: ['Still standing, quietly say:', 'দাঁড়িয়ে থেকেই নীরবে পড়ুন:'], rec: ['taawwudh', 'bismillah'] },
     { pose: 'stand', t: ['Surah Al-Fatiha', 'সূরা আল-ফাতিহা'], ar: 'الْفَاتِحَة', d: ['Recite Al-Fatiha, the opening chapter, in every rak\'ah. At the end, say Āmīn quietly.', 'প্রতি রাকাতে সূরা ফাতিহা পড়ুন। শেষে নীরবে "আমীন" বলুন।'], fatiha: true, rec: ['amin'] },
     { pose: 'stand', t: ['Another surah', 'আরেকটি সূরা'], ar: 'ضَمُّ السُّورَة', d: ['In the first two rak\'ah, recite a surah or at least three short verses after Al-Fatiha — for example, Al-Ikhlas:', 'প্রথম দুই রাকাতে ফাতিহার পর একটি সূরা বা অন্তত তিনটি ছোট আয়াত পড়ুন — যেমন সূরা ইখলাস:'], surah: 112 },
-    { pose: 'ruku', t: ['Bowing: Ruku', 'রুকু'], ar: 'الرُّكُوع', d: ['Say Allāhu Akbar and bow. Hold your knees with spread fingers, back straight and level with your head, and say three times:', '"আল্লাহু আকবার" বলে রুকুতে যান। আঙুল ছড়িয়ে হাঁটু ধরুন, পিঠ ও মাথা সমান রাখুন, এবং তিনবার বলুন:'], rec: ['ruku'] },
+    { pose: 'ruku', t: ['Bowing: Ruku', 'রুকু'], ar: 'الرُّكُوع', dw: ['Say Allāhu Akbar and bow a little, just enough for your hands to reach your knees. Rest your hands on the knees with fingers together, keep your arms close to your body and the knees slightly bent, and say three times:', '"আল্লাহু আকবার" বলে অল্প ঝুঁকে রুকু করুন, যেন হাত হাঁটু পর্যন্ত পৌঁছায়। আঙুল মিলিয়ে হাত হাঁটুর উপর রাখুন, বাহু শরীরের সাথে লাগিয়ে রাখুন, হাঁটু সামান্য বাঁকা রাখুন, এবং তিনবার বলুন:'],
+      d: ['Say Allāhu Akbar and bow. Hold your knees with spread fingers, back straight and level with your head, and say three times:', '"আল্লাহু আকবার" বলে রুকুতে যান। আঙুল ছড়িয়ে হাঁটু ধরুন, পিঠ ও মাথা সমান রাখুন, এবং তিনবার বলুন:'], rec: ['ruku'] },
     { pose: 'rest', t: ['Rising: Qawmah', 'কওমা'], ar: 'الْقَوْمَة', d: ['Rise until you stand straight, hands at your sides, saying the first phrase as you rise and the second once upright:', 'রুকু থেকে উঠে সোজা হয়ে দাঁড়ান, হাত দুই পাশে। উঠতে উঠতে প্রথমটি এবং দাঁড়িয়ে দ্বিতীয়টি বলুন:'], rec: ['tasmi', 'tahmid'] },
-    { pose: 'sujud', t: ['Prostration: Sujud', 'সিজদা'], ar: 'السُّجُود', d: ['Say Allāhu Akbar and go down: knees first, then hands, then nose and forehead. Seven parts touch the ground — forehead with nose, both hands, both knees and the toes of both feet. Say three times:', '"আল্লাহু আকবার" বলে সিজদায় যান: প্রথমে হাঁটু, তারপর হাত, তারপর নাক ও কপাল। সাতটি অঙ্গ মাটিতে লাগবে — নাকসহ কপাল, দুই হাত, দুই হাঁটু ও দুই পায়ের আঙুল। তিনবার বলুন:'], rec: ['sujud'] },
-    { pose: 'sit', t: ['Sitting: Jalsa', 'জলসা'], ar: 'الْجَلْسَة', d: ['Say Allāhu Akbar and sit up on your left foot, the right foot upright, hands on your thighs. Pause calmly; you may say:', '"আল্লাহু আকবার" বলে বাম পায়ের উপর বসুন, ডান পা খাড়া রাখুন, হাত উরুর উপর। একটু স্থির হয়ে বসুন; চাইলে বলতে পারেন:'], rec: ['jalsa'] },
+    { pose: 'sujud', t: ['Prostration: Sujud', 'সিজদা'], ar: 'السُّجُود', dw: ['Say Allāhu Akbar and go down into a compact sujud: forehead and nose on the ground, forearms resting on the ground close to your sides, stomach close to your thighs, everything gathered and covered. Say three times:', '"আল্লাহু আকবার" বলে জড়সড় হয়ে সিজদা করুন: কপাল ও নাক মাটিতে, দুই বাহু শরীরের সাথে লাগিয়ে মাটিতে রাখুন, পেট উরুর সাথে লাগিয়ে রাখুন, সব গুটিয়ে ও ঢাকা থাকবে। তিনবার বলুন:'],
+      d: ['Say Allāhu Akbar and go down: knees first, then hands, then nose and forehead. Seven parts touch the ground — forehead with nose, both hands, both knees and the toes of both feet. Say three times:', '"আল্লাহু আকবার" বলে সিজদায় যান: প্রথমে হাঁটু, তারপর হাত, তারপর নাক ও কপাল। সাতটি অঙ্গ মাটিতে লাগবে — নাকসহ কপাল, দুই হাত, দুই হাঁটু ও দুই পায়ের আঙুল। তিনবার বলুন:'], rec: ['sujud'] },
+    { pose: 'sit', t: ['Sitting: Jalsa', 'জলসা'], ar: 'الْجَلْسَة', dw: ['Say Allāhu Akbar and sit up on your left hip with both feet tucked out to the right, hands on your thighs with fingers together. Pause calmly; you may say:', '"আল্লাহু আকবার" বলে বাম নিতম্বের উপর বসুন, দুই পা ডান দিকে বের করে রাখুন, আঙুল মিলিয়ে হাত উরুর উপর রাখুন। একটু স্থির হয়ে বসুন; চাইলে বলতে পারেন:'],
+      d: ['Say Allāhu Akbar and sit up on your left foot, the right foot upright, hands on your thighs. Pause calmly; you may say:', '"আল্লাহু আকবার" বলে বাম পায়ের উপর বসুন, ডান পা খাড়া রাখুন, হাত উরুর উপর। একটু স্থির হয়ে বসুন; চাইলে বলতে পারেন:'], rec: ['jalsa'] },
     { pose: 'sujud', t: ['Second sujud', 'দ্বিতীয় সিজদা'], ar: 'السَّجْدَةُ الثَّانِيَة', d: ['Say Allāhu Akbar and make a second sujud just like the first, saying three times:', '"আল্লাহু আকবার" বলে আগের মতোই দ্বিতীয় সিজদা করুন এবং তিনবার বলুন:'], rec: ['sujud'] },
     { pose: 'stand', t: ['The second rak\'ah', 'দ্বিতীয় রাকাত'], ar: 'الرَّكْعَةُ الثَّانِيَة', d: ['Say Allāhu Akbar and stand up. Pray the second rak\'ah the same way — Bismillah, Al-Fatiha, a surah, ruku, qawmah and two sujud — but without Thana.', '"আল্লাহু আকবার" বলে দাঁড়ান। একইভাবে দ্বিতীয় রাকাত পড়ুন — বিসমিল্লাহ, ফাতিহা, সূরা, রুকু, কওমা ও দুই সিজদা — তবে সানা পড়বেন না।'], rec: ['bismillah'] },
-    { pose: 'tashahhud', t: ['Sitting: Tashahhud', 'বৈঠক: তাশাহহুদ'], ar: 'التَّشَهُّد', d: ['After the second sujud, sit and recite the Tashahhud. Raise your right index finger at "lā ilāha" and lower it at "illa-llāh".', 'দ্বিতীয় সিজদার পর বসে তাশাহহুদ পড়ুন। "লা ইলাহা" বলার সময় ডান হাতের শাহাদাত আঙুল তুলুন এবং "ইল্লাল্লাহ" বলার সময় নামান।'], rec: ['tashahhud'] },
+    { pose: 'tashahhud', t: ['Sitting: Tashahhud', 'বৈঠক: তাশাহহুদ'], ar: 'التَّشَهُّد', dw: ['After the second sujud, sit on your left hip with both feet to the right, and recite the Tashahhud. Raise your right index finger at "lā ilāha" and lower it at "illa-llāh".', 'দ্বিতীয় সিজদার পর বাম নিতম্বের উপর দুই পা ডান দিকে বের করে বসুন এবং তাশাহহুদ পড়ুন। "লা ইলাহা" বলার সময় ডান হাতের শাহাদাত আঙুল তুলুন এবং "ইল্লাল্লাহ" বলার সময় নামান।'],
+      d: ['After the second sujud, sit and recite the Tashahhud. Raise your right index finger at "lā ilāha" and lower it at "illa-llāh".', 'দ্বিতীয় সিজদার পর বসে তাশাহহুদ পড়ুন। "লা ইলাহা" বলার সময় ডান হাতের শাহাদাত আঙুল তুলুন এবং "ইল্লাল্লাহ" বলার সময় নামান।'], rec: ['tashahhud'] },
     { pose: 'sit', t: ['Durood Ibrahim', 'দরুদ শরীফ'], ar: 'الصَّلَاةُ الْإِبْرَاهِيمِيَّة', d: ['Still sitting, send blessings on the Prophet ﷺ:', 'বসে থেকেই নবী ﷺ-এর উপর দরুদ পড়ুন:'], rec: ['durood'] },
     { pose: 'sit', t: ['A supplication', 'দোয়া মাসূরা'], ar: 'الدُّعَاء', d: ['Then make a supplication from the Quran or Sunnah, such as the one the Prophet ﷺ taught Abu Bakr:', 'তারপর কুরআন বা সুন্নাহর একটি দোয়া পড়ুন, যেমন নবী ﷺ আবু বকর (রা.)-কে যা শিখিয়েছিলেন:'], rec: ['masura'] },
     { pose: 'salam', t: ['Ending: Salam', 'সালাম'], ar: 'التَّسْلِيم', d: ['Turn your face to the right and say the salam, then to the left and say it again. Your prayer is complete.', 'ডান দিকে মুখ ফিরিয়ে সালাম বলুন, তারপর বাম দিকে ফিরিয়ে আবার বলুন। নামাজ শেষ হলো।'], rec: ['salam'] },
@@ -154,7 +146,8 @@ const FLOWS = {
     { art: 'nose', n: 3, t: ['Clean the nose', 'নাকে পানি দেওয়া'], ar: 'الِاسْتِنْشَاق', d: ['Sniff water into the nose with the right hand and blow it out with the left, three times.', 'ডান হাতে নাকে পানি দিন এবং বাম হাতে ঝেড়ে পরিষ্কার করুন, তিনবার।'] },
     { art: 'face', n: 3, t: ['Wash the face', 'মুখমণ্ডল ধোয়া'], ar: 'غَسْلُ الْوَجْه', d: ['Wash the whole face three times — from the hairline to below the chin, and from ear to ear. Run wet fingers through a thick beard. (Fard)', 'পুরো মুখমণ্ডল তিনবার ধুয়ে নিন — কপালের চুলের গোড়া থেকে থুতনির নিচ পর্যন্ত এবং এক কান থেকে আরেক কান পর্যন্ত। ঘন দাড়ি থাকলে ভেজা আঙুল দিয়ে খিলাল করুন। (ফরজ)'] },
     { art: 'arm', n: 3, t: ['Wash the arms', 'দুই হাত কনুইসহ ধোয়া'], ar: 'غَسْلُ الْيَدَيْن', d: ['Wash the right arm, then the left, from the fingertips up to and including the elbows, three times each. (Fard)', 'প্রথমে ডান হাত, তারপর বাম হাত আঙুলের মাথা থেকে কনুইসহ তিনবার করে ধুয়ে নিন। (ফরজ)'] },
-    { art: 'head', t: ['Wipe the head', 'মাথা মাসেহ'], ar: 'مَسْحُ الرَّأْس', d: ['Wipe over the head once with wet hands, from the front to the back and back again. Wiping at least a quarter of the head is fard.', 'ভেজা হাতে একবার মাথা মাসেহ করুন — সামনে থেকে পেছনে এবং আবার সামনে। মাথার অন্তত এক-চতুর্থাংশ মাসেহ করা ফরজ।'] },
+    { art: 'head', t: ['Wipe the head', 'মাথা মাসেহ'], ar: 'مَسْحُ الرَّأْس', dw: ['With wet hands, wipe over the hair itself once (not over the scarf), from the front to the back. Wiping at least a quarter of the head is fard.', 'ভেজা হাতে একবার চুলের উপর মাসেহ করুন (ওড়না বা হিজাবের উপর নয়), সামনে থেকে পেছনে। মাথার অন্তত এক-চতুর্থাংশ মাসেহ করা ফরজ।'],
+      d: ['Wipe over the head once with wet hands, from the front to the back and back again. Wiping at least a quarter of the head is fard.', 'ভেজা হাতে একবার মাথা মাসেহ করুন — সামনে থেকে পেছনে এবং আবার সামনে। মাথার অন্তত এক-চতুর্থাংশ মাসেহ করা ফরজ।'] },
     { art: 'ear', t: ['Wipe the ears', 'কান মাসেহ'], ar: 'مَسْحُ الْأُذُنَيْن', d: ['With the same wet hands, wipe inside the ears with the index fingers and behind them with the thumbs. Wiping the back of the neck is also recommended.', 'একই ভেজা হাতে শাহাদাত আঙুল দিয়ে কানের ভেতর এবং বৃদ্ধাঙ্গুল দিয়ে কানের পেছন মাসেহ করুন। ঘাড় মাসেহ করাও মুস্তাহাব।'] },
     { art: 'feet', n: 3, t: ['Wash the feet', 'দুই পা টাখনুসহ ধোয়া'], ar: 'غَسْلُ الرِّجْلَيْن', d: ['Wash the right foot, then the left, up to and including the ankles, three times each. Wash between the toes with the little finger. (Fard)', 'প্রথমে ডান পা, তারপর বাম পা টাখনুসহ তিনবার করে ধুয়ে নিন। কনিষ্ঠ আঙুল দিয়ে পায়ের আঙুলের ফাঁক খিলাল করুন। (ফরজ)'] },
     { art: 'dua', t: ['The supplication after wudu', 'অজুর পরের দোয়া'], ar: 'الدُّعَاءُ بَعْدَ الْوُضُوء', end: true, d: ['When you finish, say the testimony of faith. Whoever says it, the eight gates of Paradise are opened for him.', 'অজু শেষে কালিমা শাহাদাত পড়ুন। যে তা পড়ে, তার জন্য জান্নাতের আটটি দরজা খুলে দেওয়া হয়।'], rec: ['shahada'] },
@@ -256,7 +249,8 @@ VIEWS.salah = async (tok) => {
   if (PAGES[page]) return sgPage(page);
   return sgHome();
 };
-window.addEventListener('hashchange', () => { if (!/^#\/salah\/(learn|wudu|ghusl|tayammum)/.test(location.hash)) document.body.classList.remove('focus'); });
+// Full-screen flows (salah steps, azkar sessions) hide the bars; leaving them shows the bars again.
+window.addEventListener('hashchange', () => { if (!/^#\/(salah\/(learn|wudu|ghusl|tayammum)|azkar\/s\/|quran\/hifz\/p\/)/.test(location.hash)) document.body.classList.remove('focus'); });
 
 function sgHome() {
   const done = sgDone();
@@ -269,6 +263,7 @@ function sgHome() {
       <div class="sg-hero-art">${sgFigure()}</div>
       <div class="sg-hero-t"><small>${esc(N(FLOWS.prayer.steps.length))} ${esc(sgt('steps'))}</small><b>${esc(sgt('learn'))}</b><span>${esc(sgt('learn_d'))}</span>
         <span class="btn gold small">${icon('play')}${esc(done.learn ? sgt('again') : sgt('start'))}</span></div></a>
+    <div class="sg-who"><span>${esc(sgt('who_d'))}</span><div class="p-seg"><button class="${sgFemale() ? '' : 'on'}" data-sa="who" data-v="m">${esc(sgt('men'))}</button><button class="${sgFemale() ? 'on' : ''}" data-sa="who" data-v="f">${esc(sgt('women'))}</button></div></div>
     <div class="sg-progress"><div class="hx-prog"><i style="width:${(n / topics.length) * 100}%"></i></div><small>${esc(sgt('learned'))}: ${N(n)} / ${N(topics.length)}</small></div>
     <div class="p-head">${esc(sgt('g_before'))}</div><div class="p-group">
       ${row('#/salah/wudu', 'drop', '#0091ff', FLOWS.wudu.title, 'wudu')}${row('#/salah/ghusl', 'wave', '#12a594', FLOWS.ghusl.title, 'ghusl')}${row('#/salah/tayammum', 'hand', '#a18072', FLOWS.tayammum.title, 'tayammum')}${pg('conditions')}</div>
@@ -334,9 +329,10 @@ async function sgStep(dir) {
   $('[data-sa="prev"]').style.visibility = SG.i ? 'visible' : 'hidden';
   if (s.pose) sgPose(s.pose);
   if (s.art) { const a = $('#sg-art'); a.innerHTML = sgArt(s.art, s.n); a.classList.remove('in'); void a.offsetWidth; a.classList.add('in'); }
+  if (s.pose && dir === 0 && !SG.posed) { SG.posed = true; }
   const body = $('#sg-body');
   const recs = (s.rec || []).map((id) => recCard(id)).join('');
-  body.innerHTML = `<div class="sg-step ${dir > 0 ? 'fwd' : dir < 0 ? 'bwd' : ''}"><div class="sg-term ar" dir="rtl">${s.ar}</div><h2>${esc(tr2(s.t))}</h2><p>${esc(tr2(s.d))}</p>
+  body.innerHTML = `<div class="sg-step ${dir > 0 ? 'fwd' : dir < 0 ? 'bwd' : ''}"><div class="sg-term ar" dir="rtl">${s.ar}</div><h2>${esc(tr2(s.t))}</h2><p>${esc(tr2(sgFemale() && s.dw ? s.dw : s.d))}</p>
     <div id="sg-extra"></div>${recs}${last ? `<div class="sg-end">${icon('sparkle')}${esc(sgt('well_done'))}</div>` : ''}</div>`;
   $('#scroll').scrollTop = 0;
   if (s.fatiha || s.surah) {
@@ -405,6 +401,7 @@ document.addEventListener('click', async (e) => {
   const a = e.target.closest('[data-sa]');
   if (!a) return;
   const d = a.dataset;
+  if (d.sa === 'who') { try { localStorage.setItem('salah-who', d.v); } catch { /* private mode */ } nativeUi('haptic'); render(); return; }
   if (d.sa === 'next') sgMove(1);
   else if (d.sa === 'prev') sgMove(-1);
   else if (d.sa === 'play') {

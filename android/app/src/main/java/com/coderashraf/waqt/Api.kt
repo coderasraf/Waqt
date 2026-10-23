@@ -30,6 +30,7 @@ class Api(private val ctx: Context, private val host: Host) {
         fun requestPermission(permission: String, done: (Boolean) -> Unit)
         fun pickAudio(done: (Uri?) -> Unit)
         fun createDocument(name: String, mime: String, done: (Uri?) -> Unit)
+        fun openDocument(mimes: Array<String>, done: (Uri?) -> Unit)
         fun currentLocation(done: (android.location.Location?) -> Unit)
         fun js(code: String)
     }
@@ -173,6 +174,11 @@ class Api(private val ctx: Context, private val host: Host) {
                 }
                 "POST /api/hadith/download/cancel" -> { HadithFiles.cancelled = true; ok() }
                 "POST /api/hadith/delete" -> { HadithFiles.delete(ctx, json.getString("b")); reply(200, HadithFiles.status(ctx)) }
+                // The page's own storage (localStorage), mirrored here so backups include it.
+                "GET /api/webstore" -> reply(200, webFile.takeIf { it.exists() }?.let { runCatching { JSONObject(it.readText()) }.getOrNull() } ?: JSONObject())
+                "PUT /api/webstore" -> { webFile.writeText(json.toString()); ok() }
+                "POST /api/backup/export" -> exportBackup(reply)
+                "POST /api/backup/import" -> importBackup(reply)
                 "POST /api/quran/copy" -> {
                     main.post {
                         val cm = ctx.getSystemService(android.content.ClipboardManager::class.java)
@@ -190,6 +196,40 @@ class Api(private val ctx: Context, private val host: Host) {
     }
 
     private fun err(msg: String) = JSONObject().put("error", msg)
+
+    private val webFile get() = File(ctx.filesDir, "webstore.json")
+
+    /** Everything a person makes in the app, in one file: settings, tracker, Quran, hadith, page data. */
+    private val backupFiles = listOf("config.json", "state.json", "quran.json", "hadith.json", "webstore.json")
+
+    private fun exportBackup(reply: (Int, JSONObject) -> Unit) {
+        val files = JSONObject()
+        for (f in backupFiles) File(ctx.filesDir, f).takeIf { it.exists() }?.let { runCatching { files.put(f, JSONObject(it.readText())) } }
+        val doc = JSONObject().put("app", "waqt").put("format", 1).put("created", System.currentTimeMillis()).put("version", BuildConfig.VERSION_NAME).put("files", files)
+        val name = "Waqt backup ${Repo.today()}.json"
+        host.createDocument(name, "application/json") { uri ->
+            if (uri == null) return@createDocument reply(200, JSONObject().put("cancelled", true))
+            try {
+                ctx.contentResolver.openOutputStream(uri)!!.use { it.write(doc.toString(1).toByteArray()) }
+                reply(200, JSONObject().put("ok", true).put("name", name))
+            } catch (e: Exception) { reply(500, err(e.message ?: "could not save")) }
+        }
+    }
+
+    private fun importBackup(reply: (Int, JSONObject) -> Unit) {
+        host.openDocument(arrayOf("application/json", "text/plain", "application/octet-stream", "*/*")) { uri ->
+            if (uri == null) return@openDocument reply(200, JSONObject().put("cancelled", true))
+            try {
+                val doc = JSONObject(ctx.contentResolver.openInputStream(uri)!!.use { it.bufferedReader().readText() })
+                if (doc.optString("app") != "waqt") throw HttpError(400, "not a Waqt backup")
+                val files = doc.getJSONObject("files")
+                for (f in backupFiles) files.optJSONObject(f)?.let { File(ctx.filesDir, f).writeText(it.toString()) }
+                Repo.reload()
+                reply(200, JSONObject().put("ok", true).put("web", files.optJSONObject("webstore.json") ?: JSONObject()))
+            } catch (e: HttpError) { reply(e.status, err(e.message ?: "")) }
+            catch (e: Exception) { reply(400, err("not a Waqt backup")) }
+        }
+    }
 
     /** Quran reading state: bookmarks, last read, reader and player settings. */
     private val quranFile get() = File(ctx.filesDir, "quran.json")

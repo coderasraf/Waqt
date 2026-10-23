@@ -24,6 +24,20 @@ window.__nativeReply = (id, status, body) => {
 const nativeUi = (cmd, arg = '') => { try { NATIVE && NATIVE.ui(cmd, String(arg)); } catch { /* not android */ } };
 if (NATIVE) document.documentElement.classList.add('android');
 
+// Phones: the page's localStorage (themes, fasts, zakat, tasbih targets…) is
+// mirrored into the app's files, so backups and a new phone keep it.
+const webStore = {
+  dump() { const o = {}; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); o[k] = localStorage.getItem(k); } } catch { /* blocked */ } return o; },
+  load(o) { try { localStorage.clear(); for (const [k, v] of Object.entries(o || {})) localStorage.setItem(k, v); } catch { /* blocked */ } },
+  sync() { clearTimeout(webStore.t); webStore.t = setTimeout(() => api('/api/webstore', { method: 'PUT', body: JSON.stringify(webStore.dump()) }).catch(() => {}), 900); },
+};
+if (NATIVE) {
+  for (const m of ['setItem', 'removeItem', 'clear']) {
+    const orig = Storage.prototype[m];
+    Storage.prototype[m] = function (...a) { const r = orig.apply(this, a); if (this === window.localStorage && !webStore.loading) webStore.sync(); return r; };
+  }
+}
+
 async function api(path, opts) {
   if (NATIVE) {
     return new Promise((res, rej) => {
@@ -111,7 +125,7 @@ const SIX = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'];
 
 const T = {
   en: {
-    today: 'Today', timetable: 'Timetable', calendar: 'Hijri Calendar', qibla: 'Qibla', tracker: 'Prayer Tracker', tasbih: 'Tasbih', duas: 'Duas', quran: 'Quran', hadith: 'Hadith', salah: 'Salah guide', settings: 'Settings',
+    today: 'Today', timetable: 'Timetable', calendar: 'Hijri Calendar', qibla: 'Qibla', tracker: 'Prayer Tracker', tasbih: 'Tasbih', duas: 'Duas', quran: 'Quran', hadith: 'Hadith', salah: 'Salah guide', azkar: 'Azkar', ramadan: 'Ramadan & fasting', zakat: 'Zakat & sadaqah', settings: 'Settings',
     next_prayer: 'Next prayer', at: 'at', now: 'Now', next: 'Next', ends: 'ends', remaining: 'remaining', time_left: 'left',
     duha_time: 'Duha time', no_prayer: 'Until Dhuhr',
     ayah: 'Verse of the day', moon: 'Moon & Hijri', events: 'Coming up', special: 'Special times', progress: "Today's prayers", qibla_short: 'Qibla',
@@ -173,7 +187,7 @@ const T = {
     permissions_title: 'Make sure the adhan rings', permissions_sub: 'Allow these so Waqt can ring at the exact minute, even when your phone sleeps.', jumuah_t: "Jumu'ah",
   },
   bn: {
-    today: 'আজ', timetable: 'সময়সূচি', calendar: 'হিজরি ক্যালেন্ডার', qibla: 'কিবলা', tracker: 'নামাজ ট্র্যাকার', tasbih: 'তাসবিহ', duas: 'দোয়া', quran: 'কুরআন', hadith: 'হাদীস', salah: 'নামাজ শিক্ষা', settings: 'সেটিংস',
+    today: 'আজ', timetable: 'সময়সূচি', calendar: 'হিজরি ক্যালেন্ডার', qibla: 'কিবলা', tracker: 'নামাজ ট্র্যাকার', tasbih: 'তাসবিহ', duas: 'দোয়া', quran: 'কুরআন', hadith: 'হাদীস', salah: 'নামাজ শিক্ষা', azkar: 'যিকির ও দোয়া', ramadan: 'রমজান ও রোজা', zakat: 'যাকাত ও সদকা', settings: 'সেটিংস',
     next_prayer: 'পরবর্তী নামাজ', at: '', now: 'এখন', next: 'পরবর্তী', ends: 'শেষ', remaining: 'বাকি', time_left: 'বাকি',
     duha_time: 'চাশতের সময়', no_prayer: 'যোহর পর্যন্ত',
     ayah: 'আজকের আয়াত', moon: 'চাঁদ ও হিজরি', events: 'সামনে', special: 'বিশেষ সময়', progress: 'আজকের নামাজ', qibla_short: 'কিবলা',
@@ -587,11 +601,11 @@ async function saveCfg(note = true) {
 }
 
 // ---------- Chrome: rail, top bar ----------
-const ROUTES = ['today', 'quran', 'hadith', 'salah', 'timetable', 'calendar', 'qibla', 'tracker', 'tasbih', 'duas', 'health', 'settings', 'wake'];
-const ROUTE_ICON = { today: 'today', timetable: 'table', calendar: 'calendar', qibla: 'qibla', tracker: 'tracker', tasbih: 'tasbih', duas: 'dua', quran: 'book', hadith: 'scroll', salah: 'pray', health: 'shield', settings: 'settings' };
+const ROUTES = ['today', 'quran', 'hadith', 'azkar', 'salah', 'ramadan', 'zakat', 'timetable', 'calendar', 'qibla', 'tracker', 'tasbih', 'duas', 'health', 'settings', 'wake'];
+const ROUTE_ICON = { today: 'today', timetable: 'table', calendar: 'calendar', qibla: 'qibla', tracker: 'tracker', tasbih: 'tasbih', duas: 'dua', quran: 'book', hadith: 'scroll', azkar: 'beads', salah: 'pray', ramadan: 'crescent', zakat: 'coin', health: 'shield', settings: 'settings' };
 /// The pages listed in navigation: the Adhan check and the Quran are
 /// phone-only; the Fajr wake-up page is reached from its alarm only.
-const navRoutes = () => ROUTES.filter((k) => k !== 'wake' && (!['health', 'quran', 'hadith', 'salah'].includes(k) || S.android));
+const navRoutes = () => ROUTES.filter((k) => k !== 'wake' && (!['health', 'quran', 'hadith', 'salah', 'azkar', 'ramadan', 'zakat'].includes(k) || S.android));
 const tabs = () => (S.android ? ['today', 'quran', 'hadith', 'qibla'] : ['today', 'calendar', 'qibla', 'tasbih']);
 const route = () => { const r = location.hash.replace(/^#\/?/, '').split('/')[0]; return ROUTES.includes(r) ? r : 'today'; };
 
@@ -1696,7 +1710,7 @@ setInterval(refreshLive, 2000);
 
 /// The Quran and Hadith (phones only) live in their own scripts and stylesheet.
 async function loadQuran() {
-  for (const href of ['/quran.css', '/phone.css', '/hero.css', '/salah.css']) {
+  for (const href of ['/quran.css', '/phone.css', '/hero.css', '/salah.css', '/azkar.css', '/qplus.css', '/ramadan.css']) {
     const css = document.createElement('link');
     css.rel = 'stylesheet'; css.href = href;
     document.head.appendChild(css);
@@ -1714,12 +1728,23 @@ async function loadQuran() {
   await script('/hero.js');
   await script('/illus.js');
   await script('/salah.js');
+  await script('/azkar.js');
+  await script('/qplus.js');
+  await script('/ramadan.js');
 }
 
 // ---------- Start ----------
 (async function start() {
   try {
     await loadSettings();
+    // A fresh install restored by Android, or a new phone: bring the page's data back.
+    if (S.android) {
+      try {
+        const saved = await api('/api/webstore');
+        if (localStorage.length === 0 && saved && Object.keys(saved).length) { webStore.loading = true; webStore.load(saved); webStore.loading = false; applyTheme(); }
+        else if (localStorage.length && (!saved || !Object.keys(saved).length)) webStore.sync();
+      } catch { /* first run */ }
+    }
     if (S.android) await loadQuran();
     await loadToday();
     await refreshLive();

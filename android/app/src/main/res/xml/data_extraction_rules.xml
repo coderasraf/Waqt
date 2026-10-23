@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Settings and the prayer tracker move to a new phone; caches and sounds don't. -->
+<!-- What moves to a new phone: settings, the tracker, Quran bookmarks and goals, hifz, fasts,
+     zakat and page settings. Caches and downloads (audio, hadith books) re-download. -->
 <data-extraction-rules>
     <cloud-backup>
         <include domain="file" path="config.json" />
         <include domain="file" path="state.json" />
+        <include domain="file" path="quran.json" />
+        <include domain="file" path="hadith.json" />
+        <include domain="file" path="webstore.json" />
+        <include domain="sharedpref" path="ui.xml" />
     </cloud-backup>
     <device-transfer>
         <include domain="file" path="config.json" />
         <include domain="file" path="state.json" />
+        <include domain="file" path="quran.json" />
+        <include domain="file" path="hadith.json" />
+        <include domain="file" path="webstore.json" />
         <include domain="file" path="sounds" />
+        <include domain="sharedpref" path="ui.xml" />
     </device-transfer>
 </data-extraction-rules>

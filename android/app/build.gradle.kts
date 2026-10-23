@@ -51,8 +51,8 @@ android {
         applicationId = "com.coderashraf.waqt"
         minSdk = 26
         targetSdk = 36
-        versionCode = 7
-        versionName = "1.6.0"
+        versionCode = 10
+        versionName = "1.9.0"
     }
 
     signingConfigs {

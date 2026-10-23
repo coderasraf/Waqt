@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Android 11 and older: what Android's own backup keeps. Downloads (audio, hadith books) re-download. -->
 <full-backup-content>
     <include domain="file" path="config.json" />
     <include domain="file" path="state.json" />
+    <include domain="file" path="quran.json" />
+    <include domain="file" path="hadith.json" />
+    <include domain="file" path="webstore.json" />
+    <include domain="sharedpref" path="ui.xml" />
 </full-backup-content>

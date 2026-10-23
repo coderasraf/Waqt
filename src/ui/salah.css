@@ -1,15 +1,11 @@
 /* Waqt Salah guide (phones). */
 
-/* The figure: limbs morph between postures. */
-.sg-fig { width: 100%; height: 100%; overflow: visible; }
-.sg-fig path, .sg-fig circle { transition: d .7s cubic-bezier(.34, 1.2, .64, 1), cx .7s cubic-bezier(.34, 1.2, .64, 1), cy .7s cubic-bezier(.34, 1.2, .64, 1), r .7s, opacity .5s; }
-.sg-near { fill: none; stroke: var(--text); stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; }
-.sg-near.thin { stroke-width: 5; }
-.sg-far { fill: none; stroke: rgba(var(--ink), .32); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
-.sg-head { fill: var(--text); }
-.sg-mat { fill: var(--g2); opacity: .9; }
-.sg-cue { opacity: 0; }
-.sg-fig[data-pose="niyyah"] .sg-cue.niyyah, .sg-fig[data-pose="salam"] .sg-cue.salam { opacity: 1; }
+/* The illustrated figure: two pictures that crossfade between postures. */
+.sg-photo { position: relative; width: 100%; height: 100%; }
+.sg-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; opacity: 0; transform: scale(.97);
+  transition: opacity .55s var(--ease), transform .7s var(--spring); filter: drop-shadow(0 14px 18px rgba(0,0,0,.28)); }
+.sg-photo img.on { opacity: 1; transform: none; }
+.sg-floor { position: absolute; left: 10%; right: 10%; bottom: 1%; height: 10%; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.35), transparent); }
 
 /* Home */
 .sg-hero { display: grid; grid-template-columns: 42% 1fr; align-items: center; gap: 6px; margin-top: 10px; padding: 14px 16px 14px 8px; border-radius: 24px; color: var(--text);
@@ -39,9 +35,10 @@ body.focus .view { padding-top: calc(var(--sat) + 4px); padding-bottom: calc(var
 .sg-seg i { flex: 1; height: 4px; border-radius: 4px; background: rgba(var(--ink), .12); transition: background .4s; }
 .sg-seg i.done { background: rgba(var(--acc), .55); }
 .sg-seg i.on { background: var(--g2); }
-.sg-stage { height: min(270px, 34vh); border-radius: 26px; border: 1px solid var(--line); overflow: hidden; display: grid; place-items: center; padding: 6px;
+.sg-stage { position: relative; height: min(320px, 40vh); border-radius: 26px; border: 1px solid var(--line); overflow: hidden; padding: 10px;
   background: radial-gradient(260px 200px at 50% 40%, rgba(var(--acc), .16), transparent), linear-gradient(170deg, var(--panel-2), var(--panel)); }
-.sg-stage .sg-fig { width: auto; height: 100%; }
+.sg-stage > .sg-photo, .sg-stage > #sg-art { display: block; width: 100%; height: 100%; }
+#sg-art { margin: 0 auto; }
 .sg-body { margin-top: 18px; }
 .sg-step.fwd { animation: sgIn .45s var(--ease); }
 .sg-step.bwd { animation: sgInB .45s var(--ease); }
@@ -57,18 +54,12 @@ html[lang="bn"] .sg-step > p { font-family: "Hind Siliguri", var(--font); }
 .sg-end { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 18px 0 4px; color: var(--gold); font-weight: 600; }
 .sg-end svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
 
-/* Wudu, ghusl and tayammum art. */
-#sg-art { height: 100%; aspect-ratio: 1; }
-#sg-art.in { animation: sgPop .5s var(--spring); }
-@keyframes sgPop { from { opacity: 0; transform: scale(.9); } }
-.sg-art { width: 100%; height: 100%; }
-.sg-art-bg { fill: rgba(var(--acc), .1); stroke: rgba(var(--acc), .3); stroke-width: 1.5; }
-.sg-art-part > * { fill: rgba(var(--ink), .1); stroke: var(--text); stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
-.sg-art-part .ln { fill: none; }
-.sg-art-part .dot { fill: var(--text); stroke: none; }
-.sg-drops path { fill: #5ab0ff; opacity: 0; animation: sgDrop 2.4s ease-in infinite; }
-@keyframes sgDrop { 0% { opacity: 0; transform: translateY(-8px); } 30% { opacity: .9; } 100% { opacity: 0; transform: translateY(16px); } }
-.sg-n { font-size: 22px; font-weight: 700; fill: var(--gold); }
+/* Wudu, ghusl and tayammum pictures. */
+#sg-art { position: relative; }
+#sg-art.in .sg-photo img { animation: sgPop .5s var(--ease); }
+@keyframes sgPop { from { opacity: 0; transform: scale(.96); } }
+.sg-times { position: absolute; right: 6px; bottom: 6px; padding: 4px 12px; border-radius: 999px; font-size: 16px; font-weight: 700;
+  background: linear-gradient(135deg, var(--g1), var(--g2)); color: #1d1405; box-shadow: 0 6px 16px rgba(0,0,0,.25); }
 
 /* Recitation cards. */
 .sg-rec { position: relative; padding: 16px; margin: 10px 0; border-radius: 20px; border: 1px solid var(--line); background: var(--panel); }
@@ -113,3 +104,5 @@ html[lang="bn"] .sg-para { font-family: "Hind Siliguri", var(--font); }
 .sg-pill.k-sunnah_g { background: rgba(111,182,255,.14); color: var(--sky); } .sg-pill.k-sunnah_g b { background: #0091ff; }
 .sg-pill.k-nafl { background: rgba(var(--ink), .08); color: var(--muted); } .sg-pill.k-nafl b { background: #6b7690; }
 .p-row > .sg-pill { padding: 4px 10px; flex: none; }
+.sg-who { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 14px 4px 0; }
+.sg-who > span { color: var(--muted); font-size: 13px; }
