@@ -1,0 +1,72 @@
+/* Waqt Stories of the Prophets (phones). */
+.pr [lang="ar"], .pr-page [lang="ar"] { font-family: "QHafs", var(--arabic); }
+
+/* Home */
+.pr-hero { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; height: 210px; margin-top: 10px; padding: 16px; border-radius: 24px; overflow: hidden; color: #fff;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.72)), var(--img) center / cover no-repeat; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.pr-hero-t { display: flex; flex-direction: column; min-width: 0; text-shadow: 0 2px 12px rgba(0,0,0,.5); }
+.pr-hero-t small { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: #ffe2a0; font-weight: 650; }
+.pr-hero-t b { font-size: 26px; letter-spacing: -.4px; line-height: 1.15; }
+.pr-hero-t span { font-size: 13.5px; opacity: .9; }
+.pr-hero .btn { flex: none; }
+.pr-all { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 12px; padding: 12px 14px; border-radius: 18px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.pr-all > svg { width: 22px; height: 22px; stroke: var(--gold); fill: var(--gold); flex: none; }
+.pr-all .p-lab { flex: 1; }
+
+.pr-list { display: flex; flex-direction: column; gap: 2px; margin-top: 12px; }
+.pr-row { position: relative; display: flex; align-items: center; gap: 12px; padding: 8px 6px; border-radius: 16px; color: var(--text); }
+.pr-row:active { background: rgba(var(--ink), .05); }
+.pr-thumb { position: relative; width: 58px; height: 58px; flex: none; border-radius: 16px; background: center / cover no-repeat; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+.pr-thumb i { position: absolute; left: -4px; top: -4px; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 11px; display: grid; place-items: center; font-style: normal; font-size: 11px; font-weight: 700;
+  color: #1b1407; background: var(--g2); box-shadow: 0 2px 6px rgba(0,0,0,.25); font-variant-numeric: tabular-nums; }
+.pr-row-t { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.pr-row-t b { font-size: 16px; font-weight: 600; }
+.pr-row-t b em { font-style: normal; font-weight: 400; color: var(--muted); font-size: 13.5px; }
+.pr-row-t small { color: var(--muted); font-size: 13px; }
+html[lang="bn"] .pr-row-t small, html[lang="bn"] .pr-hero-t span { font-family: "Hind Siliguri", var(--font); }
+.pr-row-ar { font-size: 24px; color: var(--gold-2); }
+.pr-tick { position: absolute; left: 44px; bottom: 4px; width: 18px; height: 18px; border-radius: 50%; background: var(--ok); display: grid; place-items: center; box-shadow: 0 0 0 2px var(--bg); }
+.pr-tick svg { width: 11px; height: 11px; stroke: #fff; fill: none; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* A story: a full-bleed cover */
+.pr-page { margin: calc(-1 * var(--view-pad-top, 0px)) 0 0; }
+.pr-cover { position: relative; height: min(420px, 56vh); margin: -8px -16px 0; overflow: hidden; color: #fff;
+  background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0) 30%, rgba(0,0,0,.15) 55%, var(--bg)), var(--img) center / cover no-repeat; }
+.pr-back { position: absolute; top: 12px; left: 16px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: rgba(0,0,0,.35); backdrop-filter: blur(8px); color: #fff; }
+.pr-back svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2.3; stroke-linecap: round; }
+.pr-cover-t { position: absolute; left: 16px; right: 16px; bottom: 8px; text-shadow: 0 2px 16px rgba(0,0,0,.55); }
+.pr-cover-t small { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: #ffe2a0; font-weight: 650; }
+.pr-ar { font-size: 44px; line-height: 1.5; color: #ffe2a0; }
+.pr-cover-t h1 { margin: 0; font-size: 30px; letter-spacing: -.5px; line-height: 1.1; color: var(--text); }
+.pr-cover-t span { color: var(--text-2, var(--text)); font-size: 15px; }
+.pr-body { padding-top: 6px; }
+.pr-tag { margin: 6px 0 12px; color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+.pr-tools { position: sticky; top: 0; z-index: 5; display: flex; gap: 10px; align-items: center; margin: 0 -16px; padding: 8px 16px; background: linear-gradient(var(--bg) 75%, transparent); }
+.pr-tools .btn { flex: 1; height: 46px; border-radius: 14px; justify-content: center; }
+.pr-story { margin-top: 8px; }
+.pr-p { margin: 0 0 14px; padding: 10px 12px; border-radius: 14px; font-size: 16.5px; line-height: 1.75; color: var(--text-2, var(--text)); transition: background .35s, box-shadow .35s; }
+.pr-story[lang="bn"] .pr-p { font-family: "Hind Siliguri", var(--font); font-size: 17px; }
+.pr-p:first-child::first-letter { float: left; font-size: 3.1em; line-height: .9; margin: 6px 8px 0 0; color: var(--gold); font-weight: 700; }
+.pr-story[lang="bn"] .pr-p:first-child::first-letter { float: none; font-size: 1em; margin: 0; color: inherit; font-weight: inherit; }
+.pr-p.on { background: rgba(var(--acc), .12); box-shadow: inset 3px 0 0 var(--g2); color: var(--text); }
+.pr-key { margin: 6px 0 4px; }
+.pr-lessons { display: flex; flex-direction: column; gap: 8px; }
+.pr-lesson { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel); }
+.pr-lesson span { width: 26px; height: 26px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; color: #1b1407; background: var(--g2); }
+.pr-lesson p { margin: 0; font-size: 15px; line-height: 1.55; }
+html[lang="bn"] .pr-lesson p, .pr-story[lang="bn"] ~ .pr-lessons p { font-family: "Hind Siliguri", var(--font); }
+.pr-pass { display: flex; align-items: center; gap: 12px; padding: 12px 14px; color: var(--text); }
+.pr-pass + .pr-pass { border-top: 1px solid var(--line); }
+.pr-pass > svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; stroke-width: 1.9; flex: none; }
+.pr-pass span { flex: 1; display: flex; flex-direction: column; }
+.pr-pass b { font-size: 15px; font-weight: 600; }
+.pr-pass small { color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.pr-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+.pr-nav a { display: flex; align-items: center; gap: 8px; padding: 12px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel); color: var(--text); min-width: 0; }
+.pr-nav a.nx { justify-content: flex-end; text-align: right; }
+.pr-nav span { display: flex; flex-direction: column; min-width: 0; }
+.pr-nav small { color: var(--muted); font-size: 12px; }
+.pr-nav b { font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pr-nav svg { width: 18px; height: 18px; stroke: var(--muted); fill: none; stroke-width: 2.3; stroke-linecap: round; flex: none; }
+.pr-refs { white-space: nowrap; font-size: .78em; }
+.pr-ref { display: inline-block; padding: 0 6px; margin: 0 1px; border-radius: 8px; color: var(--gold); background: rgba(var(--acc), .1); font-variant-numeric: tabular-nums; line-height: 1.6; }

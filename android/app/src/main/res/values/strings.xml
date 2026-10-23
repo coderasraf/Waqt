@@ -13,4 +13,14 @@
     <string name="ch_fajr_desc">Keeps ringing until you are up for Fajr</string>
     <string name="stop_adhan">Stop adhan</string>
     <string name="im_up">I\'m up</string>
+    <string name="w_small">Next prayer (small)</string>
+    <string name="w_small_d">The next prayer and its countdown</string>
+    <string name="w_verse">Ayah of the day</string>
+    <string name="w_verse_d">A verse of the Quran with its meaning, new each day</string>
+    <string name="w_name">Name of Allah</string>
+    <string name="w_name_d">One of the 99 Names each day, with its meaning</string>
+    <string name="w_fast">Sehri &amp; Iftar</string>
+    <string name="w_fast_d">Today\'s Sehri and Iftar times, with a countdown</string>
+    <string name="w_hijri">Hijri date</string>
+    <string name="w_hijri_d">Today\'s Hijri, Bangla and Gregorian dates</string>
 </resources>

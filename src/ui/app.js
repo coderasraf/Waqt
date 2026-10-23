@@ -125,7 +125,7 @@ const SIX = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'];
 
 const T = {
   en: {
-    today: 'Today', timetable: 'Timetable', calendar: 'Hijri Calendar', qibla: 'Qibla', tracker: 'Prayer Tracker', tasbih: 'Tasbih', duas: 'Duas', quran: 'Quran', hadith: 'Hadith', salah: 'Salah guide', azkar: 'Azkar', ramadan: 'Ramadan & fasting', zakat: 'Zakat & sadaqah', settings: 'Settings',
+    today: 'Today', timetable: 'Timetable', calendar: 'Hijri Calendar', qibla: 'Qibla', tracker: 'Prayer Tracker', tasbih: 'Tasbih', duas: 'Duas', quran: 'Quran', hadith: 'Hadith', salah: 'Salah guide', qaida: 'Noorani Qaida', names: '99 Names of Allah', hajj: 'Hajj & Umrah', prophets: 'Stories of the Prophets', kids: 'Kids', azkar: 'Azkar', ramadan: 'Ramadan & fasting', zakat: 'Zakat & sadaqah', settings: 'Settings',
     next_prayer: 'Next prayer', at: 'at', now: 'Now', next: 'Next', ends: 'ends', remaining: 'remaining', time_left: 'left',
     duha_time: 'Duha time', no_prayer: 'Until Dhuhr',
     ayah: 'Verse of the day', moon: 'Moon & Hijri', events: 'Coming up', special: 'Special times', progress: "Today's prayers", qibla_short: 'Qibla',
@@ -187,7 +187,7 @@ const T = {
     permissions_title: 'Make sure the adhan rings', permissions_sub: 'Allow these so Waqt can ring at the exact minute, even when your phone sleeps.', jumuah_t: "Jumu'ah",
   },
   bn: {
-    today: 'আজ', timetable: 'সময়সূচি', calendar: 'হিজরি ক্যালেন্ডার', qibla: 'কিবলা', tracker: 'নামাজ ট্র্যাকার', tasbih: 'তাসবিহ', duas: 'দোয়া', quran: 'কুরআন', hadith: 'হাদীস', salah: 'নামাজ শিক্ষা', azkar: 'যিকির ও দোয়া', ramadan: 'রমজান ও রোজা', zakat: 'যাকাত ও সদকা', settings: 'সেটিংস',
+    today: 'আজ', timetable: 'সময়সূচি', calendar: 'হিজরি ক্যালেন্ডার', qibla: 'কিবলা', tracker: 'নামাজ ট্র্যাকার', tasbih: 'তাসবিহ', duas: 'দোয়া', quran: 'কুরআন', hadith: 'হাদীস', salah: 'নামাজ শিক্ষা', qaida: 'নূরানী কায়দা', names: 'আল্লাহর ৯৯ নাম', hajj: 'হজ ও উমরা', prophets: 'নবীদের কাহিনি', kids: 'শিশুদের জন্য', azkar: 'যিকির ও দোয়া', ramadan: 'রমজান ও রোজা', zakat: 'যাকাত ও সদকা', settings: 'সেটিংস',
     next_prayer: 'পরবর্তী নামাজ', at: '', now: 'এখন', next: 'পরবর্তী', ends: 'শেষ', remaining: 'বাকি', time_left: 'বাকি',
     duha_time: 'চাশতের সময়', no_prayer: 'যোহর পর্যন্ত',
     ayah: 'আজকের আয়াত', moon: 'চাঁদ ও হিজরি', events: 'সামনে', special: 'বিশেষ সময়', progress: 'আজকের নামাজ', qibla_short: 'কিবলা',
@@ -601,11 +601,11 @@ async function saveCfg(note = true) {
 }
 
 // ---------- Chrome: rail, top bar ----------
-const ROUTES = ['today', 'quran', 'hadith', 'azkar', 'salah', 'ramadan', 'zakat', 'timetable', 'calendar', 'qibla', 'tracker', 'tasbih', 'duas', 'health', 'settings', 'wake'];
-const ROUTE_ICON = { today: 'today', timetable: 'table', calendar: 'calendar', qibla: 'qibla', tracker: 'tracker', tasbih: 'tasbih', duas: 'dua', quran: 'book', hadith: 'scroll', azkar: 'beads', salah: 'pray', ramadan: 'crescent', zakat: 'coin', health: 'shield', settings: 'settings' };
+const ROUTES = ['today', 'quran', 'hadith', 'azkar', 'salah', 'qaida', 'names', 'hajj', 'prophets', 'kids', 'ramadan', 'zakat', 'timetable', 'calendar', 'qibla', 'tracker', 'tasbih', 'duas', 'health', 'settings', 'wake'];
+const ROUTE_ICON = { today: 'today', timetable: 'table', calendar: 'calendar', qibla: 'qibla', tracker: 'tracker', tasbih: 'tasbih', duas: 'dua', quran: 'book', hadith: 'scroll', azkar: 'beads', salah: 'pray', qaida: 'alifba', names: 'names', hajj: 'kaaba', prophets: 'scrollbook', kids: 'star', ramadan: 'crescent', zakat: 'coin', health: 'shield', settings: 'settings' };
 /// The pages listed in navigation: the Adhan check and the Quran are
 /// phone-only; the Fajr wake-up page is reached from its alarm only.
-const navRoutes = () => ROUTES.filter((k) => k !== 'wake' && (!['health', 'quran', 'hadith', 'salah', 'azkar', 'ramadan', 'zakat'].includes(k) || S.android));
+const navRoutes = () => ROUTES.filter((k) => k !== 'wake' && (!['health', 'quran', 'hadith', 'salah', 'qaida', 'names', 'hajj', 'prophets', 'kids', 'azkar', 'ramadan', 'zakat'].includes(k) || S.android));
 const tabs = () => (S.android ? ['today', 'quran', 'hadith', 'qibla'] : ['today', 'calendar', 'qibla', 'tasbih']);
 const route = () => { const r = location.hash.replace(/^#\/?/, '').split('/')[0]; return ROUTES.includes(r) ? r : 'today'; };
 
@@ -647,14 +647,20 @@ let sky = null;
 let renderToken = 0;
 const live = (tok) => tok === renderToken;
 
+let renderedHash = null;
 async function render() {
   const tok = ++renderToken;
   if (sky) { sky.stop(); sky = null; }
   nativeUi('compass', 0); nativeUi('volumeTasbih', 0); nativeUi('keepScreenOn', 0);
-  closeSheet();
   renderChrome();
-  $('#scroll').scrollTop = 0;
-  view.style.animation = 'none'; void view.offsetWidth; view.style.animation = '';
+  // A new page starts at the top, with the sheet closed; redrawing the same
+  // page (a live refresh, a toggle) keeps your place and leaves the sheet open.
+  if (location.hash !== renderedHash) {
+    renderedHash = location.hash;
+    closeSheet();
+    $('#scroll').scrollTop = 0;
+    view.style.animation = 'none'; void view.offsetWidth; view.style.animation = '';
+  }
   try { await VIEWS[route()](tok); } catch (e) { if (live(tok)) view.innerHTML = `<div class="card" style="margin-top:20px">${esc(e.message)}</div>`; }
 }
 
@@ -1710,7 +1716,7 @@ setInterval(refreshLive, 2000);
 
 /// The Quran and Hadith (phones only) live in their own scripts and stylesheet.
 async function loadQuran() {
-  for (const href of ['/quran.css', '/phone.css', '/hero.css', '/salah.css', '/azkar.css', '/qplus.css', '/ramadan.css']) {
+  for (const href of ['/quran.css', '/phone.css', '/hero.css', '/salah.css', '/azkar.css', '/qplus.css', '/ramadan.css', '/qaida.css', '/names.css', '/hajj.css', '/prophets.css', '/home.css', '/daily.css', '/kids.css']) {
     const css = document.createElement('link');
     css.rel = 'stylesheet'; css.href = href;
     document.head.appendChild(css);
@@ -1731,6 +1737,14 @@ async function loadQuran() {
   await script('/azkar.js');
   await script('/qplus.js');
   await script('/ramadan.js');
+  await script('/qaida.js');
+  await script('/names.js');
+  await script('/hajj.js');
+  await script('/prophets.js');
+  // Last: the redesigned Today and calendar wrap what the others add.
+  await script('/home.js');
+  await script('/daily.js');
+  await script('/kids.js');
 }
 
 // ---------- Start ----------

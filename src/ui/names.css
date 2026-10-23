@@ -1,0 +1,111 @@
+/* Waqt 99 Names of Allah (phones). */
+.nm [lang="ar"], .nm-learn [lang="ar"], .nm-quiz [lang="ar"], .nm-sheet [lang="ar"], .nm-today [lang="ar"] { font-family: "QHafs", var(--arabic); }
+
+/* The name of the day */
+.nm-hero { position: relative; margin-top: 10px; padding: 16px 18px 18px; border-radius: 26px; text-align: center; overflow: hidden; color: var(--text);
+  border: 1px solid rgba(var(--acc), .35); background: radial-gradient(300px 220px at 50% 10%, rgba(var(--acc), .25), transparent), linear-gradient(165deg, var(--hero-a), var(--hero-b)); }
+.nm-hero::before { content: ""; position: absolute; inset: -40% -20% auto; height: 120%; background: conic-gradient(from 180deg at 50% 50%, transparent, rgba(var(--acc), .07), transparent 30%); animation: nmTurn 24s linear infinite; pointer-events: none; }
+@keyframes nmTurn { to { transform: rotate(1turn); } }
+.nm-hero > * { position: relative; }
+.nm-hero small { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--gold); font-weight: 650; }
+.nm-hero-ar { font-size: 64px; line-height: 1.6; color: var(--gold-2); text-shadow: 0 8px 30px rgba(var(--acc), .35); animation: qdRise .9s var(--ease) both; }
+.nm-hero b { display: block; font-size: 21px; letter-spacing: -.2px; }
+.nm-hero-m { display: block; color: var(--gold); font-weight: 600; margin-top: 2px; }
+.nm-hero p { margin: 10px auto 0; max-width: 34ch; color: var(--muted); font-size: 14px; line-height: 1.55; }
+html[lang="bn"] .nm-hero p, html[lang="bn"] .nm-sh-x, html[lang="bn"] .nm-face p { font-family: "Hind Siliguri", var(--font); }
+.nm-hero-b { display: flex; gap: 8px; justify-content: center; margin-top: 14px; }
+
+/* Actions */
+.nm-acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.nm-act { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px; border-radius: 18px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.nm-act:active { transform: scale(.97); }
+.nm-act b { font-size: 14px; font-weight: 650; }
+.nm-act small { color: var(--muted); font-size: 12px; margin-top: -4px; }
+.nm-quote { margin: 16px 2px 4px; padding: 12px 14px; border-radius: 16px; border-left: 3px solid var(--gold); background: rgba(var(--acc), .07); font-size: 14px; line-height: 1.55; color: var(--text-2, var(--text)); font-style: italic; }
+.nm-quote cite { display: block; margin-top: 6px; font-size: 12px; color: var(--muted); font-style: normal; }
+.nm-search { display: flex; align-items: center; gap: 8px; margin-top: 14px; padding: 0 12px; height: 44px; border-radius: 14px; background: rgba(var(--ink), .06); }
+.nm-search svg { width: 18px; height: 18px; stroke: var(--muted); fill: none; stroke-width: 2; stroke-linecap: round; flex: none; }
+.nm-search input { flex: 1; min-width: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: 15px; outline: none; }
+
+/* The grid of names */
+.nm-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.nm-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 10px 8px 12px; border-radius: 18px; border: 1px solid var(--line); background: var(--panel);
+  color: var(--text); font: inherit; text-align: center; cursor: pointer; transition: transform .25s var(--spring), border-color .2s, box-shadow .25s; }
+.nm-card:active { transform: scale(.96); }
+.nm-no { position: absolute; top: 8px; left: 10px; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.nm-got { position: absolute; top: 7px; right: 8px; width: 18px; height: 18px; border-radius: 50%; background: var(--ok); display: grid; place-items: center; }
+.nm-got svg { width: 11px; height: 11px; stroke: #fff; fill: none; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.nm-ar { font-size: 30px; line-height: 1.75; color: var(--text-ar); white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.nm-card b { font-size: 14px; font-weight: 600; }
+.nm-card small { font-size: 12px; color: var(--muted); line-height: 1.3; }
+html[lang="bn"] .nm-card small, html[lang="bn"] .nm-card b { font-family: "Hind Siliguri", var(--font); }
+.nm-card.on { border-color: var(--g2); box-shadow: 0 0 0 3px rgba(var(--acc), .3); transform: scale(1.03); }
+.nm-none { grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 20px; }
+
+/* One name, in a sheet */
+.nm-sheet { text-align: center; padding-bottom: 4px; }
+.nm-sh-top { display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.nm-nav { width: 36px; height: 36px; border-radius: 50%; border: 0; background: rgba(var(--ink), .07); color: var(--text); display: grid; place-items: center; }
+.nm-nav:disabled { opacity: .3; }
+.nm-nav svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.3; stroke-linecap: round; }
+.nm-sh-ar { font-size: 58px; line-height: 1.65; color: var(--gold-2); }
+.nm-sh-tr { display: block; font-size: 19px; }
+.nm-sh-m { color: var(--gold); font-weight: 600; margin-top: 2px; }
+.nm-sh-x { margin: 10px 0 0; font-size: 15px; line-height: 1.6; color: var(--text-2, var(--text)); }
+.nm-verse { display: block; margin-top: 14px; padding: 12px 14px; border-radius: 16px; border: 1px solid var(--line); background: rgba(var(--ink), .03); text-align: left; color: var(--text); }
+.nm-verse small { color: var(--gold); font-size: 12px; font-weight: 600; }
+.nm-v-ar { font-size: 22px; line-height: 2; text-align: right; color: var(--text-ar); margin: 4px 0; }
+.nm-v-tr { font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.nm-v-go { display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin-top: 8px; font-size: 13px; color: var(--gold); font-weight: 600; }
+.nm-v-go svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; }
+.nm-sh-b { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.nm-sh-b .btn { height: 48px; border-radius: 14px; justify-content: center; }
+.nm-sh-b .btn.on { color: var(--ok); border-color: var(--ok); }
+
+/* Memorise: a card that flips */
+.nm-learn, .nm-quiz { max-width: 620px; margin: 0 auto; }
+.nm-learn .sg-seg i.miss { background: #e5484d; }
+.nm-flip { position: relative; height: min(440px, 56vh); margin-top: 8px; perspective: 1400px; cursor: pointer; animation: sgIn .4s var(--ease); }
+.nm-face { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 22px; border-radius: 28px; text-align: center;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden; transition: transform .6s var(--ease); border: 1px solid rgba(var(--acc), .3);
+  background: radial-gradient(320px 240px at 50% 20%, rgba(var(--acc), .18), transparent), linear-gradient(165deg, var(--hero-a), var(--hero-b)); color: var(--text); }
+.nm-face.back { transform: rotateY(180deg); }
+.nm-flip.on .nm-face.front { transform: rotateY(-180deg); }
+.nm-flip.on .nm-face.back { transform: rotateY(0); }
+.nm-tag { position: absolute; top: 16px; left: 18px; font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); font-weight: 650; }
+.nm-tag.new { color: var(--gold); }
+.nm-fl-ar { font-size: 76px; line-height: 1.6; color: var(--gold-2); }
+.nm-fl-ar.sm { font-size: 40px; }
+.nm-face b { font-size: 22px; }
+.nm-face small { color: var(--muted); }
+.nm-hint { position: absolute; bottom: 18px; display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12.5px; }
+.nm-hint svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.nm-fl-m { font-size: 24px; font-weight: 700; color: var(--gold); letter-spacing: -.2px; }
+.nm-face p { margin: 8px 0 0; font-size: 15.5px; line-height: 1.6; max-width: 32ch; color: var(--text-2, var(--text)); }
+.nm-fl-ref { margin-top: 10px; }
+.nm-fl-b { display: grid; grid-template-columns: 52px 1fr 1.3fr; gap: 10px; margin-top: 16px; }
+.nm-fl-b .btn { height: 52px; border-radius: 16px; justify-content: center; font-size: 15.5px; }
+.nm-fl-b .btn:disabled { opacity: .35; }
+.nm-done { width: 96px; height: 96px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, var(--g1), var(--g3)); color: #1b1407; box-shadow: 0 12px 34px rgba(var(--acc), .35); }
+.nm-done svg { width: 44px; height: 44px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Quiz */
+.nm-q-ar { border: 0; background: none; font-size: 72px; line-height: 1.6; color: var(--gold-2); cursor: pointer; padding: 0 10px; }
+.nm-q-m { font-size: 26px; font-weight: 700; color: var(--gold); text-align: center; padding: 18px 10px; }
+.nm-opt-ar { font-size: 34px !important; }
+.nm-quiz .qd-opt.txt { height: auto; min-height: 64px; padding: 8px 10px; font-size: 16px; }
+html[lang="bn"] .nm-quiz .qd-opt.txt, html[lang="bn"] .nm-q-m { font-family: "Hind Siliguri", var(--font); }
+
+/* Today */
+.nm-today { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding: 14px 16px; border-radius: 20px; border: 1px solid var(--line); color: var(--text);
+  background: radial-gradient(200px 120px at 85% 50%, rgba(var(--acc), .14), transparent), var(--panel); }
+.nm-today-t { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.nm-today-t small { font-size: 11px; letter-spacing: 1.3px; text-transform: uppercase; color: var(--gold); font-weight: 650; }
+.nm-today-t b { font-size: 17px; }
+.nm-today-t span { font-size: 13px; color: var(--muted); }
+.nm-today-ar { font-size: 36px; line-height: 1.6; color: var(--gold-2); white-space: nowrap; }
+
+@media (max-width: 360px) {
+  .nm-acts { grid-template-columns: 1fr 1fr; }
+  .nm-ar { font-size: 26px; }
+}

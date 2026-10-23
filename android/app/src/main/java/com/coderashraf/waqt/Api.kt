@@ -143,6 +143,8 @@ class Api(private val ctx: Context, private val host: Host) {
                 "POST /api/quran/cmd" -> { main.post { QuranPlayer.command(json.optString("cmd")) }; ok() }
                 "POST /api/quran/options" -> { main.post { QuranPlayer.options(json) }; ok() }
                 "GET /api/quran/player" -> main.post { reply(200, QuranPlayer.state()) }
+                "POST /api/story/play" -> { main.post { QuranPlayer.playStory(ctx, json) }; ok() }
+                "GET /api/story/state" -> main.post { reply(200, QuranPlayer.storyState()) }
                 "POST /api/quran/share" -> {
                     val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, json.optString("text"))
                     host.startActivity(listOf(Intent.createChooser(send, null).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))); ok()
@@ -153,6 +155,25 @@ class Api(private val ctx: Context, private val host: Host) {
                     host.startActivity(listOf(Intent(android.speech.tts.TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA).addFlags(flags), Intent("com.android.settings.TTS_SETTINGS").addFlags(flags)))
                     ok()
                 }
+                "GET /api/widgets" -> main.post {
+                    try {
+                        val list = JSONArray()
+                        val placed = Widget.placed(ctx)
+                        for (k in Widget.KINDS.keys) list.put(JSONObject().put("kind", k).put("img", Widget.preview(ctx, k)).put("placed", k in placed))
+                        val pin = android.appwidget.AppWidgetManager.getInstance(ctx).isRequestPinAppWidgetSupported
+                        reply(200, JSONObject().put("widgets", list).put("pin", pin))
+                    } catch (e: Exception) { reply(500, err(e.message ?: "widgets")) }
+                }
+                "POST /api/widgets/pin" -> reply(200, JSONObject().put("ok", Widget.pin(ctx, json.optString("kind"))))
+                "GET /api/qaida/voice" -> Thread {
+                    val ok = runCatching { QaidaVoice.available(ctx, q("lang") ?: "ar") }.getOrDefault(false)
+                    reply(200, JSONObject().put("ar", ok).put("ok", ok))
+                }.start()
+                "POST /api/qaida/say" -> Thread {
+                    val why = runCatching { QaidaVoice.say(ctx, json.getString("text"), json.optDouble("rate", 0.8).toFloat(), json.optString("lang", "ar")) }.getOrElse { "no_voice" }
+                    if (why == null) ok() else reply(503, err(why))
+                }.start()
+                "POST /api/qaida/stop" -> { QaidaVoice.stop(); ok() }
                 "GET /api/hadith/state" -> reply(200, hadithFile.takeIf { it.exists() }?.let { runCatching { JSONObject(it.readText()) }.getOrNull() } ?: JSONObject())
                 "PUT /api/hadith/state" -> { hadithFile.writeText(json.toString()); ok() }
                 "GET /api/hadith/status" -> reply(200, HadithFiles.status(ctx).put("busy", hadithBusy))

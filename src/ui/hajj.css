@@ -1,0 +1,64 @@
+/* Waqt Hajj & Umrah guide (phones). */
+
+/* Home: the two journeys, as photographs */
+.hj-card { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; height: 200px; margin-top: 12px; padding: 16px; border-radius: 24px; overflow: hidden; color: #fff;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,.72)), var(--img) center / cover no-repeat; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.hj-card:active { transform: scale(.985); }
+.hj-card-t { display: flex; flex-direction: column; gap: 1px; min-width: 0; text-shadow: 0 2px 12px rgba(0,0,0,.5); }
+.hj-card-t small { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: #ffe2a0; font-weight: 650; }
+.hj-card-t b { font-size: 28px; letter-spacing: -.5px; line-height: 1.1; }
+.hj-card-t span { font-size: 13.5px; opacity: .9; }
+.hj-card .btn { flex: none; }
+
+.hj-days { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.hj-day { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 4px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-align: center; }
+.hj-day b { font-size: 19px; color: var(--gold); font-variant-numeric: tabular-nums; }
+.hj-day b svg { width: 22px; height: 22px; margin: 2px 0; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linejoin: round; }
+.hj-day small { font-size: 11px; color: var(--muted); line-height: 1.2; }
+
+/* The flows: a full-bleed photograph */
+.hj-stage { padding: 0; }
+.hj-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.04); transition: opacity .6s var(--ease), transform 6s ease-out; }
+.hj-stage img.on { opacity: 1; transform: scale(1); }
+.hj-daychip { position: absolute; left: 12px; bottom: 12px; z-index: 1; padding: 5px 11px; border-radius: 99px; font-size: 12.5px; font-weight: 600; color: #1b1407; background: rgba(255, 226, 160, .92); backdrop-filter: blur(6px); }
+.hj-women { display: flex; gap: 10px; margin: 0 0 14px; padding: 12px 14px; border-radius: 16px; background: color-mix(in srgb, #e93d82 10%, var(--panel)); border: 1px solid color-mix(in srgb, #e93d82 30%, transparent); }
+.hj-women > svg { width: 18px; height: 18px; flex: none; margin-top: 2px; stroke: #e93d82; fill: none; stroke-width: 2; }
+.hj-women b { display: block; font-size: 13px; color: #e93d82; }
+.hj-women span { font-size: 14.5px; line-height: 1.55; color: var(--text-2, var(--text)); }
+html[lang="bn"] .hj-women span { font-family: "Hind Siliguri", var(--font); }
+.hj-open { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; padding: 10px 12px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel); color: var(--text); }
+.hj-open b { flex: 1; font-size: 15px; font-weight: 600; }
+.hj-banner { height: 180px; margin: 6px 0 14px; border-radius: 22px; background: var(--img) center / cover no-repeat; }
+
+/* The round counter */
+.hj-counter { max-width: 620px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; -webkit-tap-highlight-color: transparent; user-select: none; }
+.hj-counter .sg-bar { width: 100%; }
+.hj-ring { position: relative; width: min(270px, 66vw); aspect-ratio: 1; margin-top: 2vh; }
+.hj-ring > svg { width: 100%; height: 100%; }
+.hj-ring > svg path { fill: none; stroke: rgba(var(--ink), .12); stroke-width: 14; stroke-linecap: butt; transition: stroke .35s; }
+.hj-ring > svg path.on { stroke: var(--g2); filter: drop-shadow(0 0 6px rgba(var(--acc), .45)); }
+.hj-counter.sai .hj-ring > svg path.on { stroke: #3e8ef7; filter: drop-shadow(0 0 6px rgba(62, 142, 247, .45)); }
+.hj-ring-t { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.hj-ring-t small { font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.hj-ring-t b { font-size: 92px; line-height: 1; font-weight: 700; letter-spacing: -2px; font-variant-numeric: tabular-nums; animation: qdRise .35s var(--ease); }
+.hj-ring-t svg { width: 54px; height: 54px; stroke: var(--ok); fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.hj-ring-t svg + b { font-size: 21px; letter-spacing: -.2px; margin-top: 8px; }
+.hj-dir { margin: 18px 0 0; font-size: 18px; font-weight: 650; color: var(--gold); text-align: center; }
+.hj-c-rec { width: 100%; margin-top: 14px; }
+.hj-tap { margin: 14px 0 0; color: var(--muted); font-size: 13px; text-align: center; }
+.hj-c-b { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.hj-c-b .btn { height: 50px; border-radius: 16px; justify-content: center; }
+.hj-c-b .btn:disabled { opacity: .35; }
+
+/* Checklist */
+.hj-ck { width: 100%; border: 0; background: none; font: inherit; color: inherit; text-align: left; }
+.hj-box { width: 24px; height: 24px; flex: none; border-radius: 8px; border: 2px solid var(--line-2); display: grid; place-items: center; transition: background .2s, border-color .2s; }
+.hj-box svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform: scale(.6); transition: opacity .2s, transform .25s var(--spring); }
+.hj-ck.on .hj-box { background: var(--ok); border-color: var(--ok); }
+.hj-ck.on .hj-box svg { opacity: 1; transform: none; }
+.hj-ck.on .p-lab b { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(var(--ink), .3); }
+
+@media (max-width: 360px) {
+  .hj-days small { font-size: 10px; }
+  .hj-card { height: 170px; }
+}

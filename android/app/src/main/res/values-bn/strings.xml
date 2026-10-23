@@ -13,4 +13,14 @@
     <string name="ch_fajr_desc">ফজরের জন্য না ওঠা পর্যন্ত বাজতে থাকবে</string>
     <string name="stop_adhan">আজান থামান</string>
     <string name="im_up">উঠেছি</string>
+    <string name="w_small">পরবর্তী নামাজ (ছোট)</string>
+    <string name="w_small_d">পরবর্তী নামাজ ও কাউন্টডাউন</string>
+    <string name="w_verse">আজকের আয়াত</string>
+    <string name="w_verse_d">প্রতিদিন কুরআনের একটি আয়াত ও তার অর্থ</string>
+    <string name="w_name">আল্লাহর নাম</string>
+    <string name="w_name_d">প্রতিদিন আল্লাহর ৯৯ নামের একটি, অর্থসহ</string>
+    <string name="w_fast">সাহরি ও ইফতার</string>
+    <string name="w_fast_d">আজকের সাহরি ও ইফতারের সময়, কাউন্টডাউনসহ</string>
+    <string name="w_hijri">হিজরি তারিখ</string>
+    <string name="w_hijri_d">আজকের হিজরি, বাংলা ও ইংরেজি তারিখ</string>
 </resources>

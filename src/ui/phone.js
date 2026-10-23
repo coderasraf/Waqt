@@ -174,10 +174,35 @@ VIEWS.settings = async (tok) => {
   if (!live(tok)) return;
   const parts = location.hash.replace(/^#\/?settings\/?/, '').split('/').filter(Boolean);
   const page = parts[0] || '';
-  const pages = { backup: sBackup, location: sLocation, calc: sCalc, adhan: sAdhan, alerts: sAlerts, mosque: sMosque, travel: sTravel, hijri: sHijri, theme: sTheme, about: sAbout };
+  const pages = { backup: sBackup, location: sLocation, calc: sCalc, adhan: sAdhan, alerts: sAlerts, mosque: sMosque, travel: sTravel, hijri: sHijri, theme: sTheme, about: sAbout, widgets: sWidgets };
   if (page === 'adhan' && parts[1]) return sPrayer(parts[1]);
   return (pages[page] || sIndex)(tok);
 };
+
+// ---------- Home-screen widgets: a gallery of the real widgets ----------
+const WIDGETS = {
+  next: [['Next prayer', 'পরবর্তী নামাজ'], ['A live countdown, the dates and all five times', 'লাইভ কাউন্টডাউন, তারিখ ও পাঁচ ওয়াক্তের সময়'], '4 × 2'],
+  small: [['Next prayer (small)', 'পরবর্তী নামাজ (ছোট)'], ['Just the next prayer and its countdown', 'শুধু পরবর্তী নামাজ ও কাউন্টডাউন'], '2 × 2'],
+  verse: [['Ayah of the day', 'আজকের আয়াত'], ['A short verse with its meaning, new each day', 'প্রতিদিন একটি ছোট আয়াত, অর্থসহ'], '4 × 2'],
+  name: [['Name of Allah', 'আল্লাহর নাম'], ['One of the 99 Names each day', 'প্রতিদিন আল্লাহর ৯৯ নামের একটি'], '2 × 2'],
+  fast: [['Sehri & Iftar', 'সাহরি ও ইফতার'], ['Today\'s times, counting down to the next', 'আজকের সময়, পরেরটির কাউন্টডাউনসহ'], '4 × 1'],
+  hijri: [['Hijri date', 'হিজরি তারিখ'], ['The Hijri, Bangla and Gregorian dates', 'হিজরি, বাংলা ও ইংরেজি তারিখ'], '3 × 1'],
+};
+const wtx = (pair) => pair[L() === 'bn' ? 1 : 0];
+
+async function sWidgets(tok) {
+  view.innerHTML = `<div class="p-page">${ptitle(wtx(['Home-screen widgets', 'হোম স্ক্রিন উইজেট']), '#/settings', wtx(['See Waqt at a glance, without opening the app.', 'অ্যাপ না খুলেই এক নজরে ওয়াক্ত দেখুন।']))}<div class="wg-list" id="wg"><div class="wg-load"></div></div></div>`;
+  let d;
+  try { d = await api('/api/widgets'); } catch (e) { $('#wg').innerHTML = `<div class="card">${esc(e.message)}</div>`; return; }
+  if (!live(tok)) return;
+  $('#wg').innerHTML = d.widgets.map((w) => {
+    const [title, desc, size] = WIDGETS[w.kind];
+    const btn = w.placed ? `<span class="wg-on">${icon('check')}${esc(wtx(['On your home screen', 'হোম স্ক্রিনে আছে']))}</span>`
+      : d.pin ? `<button class="btn gold small" data-pa="wg-pin" data-k="${w.kind}">${icon('plus')}${esc(wtx(['Add', 'যোগ করুন']))}</button>` : '';
+    return `<div class="wg-card"><div class="wg-shot wg-${w.kind}"><img src="${w.img}" alt=""></div>
+      <div class="wg-row"><span class="p-lab"><b>${esc(wtx(title))}</b><small>${esc(wtx(desc))} · ${esc(N(size))}</small></span>${btn}</div></div>`;
+  }).join('') + `<div class="p-foot">${esc(wtx(d.pin ? ['You can also long-press an empty part of your home screen, tap Widgets, and find Waqt.', 'হোম স্ক্রিনের খালি জায়গায় চেপে ধরে "উইজেট" থেকে ওয়াক্ত খুঁজেও যোগ করা যায়।'] : ['Long-press an empty part of your home screen, tap Widgets, and find Waqt.', 'হোম স্ক্রিনের খালি জায়গায় চেপে ধরে "উইজেট" থেকে ওয়াক্ত খুঁজে যোগ করুন।']))}</div>`;
+}
 
 function sIndex() {
   const c = S.cfg, p = c.phone || {};
@@ -207,6 +232,7 @@ function sIndex() {
     ${group(pt('g_look'), [
       prow({ ic: 'palette', color: '#d6409f', label: pt('theme'), value: THEME_NAME(themePrefV), href: '#/settings/theme' }),
       `<button class="p-row tap" data-pa="hero-pick">${tile('layers', '#f76b15')}<span class="p-lab"><b>${esc(pt('hero'))}</b></span><span class="p-val">${esc(pt('hx_' + heroStyle()))}</span>${chev()}</button>`,
+      ...(S.android ? [prow({ ic: 'table', color: '#30a46c', label: L() === 'bn' ? 'হোম স্ক্রিন উইজেট' : 'Home-screen widgets', href: '#/settings/widgets' })] : []),
       prow({ ic: 'globe', color: '#0091ff', label: t('language'), control: pseg('language', [['en', 'English'], ['bn', 'বাংলা']], L()) }),
       prow({ ic: 'clock', color: '#6b7690', label: t('clock'), control: pseg('clock', [[12, '12h'], [24, '24h']], c.clock, true) }),
       prow({ ic: 'hash', color: '#6b7690', label: t('bn_digits'), help: '০১২৩', control: ptog('bangla_digits', c.bangla_digits) }),
@@ -556,6 +582,7 @@ document.addEventListener('click', async (e) => {
       break;
     }
     case 'tt-day': ttDay(TT.days[+d.i]); break;
+    case 'wg-pin': { const r = await post('/api/widgets/pin', { kind: d.k }); if (!r.ok) toast(wtx(['Your launcher cannot add widgets from apps — add it from the home screen.', 'আপনার লঞ্চার অ্যাপ থেকে উইজেট যোগ করতে পারে না — হোম স্ক্রিন থেকে যোগ করুন।'])); break; }
     case 'voice': {
       if (e.target.closest('[data-pa="vplay"]')) return;
       const s = S.sounds.find((x) => x.id === d.id);
@@ -600,3 +627,105 @@ VIEWS.tasbih = async (tok) => {
   nativeUi('volumeTasbih', 1); nativeUi('keepScreenOn', 1);
 };
 void tasbihView;
+// Back from placing a widget: show it as added.
+const wgResume = window.onNativeResume;
+window.onNativeResume = async () => { await wgResume?.(); if (location.hash === '#/settings/widgets') render(); };
+
+// =====================================================================
+// More: every other part of the app, as a sheet of app-style tiles
+// =====================================================================
+// Grouped by purpose, with a search, a grab handle and swipe-to-close; it
+// never grows past the screen. Replaces app.js's plain list on phones.
+const MORE_GROUPS = [
+  ['learn', ['Learn', 'শিখুন'], ['salah', 'qaida', 'names', 'prophets']],
+  ['worship', ['Worship', 'ইবাদত'], ['azkar', 'tasbih', 'duas', 'tracker']],
+  ['season', ['Seasons & dates', 'মৌসুম ও তারিখ'], ['hajj', 'ramadan', 'zakat', 'calendar']],
+];
+/// Shown as rows under the tiles, with a line saying what each is for.
+const MORE_ROWS = [['timetable', ['Prayer times for the whole month', 'পুরো মাসের নামাজের সময়']], ['health', null], ['settings', ['Location, adhan, theme and more', 'অবস্থান, আজান, থিম ও আরও']]];
+// Each tile: its colours (top, bottom), the glyph's colour, and a short name.
+const MORE_TILE = {
+  salah: ['#ff9a4d', '#e8590c', '#fff', ['Salah guide', 'নামাজ শিক্ষা']], qaida: ['#2dd4bf', '#0d8a7c', '#fff', ['Qaida', 'নূরানী কায়দা']],
+  names: ['#b77cf5', '#7c2fd1', '#fff', ['99 Names', '৯৯ নাম']], prophets: ['#e0b483', '#a8743f', '#fff', ['Prophets', 'নবীদের কাহিনি']],
+  hajj: ['#3a3a44', '#111116', '#f3c66b', ['Hajj & Umrah', 'হজ ও উমরা']], azkar: ['#4cd471', '#1f9d45', '#fff', ['Azkar', 'যিকির ও দোয়া']],
+  tasbih: ['#3d9bff', '#0062cc', '#fff', ['Tasbih', 'তাসবিহ']], duas: ['#ff7aa2', '#e0336a', '#fff', ['Duas', 'দোয়া']],
+  tracker: ['#7d7bf0', '#3f3db8', '#fff', ['Tracker', 'ট্র্যাকার']], timetable: ['#4fc3f7', '#1b84b8', '#fff', ['Timetable', 'সময়সূচি']],
+  calendar: ['#ff6b61', '#d42a20', '#fff', ['Calendar', 'ক্যালেন্ডার']], ramadan: ['#34489c', '#121d52', '#f3c66b', ['Ramadan', 'রমজান']],
+  zakat: ['#ffd84d', '#e0a800', '#3b2a00', ['Zakat', 'যাকাত']],
+};
+const ROW_TINT = { timetable: ['#4fc3f7', '#1b84b8'], settings: ['#9aa3b5', '#5e6678'] };
+const moreLabel = (k) => (MORE_TILE[k] ? MORE_TILE[k][3][L() === 'bn' ? 1 : 0] : t(k));
+
+function moreTile(k) {
+  const [a, b, g] = MORE_TILE[k] || ['#6b7690', '#4a5368', '#fff'];
+  const on = route() === k;
+  return `<a class="mx-tile ${on ? 'on' : ''}" href="#/${k}" aria-label="${esc(t(k))}"><span class="mx-ic" style="--t1:${a};--t2:${b};--tg:${g}">${icon(ROUTE_ICON[k])}</span><span class="mx-lb">${esc(moreLabel(k))}</span></a>`;
+}
+
+function moreBody(q) {
+  const items = navRoutes().filter((k) => !tabs().includes(k));
+  const failing = S.day?.health_failing || 0;
+  ROW_TINT.health = failing ? ['#ff6b61', '#d42a20'] : ['#4cd471', '#1f9d45'];
+  const row = (k, sub) => items.includes(k) ? `<a class="mx-row" href="#/${k}"><span class="mx-ic sm" style="--t1:${ROW_TINT[k]?.[0] || '#9aa3b5'};--t2:${ROW_TINT[k]?.[1] || '#5e6678'};--tg:#fff">${icon(ROUTE_ICON[k])}</span>
+    <span class="mx-row-t"><b>${esc(t(k))}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span>${k === 'health' && failing ? `<span class="badge">${N(failing)}</span>` : ''}${icon('chevR')}</a>` : '';
+  if (q) {
+    const n = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const hits = items.filter((k) => [t(k), ...(MORE_TILE[k]?.[3] || [])].some((s) => n(s).includes(n(q))));
+    const tiles = hits.filter((k) => MORE_TILE[k] && k !== 'timetable');
+    const rows = hits.filter((k) => !MORE_TILE[k] || k === 'timetable');
+    if (!hits.length) return `<p class="mx-none">${esc(L() === 'bn' ? 'কিছু পাওয়া যায়নি' : 'Nothing found')}</p>`;
+    return `${tiles.length ? `<div class="mx-grid">${tiles.map(moreTile).join('')}</div>` : ''}${rows.length ? `<div class="mx-rows">${rows.map((k) => row(k)).join('')}</div>` : ''}`;
+  }
+  const grouped = new Set(MORE_GROUPS.flatMap((g) => g[2]));
+  const extra = items.filter((k) => !grouped.has(k) && k !== 'kids' && !MORE_ROWS.some(([r]) => r === k));
+  const kids = items.includes('kids') ? `<a class="mx-kids" href="#/kids"><img src="/kids/deeds.webp" alt=""><span><b>${esc(t('kids'))}</b><small>${esc(L() === 'bn' ? 'কুরআন, দোয়া, গল্প আর খেলা — ছোটদের জন্য' : 'Quran, duas, stories and games for children')}</small></span>${icon('chevR')}</a>` : '';
+  const groups = MORE_GROUPS.map(([id, title, ks]) => {
+    const here = ks.filter((k) => items.includes(k));
+    return here.length ? `<section class="mx-sec"><h3>${esc(title[L() === 'bn' ? 1 : 0])}</h3><div class="mx-grid">${here.map(moreTile).join('')}</div></section>` : '';
+  }).join('');
+  return `${kids}${groups}${extra.length ? `<section class="mx-sec"><div class="mx-grid">${extra.map(moreTile).join('')}</div></section>` : ''}
+    <div class="mx-rows">${MORE_ROWS.map(([k, sub]) => row(k, k === 'health'
+      ? (failing ? (L() === 'bn' ? 'কিছু বিষয় ঠিক করতে হবে' : 'Something needs fixing') : (L() === 'bn' ? 'আজান ঠিকমতো বাজবে কি না দেখুন' : 'Make sure the adhan will sound'))
+      : sub[L() === 'bn' ? 1 : 0])).join('')}</div>`;
+}
+
+openSheet = function () {
+  const sh = $('#sheet');
+  sh.innerHTML = `<div class="sheet-bg" data-act="sheet-close"></div>
+    <div class="mx" role="dialog" aria-modal="true" aria-label="${esc(t('more'))}">
+      <div class="mx-grab" aria-hidden="true"><i></i></div>
+      <div class="mx-head"><b>${esc(t('more'))}</b><button class="mx-x" data-act="sheet-close" aria-label="close">${icon('x')}</button></div>
+      <label class="mx-search">${icon('search')}<input id="mx-q" type="search" autocomplete="off" placeholder="${esc(L() === 'bn' ? 'খুঁজুন' : 'Search')}"></label>
+      <div class="mx-body" id="mx-body">${moreBody('')}</div></div>`;
+  sh.hidden = false;
+  sh.classList.remove('closing');
+  nativeUi('haptic');
+  $('#mx-q').addEventListener('input', (e) => { $('#mx-body').innerHTML = moreBody(e.target.value.trim()); });
+  // Drag the sheet down by its top to close it.
+  const box = $('.mx', sh), body = $('#mx-body', sh);
+  // Any choice closes it, even the page already open.
+  box.addEventListener('click', (e) => { if (e.target.closest('a[href]')) closeSheet(); });
+  let y0 = null, dy = 0;
+  box.addEventListener('touchstart', (e) => {
+    const top = e.target.closest('.mx-grab, .mx-head');
+    y0 = top || body.scrollTop <= 0 ? e.touches[0].clientY : null; dy = 0;
+  }, { passive: true });
+  box.addEventListener('touchmove', (e) => {
+    if (y0 == null) return;
+    dy = Math.max(0, e.touches[0].clientY - y0);
+    if (dy > 4) { box.style.transition = 'none'; box.style.transform = `translateY(${dy}px)`; }
+  }, { passive: true });
+  box.addEventListener('touchend', () => {
+    if (y0 == null) return;
+    y0 = null;
+    box.style.transition = ''; box.style.transform = '';
+    if (dy > 110) closeSheet();
+  });
+};
+closeSheet = function () {
+  const sh = $('#sheet');
+  if (!sh || sh.hidden) return;
+  if (sh.classList.contains('closing')) return;
+  sh.classList.add('closing');
+  setTimeout(() => { sh.hidden = true; sh.classList.remove('closing'); }, 220);
+};

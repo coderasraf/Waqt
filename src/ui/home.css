@@ -1,0 +1,189 @@
+/* Waqt Today and Hijri calendar, redesigned for phones. */
+
+/* ---------- Today: the prayers, in one card ---------- */
+.hm-day { margin-top: 14px; padding: 14px 6px 6px; border-radius: 24px; background: var(--panel); border: 1px solid var(--line); }
+.hm-head { display: flex; align-items: center; justify-content: space-between; padding: 0 10px 12px; }
+.hm-head b { font-size: 17px; font-weight: 650; letter-spacing: -.2px; }
+.hm-prog { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.hm-prog svg { width: 20px; height: 20px; transform: rotate(-90deg); }
+.hm-prog circle { fill: none; stroke-width: 3; }
+.hm-prog .bg { stroke: rgba(var(--ink), .14); }
+.hm-prog .fg { stroke: var(--ok); stroke-linecap: round; transition: stroke-dashoffset .8s var(--ease); }
+
+/* The day bar: five parts, one per prayer, filling through its time. */
+.hm-day .timeline { margin: 0; padding: 0 8px 12px; background: none; border: 0; box-shadow: none; }
+.hm-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+.hm-seg { display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 0; }
+.hm-track { width: 100%; height: 8px; border-radius: 6px; background: rgba(var(--ink), .1); overflow: hidden; }
+.hm-track i { display: block; height: 100%; width: 0; border-radius: 6px; background: rgba(var(--ink), .28); transition: width 1s var(--ease); }
+.hm-seg b { margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.hm-seg small { font-size: 11px; color: var(--faint); font-variant-numeric: tabular-nums; white-space: nowrap; }
+html[lang="bn"] .hm-seg b, html[lang="bn"] .hm-seg small { font-family: "Hind Siliguri", var(--font); }
+.hm-seg.now .hm-track i { background: linear-gradient(90deg, var(--g1), var(--g3)); box-shadow: 0 0 10px rgba(var(--acc), .6); }
+.hm-seg.now b { color: var(--gold); }
+.hm-seg.now small { color: var(--text-2, var(--text)); }
+.hm-seg.past .hm-track i { background: rgba(var(--ink), .32); }
+.hm-seg.s1 .hm-track i, .hm-seg.s2 .hm-track i { background: linear-gradient(90deg, #4fdb9a, var(--ok)); box-shadow: none; }
+.hm-seg.s3 .hm-track i { background: var(--violet, #a597ff); }
+.hm-seg.s4 .hm-track i { width: 100% !important; background: var(--rose, #ff7d8e); opacity: .7; }
+.hm-seg.s1 b, .hm-seg.s2 b { color: var(--ok); }
+
+/* The list: rows with hairlines; the current prayer softly lit. */
+.hm-day .prayers { display: block; margin: 0; }
+.hm-day .pcard { margin: 0; border: 0; border-radius: 16px; background: none; box-shadow: none; animation: none; padding: 10px 10px; }
+.hm-day .pcard + .pcard::before { content: ""; position: absolute; left: 60px; right: 10px; top: 0; height: 1px; background: var(--line); }
+.hm-day .pcard .tag { display: none; }
+.hm-day .pcard.past { opacity: .6; }
+.hm-day .pcard.current { background: linear-gradient(90deg, rgba(var(--acc), .16), rgba(var(--acc), .04)); animation: none; border: 0; box-shadow: none; }
+.hm-day .pcard.current::before { display: none; }
+.hm-day .pcard.current + .pcard::before { display: none; }
+.hm-day .pcard.current::after { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 3px; background: var(--g2); inset: 12px auto 12px 0; }
+.hm-day .pcard.current .ico { background: linear-gradient(160deg, var(--g1), var(--g3)); color: #1d1405; }
+.hm-day .pcard.current .tm { color: var(--gold); }
+.hm-day .pcard .ico { width: 36px; height: 36px; border-radius: 11px; }
+.hm-day .pcard .tm { font-size: 21px; }
+.hm-day .pcard .mode { border: 0; background: rgba(var(--ink), .06); }
+
+/* ---------- Today: widgets ---------- */
+#widgets.widgets { display: flex !important; flex-direction: column; gap: 10px; margin-top: 14px; }
+.hw { position: relative; display: flex; flex-direction: column; gap: 2px; padding: 14px 14px 13px; border-radius: 22px; color: var(--text); overflow: hidden; min-width: 0;
+  background: linear-gradient(155deg, color-mix(in srgb, var(--wc) 26%, var(--panel)), color-mix(in srgb, var(--wc) 7%, var(--panel)) 70%);
+  border: 1px solid color-mix(in srgb, var(--wc) 22%, transparent); transition: transform .25s var(--spring); -webkit-tap-highlight-color: transparent; }
+.hw:active { transform: scale(.975); }
+.hw-l { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 650; letter-spacing: .6px; text-transform: uppercase; color: color-mix(in srgb, var(--wc) 75%, var(--text)); }
+html[lang="bn"] .hw-l { text-transform: none; letter-spacing: 0; font-size: 12.5px; }
+.hw-l svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.hw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.hw-grid .hw { min-height: 148px; }
+.hw-num { font-size: 38px; font-weight: 700; line-height: 1.05; letter-spacing: -1px; margin-top: auto; font-variant-numeric: tabular-nums; }
+.hw-t { font-size: 15px; font-weight: 650; line-height: 1.25; }
+.hw-s { font-size: 12.5px; color: var(--muted); line-height: 1.3; }
+html[lang="bn"] .hw-s, html[lang="bn"] .hw-t { font-family: "Hind Siliguri", var(--font); }
+
+/* The ayah */
+.hw-ayah { margin-top: 8px; }
+.hw-ayah-ar { font-family: "QHafs", var(--arabic); font-size: 24px; line-height: 1.9; color: var(--text-ar); text-align: right; }
+.hw-ayah p { margin: 4px 0 6px; font-size: 14.5px; line-height: 1.55; color: var(--text-2, var(--text)); }
+html[lang="bn"] .hw-ayah p { font-family: "Hind Siliguri", var(--font); }
+.hw-ayah small { font-size: 12px; color: var(--muted); }
+.hw-skel { height: 22px; border-radius: 8px; margin: 8px 0; background: linear-gradient(90deg, rgba(var(--ink), .06), rgba(var(--ink), .12), rgba(var(--ink), .06)); background-size: 200% 100%; animation: wgShim 1.2s linear infinite; }
+.hw-skel.s { width: 60%; height: 14px; }
+
+/* Hijri and moon */
+.hw.hijri .hw-moon { position: absolute; top: 10px; right: 10px; width: 46px; height: 46px; filter: drop-shadow(0 4px 14px rgba(255, 236, 180, .3)); }
+.hw.hijri .hw-moon svg { width: 100%; height: 100%; }
+
+/* Name of Allah */
+.hw.name .hw-ar { font-family: "QHafs", var(--arabic); font-size: 30px; line-height: 1.6; color: color-mix(in srgb, var(--wc) 45%, var(--gold-2)); margin-top: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Qibla */
+.hw-compass { position: absolute; top: 10px; right: 10px; width: 48px; height: 48px; }
+.hw-compass .ring { fill: rgba(0, 0, 0, .12); stroke: color-mix(in srgb, var(--wc) 40%, transparent); stroke-width: 1.5; }
+.hw-compass line { stroke: rgba(var(--ink), .35); stroke-width: 1.5; }
+.hw-compass text { font-size: 9px; font-weight: 700; fill: var(--gold); }
+.hw-compass .ndl { fill: var(--gold); }
+.hw-compass .hub { fill: var(--text); }
+
+/* Streak */
+.hw-dots { position: absolute; top: 14px; right: 12px; display: flex; gap: 3px; }
+.hw-dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(var(--ink), .16); }
+.hw-dots i.s1, .hw-dots i.s2 { background: var(--ok); }
+.hw-dots i.s3 { background: var(--violet, #a597ff); }
+.hw-dots i.s4 { background: var(--rose, #ff7d8e); }
+
+/* Coming up */
+.hw-big-ev { display: flex; align-items: center; gap: 12px; margin: 8px 0 4px; }
+.hw-big-ev .hw-num { margin: 0; font-size: 40px; color: color-mix(in srgb, var(--wc) 55%, var(--text)); }
+.hw-big-ev span:last-child { display: flex; flex-direction: column; }
+.hw-big-ev b { font-size: 15.5px; }
+.hw-big-ev small { font-size: 12.5px; color: var(--muted); }
+.hw-evs { display: flex; flex-direction: column; margin-top: 4px; }
+.hw-ev { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+.hw-ev + .hw-ev { border-top: 1px solid var(--line); }
+.hw-ev .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.hw-ev-t { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.hw-ev-t b { font-size: 14.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hw-ev-t small { font-size: 12px; color: var(--muted); }
+.hw-ev-n { font-size: 12.5px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* More times */
+.hw-tms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 8px; margin-top: 10px; }
+.hw-tm { display: flex; flex-direction: column; min-width: 0; }
+.hw-tm small { font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hw-tm b { font-size: 15px; font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; }
+html[lang="bn"] .hw-tm small, html[lang="bn"] .hw-tm b { font-family: "Hind Siliguri", var(--font); }
+
+/* Ramadan */
+.hw-twin { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+.hw-twin small { display: block; font-size: 12px; color: var(--muted); }
+.hw-twin b { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ---------- Hijri calendar ---------- */
+.hc-month { position: relative; margin-top: 6px; padding: 12px 10px 10px; border-radius: 24px; background: var(--panel); border: 1px solid var(--line); }
+.hc-head { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; }
+.hc-nav { width: 38px; height: 38px; border-radius: 50%; border: 0; display: grid; place-items: center; background: rgba(var(--ink), .07); color: var(--text); }
+.hc-nav svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.3; stroke-linecap: round; }
+.hc-title { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 0; }
+.hc-title .ar { font-family: "QHafs", var(--arabic); font-size: 22px; line-height: 1.5; color: var(--gold-2); }
+.hc-title b { font-size: 19px; font-weight: 700; letter-spacing: -.2px; }
+.hc-title small { font-size: 12px; color: var(--muted); }
+.hc-today { position: absolute; top: 12px; right: 56px; padding: 4px 10px; border-radius: 99px; border: 0; background: rgba(var(--acc), .16); color: var(--gold); font: inherit; font-size: 12px; font-weight: 650; }
+.hc-grid { display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 4px; margin-top: 12px; }
+.hc-grid.slide-l { animation: sgIn .35s var(--ease); }
+.hc-grid.slide-r { animation: sgInB .35s var(--ease); }
+.hc-wd { text-align: center; font-size: 11.5px; font-weight: 650; color: var(--faint); padding-bottom: 6px; }
+.hc-wd.fri { color: var(--gold); }
+.hc-d { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0; height: 56px; padding-top: 4px; border: 0; background: none; color: var(--text); font: inherit; border-radius: 14px; -webkit-tap-highlight-color: transparent; }
+.hc-d.empty { pointer-events: none; }
+.hc-d b { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; transition: background .2s, box-shadow .2s; }
+.hc-d small { font-size: 10px; color: var(--faint); line-height: 1.1; white-space: nowrap; }
+.hc-d.fri b { color: var(--gold); }
+.hc-d.white b { background: rgba(var(--ink), .08); }
+.hc-d.today b { background: linear-gradient(160deg, var(--g1), var(--g3)); color: #1d1405; box-shadow: 0 4px 12px rgba(var(--acc), .35); }
+.hc-d.sel:not(.today) b { box-shadow: inset 0 0 0 2px var(--g2); }
+.hc-d:active b { transform: scale(.92); }
+.hc-dots { display: flex; gap: 2px; height: 5px; margin-top: 2px; }
+.hc-dots i { width: 5px; height: 5px; border-radius: 50%; }
+.hc-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: center; margin: 8px 0 2px; font-size: 11.5px; color: var(--muted); }
+.hc-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.hc-lg { width: 9px; height: 9px; border-radius: 50%; }
+.hc-lg.today { background: var(--g2); }
+.hc-lg.ev { background: var(--violet, #a597ff); }
+.hc-lg.white { background: rgba(var(--ink), .25); }
+/* Event colours: app.css gives each kind (.k-eid, .k-night, ...) its colour. */
+.hc-dots i, .hc-bar, .hw-ev .dot { background: currentColor; }
+
+/* The chosen day */
+.hc-detail { margin-top: 12px; padding: 14px; border-radius: 22px; background: var(--panel); border: 1px solid var(--line); }
+.hc-dtop { display: flex; gap: 14px; align-items: center; }
+.hc-dmoon { width: 56px; height: 56px; flex: none; filter: drop-shadow(0 4px 16px rgba(255, 236, 180, .25)); }
+.hc-dmoon svg { width: 100%; height: 100%; }
+.hc-dt { display: flex; flex-direction: column; min-width: 0; }
+.hc-dt small { font-size: 11.5px; font-weight: 650; letter-spacing: .6px; text-transform: uppercase; color: var(--gold); }
+html[lang="bn"] .hc-dt small { text-transform: none; letter-spacing: 0; font-size: 12.5px; }
+.hc-dt b { font-size: 19px; font-weight: 700; letter-spacing: -.2px; }
+.hc-dt span { font-size: 13.5px; color: var(--text-2, var(--text)); }
+.hc-dt em { font-style: normal; font-size: 12.5px; color: var(--muted); }
+.hc-item { display: flex; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.hc-item b { font-size: 15px; }
+.hc-item b .ar { font-family: "QHafs", var(--arabic); color: var(--gold-2); font-weight: 400; margin-left: 4px; }
+.hc-item p { margin: 3px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.hc-bar { width: 4px; flex: none; border-radius: 3px; align-self: stretch; }
+
+/* Upcoming */
+.hc-evs { border-radius: 20px; background: var(--panel); border: 1px solid var(--line); overflow: hidden; }
+.hc-ev { display: flex; align-items: center; gap: 12px; padding: 11px 14px; }
+.hc-ev + .hc-ev { border-top: 1px solid var(--line); }
+.hc-ev .hc-bar { height: 34px; align-self: center; }
+.hc-ev-t { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.hc-ev-t b { font-size: 15px; font-weight: 600; }
+.hc-ev-t small { font-size: 12px; color: var(--muted); }
+.hc-ev-n { display: flex; flex-direction: column; align-items: flex-end; font-size: 11px; color: var(--muted); white-space: nowrap; }
+.hc-ev-n b { font-size: 17px; color: var(--text); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.hc-more { display: block; margin: 10px auto 0; padding: 8px 16px; border-radius: 99px; border: 0; background: rgba(var(--ink), .07); color: var(--text); font: inherit; font-size: 13.5px; font-weight: 600; }
+/* The chosen day's items are lines in its card, never boxes of their own. */
+.hc-detail .hc-item, [data-light] .hc-detail .hc-item { background: none; box-shadow: none; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 12px 0 0; margin-top: 12px; }
+/* In light themes too, the prayers are rows inside one card, not cards of their own. */
+[data-light] .hm-day .pcard { background: none; box-shadow: none; border: 0; }
+[data-light] .hm-day .pcard.current { background: linear-gradient(90deg, rgba(var(--acc), .16), rgba(var(--acc), .03)); }
+[data-light] .hm-day .pcard .ico { background: rgba(var(--acc), .1); }

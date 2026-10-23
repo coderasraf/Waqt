@@ -1,0 +1,163 @@
+/* Waqt Noorani Qaida (phones). */
+.qd { --qd-throat: #f76b15; --qd-tongue: #3e8ef7; --qd-lips: #e93d82; --qd-jawf: #30a46c; --qd-qalqalah: #8e4ec6; --qd-ghunnah: #12a594; }
+.qd [lang="ar"], .qd-quiz [lang="ar"] { font-family: "QIndoPak", var(--arabic); }
+
+/* Home: the hero */
+.qd-hero { display: block; margin-top: 10px; padding: 14px 16px 16px; border-radius: 24px; color: var(--text); overflow: hidden; position: relative;
+  border: 1px solid rgba(var(--acc), .35); background: radial-gradient(340px 200px at 85% 0%, rgba(var(--acc), .22), transparent), linear-gradient(160deg, var(--hero-a), var(--hero-b)); }
+.qd-hero-ar { display: flex; justify-content: center; gap: 22px; font-size: 58px; line-height: 1.5; color: var(--gold-2); height: 92px; }
+.qd-hero-ar span { animation: qdRise 1s var(--ease) both; animation-delay: var(--d); text-shadow: 0 6px 24px rgba(var(--acc), .35); }
+@keyframes qdRise { from { opacity: 0; transform: translateY(14px); } }
+.qd-hero-row { display: flex; align-items: center; gap: 16px; }
+.qd-hero-t { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
+.qd-hero-t small { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--gold); font-weight: 650; }
+.qd-hero-t b { font-size: 21px; font-weight: 700; letter-spacing: -.3px; line-height: 1.2; }
+.qd-hero-t span:not(.btn) { color: var(--muted); font-size: 13px; }
+.qd-hero-t .btn { margin-top: 10px; }
+
+/* Progress rings */
+.qd-ring { width: 84px; height: 84px; flex: none; transform: rotate(-90deg); }
+.qd-ring circle { fill: none; stroke-width: 7; }
+.qd-ring .bg { stroke: rgba(var(--ink), .12); }
+.qd-ring .fg { stroke: var(--g2); stroke-linecap: round; transition: stroke-dashoffset 1s var(--ease); }
+.qd-ring text { transform: rotate(90deg); transform-origin: center; fill: var(--text); font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.qd-ring text.sm { font-size: 11px; fill: var(--muted); font-weight: 500; }
+
+/* Home: the path of lessons */
+.qd-path { position: relative; display: flex; flex-direction: column; gap: 2px; }
+.qd-path::before { content: ""; position: absolute; left: 21px; top: 26px; bottom: 26px; width: 2px; background: rgba(var(--ink), .12); border-radius: 2px; }
+.qd-step { position: relative; display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 4px; border-radius: 16px; color: var(--text); }
+.qd-step:active { background: rgba(var(--ink), .05); }
+.qd-n { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: 50%; margin-left: 2px; z-index: 1; font-weight: 650; font-size: 14px;
+  background: var(--panel); border: 2px solid var(--line-2); color: var(--muted); font-variant-numeric: tabular-nums; }
+.qd-n svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.qd-step.done .qd-n { background: var(--ok); border-color: var(--ok); color: #fff; }
+.qd-step.cur .qd-n { border-color: var(--g2); color: var(--gold); box-shadow: 0 0 0 5px rgba(var(--acc), .16); }
+.qd-step.cur { background: rgba(var(--acc), .08); }
+.qd-st { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.qd-st b { font-size: 15.5px; font-weight: 600; }
+.qd-st small { color: var(--muted); font-size: 12.5px; }
+.qd-sample { font-size: 21px; color: var(--gold-2); white-space: nowrap; max-width: 38%; overflow: hidden; text-overflow: ellipsis; }
+
+/* A lesson */
+.qd-intro { margin-top: 6px; padding: 14px 16px; border-radius: 22px; border: 1px solid var(--line); background: radial-gradient(260px 140px at 90% 0%, rgba(var(--acc), .14), transparent), var(--panel); }
+.qd-intro small { font-size: 11px; letter-spacing: 1.3px; text-transform: uppercase; color: var(--gold); font-weight: 650; }
+.qd-intro-ar { font-size: 44px; line-height: 1.7; color: var(--text-ar); text-align: center; margin: 2px 0 4px; }
+.qd-intro p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--text-2, var(--text)); }
+html[lang="bn"] .qd-intro p { font-family: "Hind Siliguri", var(--font); }
+.qd-inl { font-family: "QIndoPak", var(--arabic); font-size: 1.75em; line-height: 1; color: var(--text-ar); unicode-bidi: isolate; }
+.qd-legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.qd-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 8px; border-radius: 99px; font-size: 12px; background: rgba(var(--ink), .06); color: var(--text-2, var(--text)); }
+.qd-chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--c); }
+.qd-chip.c-heavy i { width: 14px; height: 3px; border-radius: 2px; background: var(--gold); }
+.c-throat { --c: var(--qd-throat); } .c-tongue { --c: var(--qd-tongue); } .c-lips { --c: var(--qd-lips); } .c-jawf { --c: var(--qd-jawf); }
+.c-qalqalah { --c: var(--qd-qalqalah); } .c-ghunnah { --c: var(--qd-ghunnah); }
+
+.qd-acts { position: sticky; top: 0; z-index: 5; display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px; margin: 12px -16px 0; padding: 10px 16px;
+  background: linear-gradient(var(--bg) 75%, transparent); }
+.qd-acts.one { grid-template-columns: 1fr; }
+.qd-acts .btn { height: 46px; border-radius: 14px; justify-content: center; }
+.qd-hint { margin: 2px 4px 10px; color: var(--muted); font-size: 12.5px; text-align: center; }
+.qd-gp { margin: -2px 4px 10px; color: var(--muted); font-size: 13px; }
+
+/* Tiles */
+.qd-grid { display: grid; gap: 8px; }
+.qd-grid.c4 { grid-template-columns: repeat(4, 1fr); }
+.qd-grid.c2 { grid-template-columns: repeat(2, 1fr); }
+.qd-rows { display: flex; flex-direction: column; gap: 8px; }
+.qd-row { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 8px; position: relative; }
+.qd-row.m-qalqalah .qd-t { border-color: color-mix(in srgb, var(--qd-qalqalah) 55%, transparent); background: color-mix(in srgb, var(--qd-qalqalah) 10%, var(--panel)); }
+.qd-row.m-ghunnah .qd-t { border-color: color-mix(in srgb, var(--qd-ghunnah) 55%, transparent); background: color-mix(in srgb, var(--qd-ghunnah) 10%, var(--panel)); }
+.qd-t { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; min-height: 76px; padding: 6px 4px 8px; border-radius: 16px;
+  border: 1px solid var(--line); background: var(--panel); color: var(--text-ar); font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: transform .25s var(--spring), border-color .2s, box-shadow .25s, background .2s; }
+.qd-t:active { transform: scale(.94); }
+.qd-t.blank { visibility: hidden; }
+.qd-ar { font-size: 32px; line-height: 1.55; direction: rtl; }
+.qd-t.small .qd-ar { font-size: 27px; }
+.qd-t.word .qd-ar { font-size: 30px; }
+.qd-snd, .qd-nm { font-size: 12.5px; color: var(--muted); line-height: 1.2; direction: ltr; }
+.qd-nm { color: var(--text); font-weight: 600; font-size: 13px; }
+.qd-t.small .qd-snd { font-size: 10.5px; }
+.qd-mean { font-size: 11.5px; color: var(--gold); line-height: 1.25; margin-top: 2px; direction: ltr; text-align: center; }
+html[lang="bn"] .qd-snd, html[lang="bn"] .qd-nm, html[lang="bn"] .qd-mean { font-family: "Hind Siliguri", var(--font); }
+/* Where a letter is said: a dot; a heavy letter: a bar under it. */
+.qd-t[class*="g-"]::before { content: ""; position: absolute; top: 8px; right: 8px; width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
+.qd-t.g-throat { --c: var(--qd-throat); } .qd-t.g-tongue { --c: var(--qd-tongue); } .qd-t.g-lips { --c: var(--qd-lips); } .qd-t.g-jawf { --c: var(--qd-jawf); }
+.qd-t.heavy::after { content: ""; position: absolute; bottom: 5px; width: 18px; height: 3px; border-radius: 2px; background: var(--gold); }
+.qd-t.name { min-height: 88px; }
+/* Speaking, and then the learner's turn to say it back. */
+.qd-t.on { border-color: var(--g2); box-shadow: 0 0 0 3px rgba(var(--acc), .3); transform: scale(1.04); background: color-mix(in srgb, var(--g2) 14%, var(--panel)); }
+.qd-t.turn { animation: qdTurn 1s ease-in-out infinite; border-color: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 35%, transparent); transform: none; background: var(--panel); }
+@keyframes qdTurn { 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--ok) 12%, transparent); } }
+
+/* Opening letters */
+.qd-muq { display: flex; flex-direction: column; gap: 8px; }
+.qd-mq { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 18px; border: 1px solid var(--line); background: var(--panel); }
+.qd-t.muq { width: 132px; padding: 6px 4px 8px; flex: none; min-height: 70px; border: 0; background: rgba(var(--acc), .1); }
+.qd-t.muq .qd-snd { display: none; }
+.qd-t.muq .qd-ar { font-size: 28px; white-space: nowrap; }
+.qd-mq-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.qd-mq-t b { font-size: 15.5px; }
+.qd-mq-t small { color: var(--muted); font-size: 12px; line-height: 1.35; }
+
+/* Reading the Quran */
+.qd-surahs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px 10px; padding: 2px 16px; }
+.qd-surahs::-webkit-scrollbar { display: none; }
+.qd-surahs button { flex: none; padding: 8px 14px; border-radius: 99px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: inherit; font-size: 13.5px; }
+.qd-surahs button.on { background: var(--g2); border-color: var(--g2); color: #1b1407; font-weight: 600; }
+.qd-bism { text-align: center; font-size: 26px; color: var(--text-ar); margin: 4px 0 10px; }
+.qd-read { display: flex; flex-direction: column; gap: 10px; }
+.qd-verse { display: flex; flex-wrap: wrap; gap: 6px; align-items: stretch; padding: 10px; border-radius: 20px; border: 1px solid var(--line); background: rgba(var(--ink), .025); }
+.qd-verse .qd-t { min-height: 0; padding: 4px 10px 6px; flex: 0 1 auto; border-radius: 14px; }
+.qd-verse .qd-ar { font-size: 28px; }
+.qd-verse .qd-mean { max-width: 120px; }
+.qd-vn { align-self: center; margin-right: 4px; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--gold); color: var(--gold); font-size: 14px; font-family: var(--arabic); }
+
+.qd-end { display: flex; flex-direction: column; gap: 10px; margin: 20px 0 8px; }
+.qd-end .btn { height: 52px; border-radius: 16px; justify-content: center; font-size: 16px; }
+.qd-nextl { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 16px; border: 1px solid var(--line); color: var(--text); }
+.qd-nextl small { color: var(--muted); font-size: 12px; }
+.qd-nextl b { flex: 1; font-size: 15px; font-weight: 600; text-align: right; }
+.qd-nextl svg { width: 18px; height: 18px; stroke: var(--muted); fill: none; stroke-width: 2.2; stroke-linecap: round; }
+
+/* The quiz */
+.qd-quiz { max-width: 620px; margin: 0 auto; }
+.qd-quiz .sg-seg i.miss { background: var(--bad, #e5484d); }
+.qd-qbox { display: flex; flex-direction: column; align-items: center; padding-top: 4vh; animation: sgIn .4s var(--ease); }
+.qd-prompt { font-size: 19px; font-weight: 650; margin: 0 0 22px; text-align: center; }
+.qd-listen { width: 132px; height: 132px; border-radius: 50%; border: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #1b1407; cursor: pointer;
+  background: radial-gradient(circle at 35% 30%, var(--g1), var(--g3)); box-shadow: 0 12px 34px rgba(var(--acc), .35); transition: transform .25s var(--spring); font: inherit; }
+.qd-listen svg { width: 44px; height: 44px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.qd-listen span { font-size: 12px; font-weight: 600; }
+.qd-listen:active { transform: scale(.94); }
+.qd-listen.on { animation: qdPulse 1.1s ease-in-out infinite; }
+@keyframes qdPulse { 50% { box-shadow: 0 0 0 16px rgba(var(--acc), .12), 0 12px 34px rgba(var(--acc), .35); } }
+.qd-show { font-size: 96px; line-height: 1.5; color: var(--text-ar); height: 150px; }
+.qd-opts { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 34px; }
+.qd-opt { height: 104px; border-radius: 22px; border: 1.5px solid var(--line-2); background: var(--panel); color: var(--text-ar); font: inherit; cursor: pointer; transition: transform .2s var(--spring), background .2s, border-color .2s; }
+.qd-opt span { font-size: 40px; line-height: 1.5; }
+.qd-opt.txt { height: 64px; font-size: 18px; font-weight: 600; color: var(--text); }
+html[lang="bn"] .qd-opt.txt { font-family: "Hind Siliguri", var(--font); }
+.qd-opt:active { transform: scale(.95); }
+.qd-opt.right { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 18%, var(--panel)); }
+.qd-opt.wrong { border-color: var(--bad, #e5484d); background: color-mix(in srgb, #e5484d 16%, var(--panel)); animation: qdShake .4s; }
+@keyframes qdShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.qd-res { display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: 6vh; animation: sgIn .4s var(--ease); }
+.qd-ring.big { width: 150px; height: 150px; }
+.qd-ring.big circle { stroke-width: 9; }
+.qd-ring.big .fg { animation: qdFill 1.2s .2s var(--ease) forwards; }
+.qd-res:not(.pass) .qd-ring .fg { stroke: var(--muted); }
+@keyframes qdFill { to { stroke-dashoffset: var(--to); } }
+.qd-ring.big text { font-size: 36px; }
+.qd-ring.big text.sm { font-size: 14px; }
+.qd-res h2 { font-size: 24px; letter-spacing: -.3px; margin: 18px 0 6px; }
+.qd-res p { color: var(--muted); margin: 0; }
+.qd-res-b { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
+.qd-res-b .btn { height: 52px; border-radius: 16px; justify-content: center; font-size: 16px; }
+
+@media (max-width: 360px) {
+  .qd-ar { font-size: 27px; }
+  .qd-grid.c4 { gap: 6px; }
+  .qd-hero-ar { font-size: 48px; gap: 16px; }
+}

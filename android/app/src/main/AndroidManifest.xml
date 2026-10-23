@@ -76,5 +76,35 @@
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_next" />
         </receiver>
+        <receiver android:name=".SmallPrayerWidget" android:exported="true" android:label="@string/w_small">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_small_info" />
+        </receiver>
+        <receiver android:name=".VerseWidget" android:exported="true" android:label="@string/w_verse">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_verse_info" />
+        </receiver>
+        <receiver android:name=".NameWidget" android:exported="true" android:label="@string/w_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_name_info" />
+        </receiver>
+        <receiver android:name=".FastWidget" android:exported="true" android:label="@string/w_fast">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_fast_info" />
+        </receiver>
+        <receiver android:name=".HijriWidget" android:exported="true" android:label="@string/w_hijri">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_hijri_info" />
+        </receiver>
     </application>
 </manifest>

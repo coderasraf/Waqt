@@ -266,7 +266,7 @@ object QuranPlayer {
     private data class Id(val unit: Int, val s: Int, val v: Int, val kind: String, val rep: Int)
     private fun parse(item: MediaItem?): Id? {
         val parts = item?.mediaId?.split('|') ?: return null
-        if (parts.size < 5) return null
+        if (parts.size < 5 || parts[0] == "story") return null
         return Id(parts[0].toInt(), parts[1].toInt(), parts[2].toInt(), parts[3], parts[4].toInt())
     }
 
@@ -274,6 +274,7 @@ object QuranPlayer {
     fun play(ctx: Context, j: JSONObject) {
         val p = player(ctx)
         connect()
+        story = false
         gapPending?.let { main.removeCallbacks(it) }; gapPending = null
         lastError = null
         generation++
@@ -286,6 +287,54 @@ object QuranPlayer {
         p.setPlaybackSpeed(j.optDouble("speed", 1.0).toFloat())
         p.playWhenReady = true
         pump()
+    }
+
+    // ----- Stories of the Prophets: narrated clips, one per paragraph -----
+    private var story = false
+
+    /**
+     * Queues a story's narration (or several stories', to listen to all) and
+     * starts at the given clip. Each clip is {id, file, title}; files are in
+     * the app's assets. The same player and media session as the Quran, so
+     * it plays on with the screen off and shows on the lock screen.
+     */
+    fun playStory(ctx: Context, j: JSONObject) {
+        val p = player(ctx)
+        connect()
+        gapPending?.let { main.removeCallbacks(it) }; gapPending = null
+        lastError = null
+        generation++
+        plan = null; cursorS = 0
+        story = true
+        p.stop()
+        p.clearMediaItems()
+        val clips = j.getJSONArray("clips")
+        val album = j.optString("album", "Waqt")
+        val art = HashMap<String, ByteArray?>()
+        val items = (0 until clips.length()).map { i ->
+            val c = clips.getJSONObject(i)
+            val pic = c.optString("art")
+            val cover = art.getOrPut(pic) { if (pic.isEmpty()) null else runCatching { app.assets.open("web/$pic").use { it.readBytes() } }.getOrNull() } ?: artwork
+            MediaItem.Builder().setMediaId("story|${c.getString("id")}").setUri("asset:///web/${c.getString("file")}")
+                .setMediaMetadata(MediaMetadata.Builder().setTitle(c.optString("title")).setArtist(album).setAlbumTitle(album)
+                    .apply { cover?.let { setArtworkData(it, MediaMetadata.PICTURE_TYPE_FRONT_COVER) } }.build())
+                .build()
+        }
+        p.addMediaItems(items)
+        p.seekTo(j.optInt("start", 0).coerceIn(0, (items.size - 1).coerceAtLeast(0)), 0)
+        p.setPlaybackSpeed(j.optDouble("speed", 1.0).toFloat())
+        p.prepare()
+        p.play()
+    }
+
+    /** Which story clip is playing, for the page to highlight its paragraph. */
+    fun storyState(): JSONObject {
+        val p = exo
+        val id = p?.currentMediaItem?.mediaId
+        if (p == null || !story || id == null || !id.startsWith("story|")) return JSONObject().put("active", false)
+        return JSONObject().put("active", true).put("id", id.removePrefix("story|"))
+            .put("playing", p.isPlaying).put("ended", p.playbackState == Player.STATE_ENDED)
+            .put("pos", p.currentPosition).put("dur", p.duration.coerceAtLeast(0))
     }
 
     /** Live changes from the player screen. */
@@ -308,8 +357,8 @@ object QuranPlayer {
             "toggle" -> if (p.isPlaying || gapPending != null) pause() else { if (p.playbackState == Player.STATE_IDLE) p.prepare(); p.play() }
             "pause" -> pause()
             "play" -> { if (p.playbackState == Player.STATE_IDLE) p.prepare(); p.play() }
-            "next" -> skipVerse(1)
-            "prev" -> skipVerse(-1)
+            "next" -> if (story) { if (p.hasNextMediaItem()) p.seekToNextMediaItem() } else skipVerse(1)
+            "prev" -> if (story) p.seekToPreviousMediaItem() else skipVerse(-1)
             "stop" -> stop()
         }
     }
@@ -326,6 +375,7 @@ object QuranPlayer {
         pause()
         generation++
         plan = null; cursorS = 0
+        story = false
         exo?.stop(); exo?.clearMediaItems()
         main.removeCallbacks(sleeper); sleepAt = 0
         controller?.let { MediaController.releaseFuture(it) }
@@ -495,7 +545,7 @@ object QuranPlayer {
             .put("from", plan!!.from).put("to", plan!!.to).put("surah", plan!!.surah)
     }
 
-    val active get() = exo != null && plan != null
+    val active get() = exo != null && (plan != null || story)
 
     fun release() {
         stop()

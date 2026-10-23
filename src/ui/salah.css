@@ -106,3 +106,10 @@ html[lang="bn"] .sg-para { font-family: "Hind Siliguri", var(--font); }
 .p-row > .sg-pill { padding: 4px 10px; flex: none; }
 .sg-who { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 14px 4px 0; }
 .sg-who > span { color: var(--muted); font-size: 13px; }
+.sg-ask { text-align: center; padding: 8px 6px 4px; }
+.sg-ask b { display: block; font-size: 20px; }
+.sg-ask small { color: var(--muted); }
+.sg-ask-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.sg-ask-two button { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 6px 14px; border-radius: 20px; border: 1.5px solid var(--line); background: var(--panel); color: var(--text); }
+.sg-ask-two img { width: 100%; aspect-ratio: 1; object-fit: contain; }
+.sg-ask-two span { font-weight: 600; font-size: 16px; }

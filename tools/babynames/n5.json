@@ -1,0 +1,1308 @@
+[
+ {
+  "en": "Abdullah",
+  "bn": "আব্দুল্লাহ",
+  "ar": "عَبْدُ اللّٰه",
+  "g": "m",
+  "mean_en": "Servant of Allah",
+  "mean_bn": "আল্লাহর বান্দা",
+  "cat": "abd",
+  "origin_en": "From the name Allah — the most beloved names to Allah (Muslim 2132)",
+  "origin_bn": "আল্লাহ নাম থেকে — আল্লাহর কাছে সবচেয়ে প্রিয় নাম (মুসলিম ২১৩২)",
+  "themes": [
+   "faith"
+  ]
+ },
+ {
+  "en": "Abdur Rahman",
+  "bn": "আব্দুর রহমান",
+  "ar": "عَبْدُ الرَّحْمٰن",
+  "g": "m",
+  "mean_en": "Servant of the Most Gracious",
+  "mean_bn": "পরম করুণাময়ের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Ar-Rahman (The Most Gracious) — the most beloved names to Allah (Muslim 2132)",
+  "origin_bn": "আল্লাহর নাম আর-রাহমান (পরম করুণাময়) থেকে — আল্লাহর কাছে সবচেয়ে প্রিয় নাম (মুসলিম ২১৩২)",
+  "themes": [
+   "faith",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdur Rahim",
+  "bn": "আব্দুর রহিম",
+  "ar": "عَبْدُ الرَّحِيْم",
+  "g": "m",
+  "mean_en": "Servant of the Most Merciful",
+  "mean_bn": "অসীম দয়ালুর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Ar-Rahim (The Most Merciful)",
+  "origin_bn": "আল্লাহর নাম আর-রাহীম (অসীম দয়ালু) থেকে",
+  "themes": [
+   "faith",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdul Malik",
+  "bn": "আব্দুল মালিক",
+  "ar": "عَبْدُ الْمَلِك",
+  "g": "m",
+  "mean_en": "Servant of the King",
+  "mean_bn": "মহাঅধিপতির বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Malik (The King)",
+  "origin_bn": "আল্লাহর নাম আল-মালিক (মহাঅধিপতি) থেকে",
+  "themes": [
+   "faith",
+   "leader",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdul Quddus",
+  "bn": "আব্দুল কুদ্দুস",
+  "ar": "عَبْدُ الْقُدُّوْس",
+  "g": "m",
+  "mean_en": "Servant of the Most Holy",
+  "mean_bn": "মহাপবিত্রের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Quddus (The Most Holy)",
+  "origin_bn": "আল্লাহর নাম আল-কুদ্দূস (মহাপবিত্র) থেকে",
+  "themes": [
+   "faith",
+   "light"
+  ]
+ },
+ {
+  "en": "Abdus Salam",
+  "bn": "আব্দুস সালাম",
+  "ar": "عَبْدُ السَّلَام",
+  "g": "m",
+  "mean_en": "Servant of the Source of Peace",
+  "mean_bn": "শান্তিদাতার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name As-Salam (The Source of Peace)",
+  "origin_bn": "আল্লাহর নাম আস-সালাম (শান্তির উৎস) থেকে",
+  "themes": [
+   "faith",
+   "peace"
+  ]
+ },
+ {
+  "en": "Abdul Mumin",
+  "bn": "আব্দুল মুমিন",
+  "ar": "عَبْدُ الْمُؤْمِن",
+  "g": "m",
+  "mean_en": "Servant of the Giver of Security",
+  "mean_bn": "নিরাপত্তাদাতার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Mu'min (The Giver of Security)",
+  "origin_bn": "আল্লাহর নাম আল-মু'মিন (নিরাপত্তাদাতা) থেকে",
+  "themes": [
+   "faith",
+   "peace"
+  ]
+ },
+ {
+  "en": "Abdul Muhaimin",
+  "bn": "আব্দুল মুহাইমিন",
+  "ar": "عَبْدُ الْمُهَيْمِن",
+  "g": "m",
+  "mean_en": "Servant of the Guardian",
+  "mean_bn": "রক্ষণাবেক্ষণকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Muhaymin (The Guardian)",
+  "origin_bn": "আল্লাহর নাম আল-মুহাইমিন (রক্ষণাবেক্ষণকারী) থেকে",
+  "themes": [
+   "faith",
+   "strength"
+  ]
+ },
+ {
+  "en": "Abdul Aziz",
+  "bn": "আব্দুল আযীয",
+  "ar": "عَبْدُ الْعَزِيْز",
+  "g": "m",
+  "mean_en": "Servant of the Almighty",
+  "mean_bn": "মহাপরাক্রমশালীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-'Aziz (The Almighty)",
+  "origin_bn": "আল্লাহর নাম আল-আযীয (মহাপরাক্রমশালী) থেকে",
+  "themes": [
+   "faith",
+   "strength",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdul Jabbar",
+  "bn": "আব্দুল জাব্বার",
+  "ar": "عَبْدُ الْجَبَّار",
+  "g": "m",
+  "mean_en": "Servant of the Compeller",
+  "mean_bn": "মহাপ্রতাপশালীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Jabbar (The Compeller)",
+  "origin_bn": "আল্লাহর নাম আল-জাব্বার (মহাপ্রতাপশালী) থেকে",
+  "themes": [
+   "faith",
+   "strength"
+  ]
+ },
+ {
+  "en": "Abdul Khaliq",
+  "bn": "আব্দুল খালিক",
+  "ar": "عَبْدُ الْخَالِق",
+  "g": "m",
+  "mean_en": "Servant of the Creator",
+  "mean_bn": "সৃষ্টিকর্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Khaliq (The Creator)",
+  "origin_bn": "আল্লাহর নাম আল-খালিক (সৃষ্টিকর্তা) থেকে",
+  "themes": [
+   "faith",
+   "nature"
+  ]
+ },
+ {
+  "en": "Abdul Bari",
+  "bn": "আব্দুল বারী",
+  "ar": "عَبْدُ الْبَارِئ",
+  "g": "m",
+  "mean_en": "Servant of the Maker",
+  "mean_bn": "উদ্ভাবনকর্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Bari' (The Maker)",
+  "origin_bn": "আল্লাহর নাম আল-বারী (উদ্ভাবনকর্তা) থেকে",
+  "themes": [
+   "faith",
+   "nature"
+  ]
+ },
+ {
+  "en": "Abdul Musawwir",
+  "bn": "আব্দুল মুসাওয়ির",
+  "ar": "عَبْدُ الْمُصَوِّر",
+  "g": "m",
+  "mean_en": "Servant of the Fashioner",
+  "mean_bn": "আকৃতিদাতার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Musawwir (The Fashioner)",
+  "origin_bn": "আল্লাহর নাম আল-মুসাউয়ির (আকৃতিদাতা) থেকে",
+  "themes": [
+   "faith",
+   "beauty"
+  ]
+ },
+ {
+  "en": "Abdul Ghaffar",
+  "bn": "আব্দুল গাফফার",
+  "ar": "عَبْدُ الْغَفَّار",
+  "g": "m",
+  "mean_en": "Servant of the Ever-Forgiving",
+  "mean_bn": "পরম ক্ষমাশীলের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Ghaffar (The Ever-Forgiving)",
+  "origin_bn": "আল্লাহর নাম আল-গাফফার (পরম ক্ষমাশীল) থেকে",
+  "themes": [
+   "faith",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdul Qahhar",
+  "bn": "আব্দুল কাহহার",
+  "ar": "عَبْدُ الْقَهَّار",
+  "g": "m",
+  "mean_en": "Servant of the Subduer",
+  "mean_bn": "মহাপরাক্রান্তের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Qahhar (The Subduer)",
+  "origin_bn": "আল্লাহর নাম আল-কাহহার (মহাপরাক্রান্ত) থেকে",
+  "themes": [
+   "faith",
+   "strength"
+  ]
+ },
+ {
+  "en": "Abdul Wahhab",
+  "bn": "আব্দুল ওয়াহহাব",
+  "ar": "عَبْدُ الْوَهَّاب",
+  "g": "m",
+  "mean_en": "Servant of the Bestower",
+  "mean_bn": "মহাদাতার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Wahhab (The Bestower)",
+  "origin_bn": "আল্লাহর নাম আল-ওয়াহহাব (মহাদাতা) থেকে",
+  "themes": [
+   "faith",
+   "gratitude",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdur Razzaq",
+  "bn": "আব্দুর রাযযাক",
+  "ar": "عَبْدُ الرَّزَّاق",
+  "g": "m",
+  "mean_en": "Servant of the Provider",
+  "mean_bn": "রিযিকদাতার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Ar-Razzaq (The Provider)",
+  "origin_bn": "আল্লাহর নাম আর-রাযযাক (রিযিকদাতা) থেকে",
+  "themes": [
+   "faith",
+   "gratitude"
+  ]
+ },
+ {
+  "en": "Abdul Fattah",
+  "bn": "আব্দুল ফাত্তাহ",
+  "ar": "عَبْدُ الْفَتَّاح",
+  "g": "m",
+  "mean_en": "Servant of the Opener",
+  "mean_bn": "মহাবিজয়দাতার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Fattah (The Opener)",
+  "origin_bn": "আল্লাহর নাম আল-ফাত্তাহ (মহাবিজয়দাতা) থেকে",
+  "themes": [
+   "faith",
+   "joy"
+  ]
+ },
+ {
+  "en": "Abdul Alim",
+  "bn": "আব্দুল আলীম",
+  "ar": "عَبْدُ الْعَلِيْم",
+  "g": "m",
+  "mean_en": "Servant of the All-Knowing",
+  "mean_bn": "সর্বজ্ঞের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-'Alim (The All-Knowing)",
+  "origin_bn": "আল্লাহর নাম আল-আলীম (সর্বজ্ঞ) থেকে",
+  "themes": [
+   "faith",
+   "knowledge"
+  ]
+ },
+ {
+  "en": "Abdul Basit",
+  "bn": "আব্দুল বাসিত",
+  "ar": "عَبْدُ الْبَاسِط",
+  "g": "m",
+  "mean_en": "Servant of the Extender",
+  "mean_bn": "সম্প্রসারণকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Basit (The Extender)",
+  "origin_bn": "আল্লাহর নাম আল-বাসিত (সম্প্রসারণকারী) থেকে",
+  "themes": [
+   "faith",
+   "gratitude"
+  ]
+ },
+ {
+  "en": "Abdur Rafi",
+  "bn": "আব্দুর রাফি",
+  "ar": "عَبْدُ الرَّافِع",
+  "g": "m",
+  "mean_en": "Servant of the Exalter",
+  "mean_bn": "উন্নতকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Ar-Rafi' (The Exalter)",
+  "origin_bn": "আল্লাহর নাম আর-রাফি' (উন্নতকারী) থেকে",
+  "themes": [
+   "faith",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdul Muiz",
+  "bn": "আব্দুল মুইজ",
+  "ar": "عَبْدُ الْمُعِزُّ",
+  "g": "m",
+  "mean_en": "Servant of the Giver of Honour",
+  "mean_bn": "সম্মানদাতার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Mu'izz (The Giver of Honour)",
+  "origin_bn": "আল্লাহর নাম আল-মু'ইয (সম্মানদাতা) থেকে",
+  "themes": [
+   "faith",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdus Sami",
+  "bn": "আব্দুস সামি",
+  "ar": "عَبْدُ السَّمِيْع",
+  "g": "m",
+  "mean_en": "Servant of the All-Hearing",
+  "mean_bn": "সর্বশ্রোতার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name As-Sami' (The All-Hearing)",
+  "origin_bn": "আল্লাহর নাম আস-সামী' (সর্বশ্রোতা) থেকে",
+  "themes": [
+   "faith",
+   "knowledge"
+  ]
+ },
+ {
+  "en": "Abdul Basir",
+  "bn": "আব্দুল বাসীর",
+  "ar": "عَبْدُ الْبَصِيْر",
+  "g": "m",
+  "mean_en": "Servant of the All-Seeing",
+  "mean_bn": "সর্বদ্রষ্টার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Basir (The All-Seeing)",
+  "origin_bn": "আল্লাহর নাম আল-বাসীর (সর্বদ্রষ্টা) থেকে",
+  "themes": [
+   "faith",
+   "knowledge"
+  ]
+ },
+ {
+  "en": "Abdul Hakam",
+  "bn": "আব্দুল হাকাম",
+  "ar": "عَبْدُ الْحَكَم",
+  "g": "m",
+  "mean_en": "Servant of the Judge",
+  "mean_bn": "মহাবিচারকের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Hakam (The Judge)",
+  "origin_bn": "আল্লাহর নাম আল-হাকাম (মহাবিচারক) থেকে",
+  "themes": [
+   "faith",
+   "leader"
+  ]
+ },
+ {
+  "en": "Abdul Adl",
+  "bn": "আব্দুল আদল",
+  "ar": "عَبْدُ الْعَدْل",
+  "g": "m",
+  "mean_en": "Servant of the Just",
+  "mean_bn": "ন্যায়বিচারকের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-'Adl (The Just)",
+  "origin_bn": "আল্লাহর নাম আল-আদল (ন্যায়বিচারক) থেকে",
+  "themes": [
+   "faith",
+   "leader",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdul Latif",
+  "bn": "আব্দুল লতিফ",
+  "ar": "عَبْدُ اللَّطِيْف",
+  "g": "m",
+  "mean_en": "Servant of the Subtle and Kind",
+  "mean_bn": "সূক্ষ্মদর্শী ও কোমল সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Latif (The Subtle, the Kind)",
+  "origin_bn": "আল্লাহর নাম আল-লাতীফ (সূক্ষ্মদর্শী, কোমল) থেকে",
+  "themes": [
+   "faith",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdul Khabir",
+  "bn": "আব্দুল খবির",
+  "ar": "عَبْدُ الْخَبِيْر",
+  "g": "m",
+  "mean_en": "Servant of the All-Aware",
+  "mean_bn": "সর্ববিষয়ে অবগত সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Khabir (The All-Aware)",
+  "origin_bn": "আল্লাহর নাম আল-খাবীর (সর্ববিষয়ে অবগত) থেকে",
+  "themes": [
+   "faith",
+   "knowledge"
+  ]
+ },
+ {
+  "en": "Abdul Halim",
+  "bn": "আব্দুল হালিম",
+  "ar": "عَبْدُ الْحَلِيْم",
+  "g": "m",
+  "mean_en": "Servant of the Forbearing",
+  "mean_bn": "পরম সহনশীলের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Halim (The Forbearing)",
+  "origin_bn": "আল্লাহর নাম আল-হালীম (পরম সহনশীল) থেকে",
+  "themes": [
+   "faith",
+   "patience",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdul Azim",
+  "bn": "আব্দুল আযীম",
+  "ar": "عَبْدُ الْعَظِيْم",
+  "g": "m",
+  "mean_en": "Servant of the Magnificent",
+  "mean_bn": "মহামহিমের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-'Azim (The Magnificent)",
+  "origin_bn": "আল্লাহর নাম আল-আযীম (মহামহিম) থেকে",
+  "themes": [
+   "faith",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdul Ghafur",
+  "bn": "আব্দুল গফুর",
+  "ar": "عَبْدُ الْغَفُوْر",
+  "g": "m",
+  "mean_en": "Servant of the All-Forgiving",
+  "mean_bn": "অতিশয় ক্ষমাশীলের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Ghafur (The All-Forgiving)",
+  "origin_bn": "আল্লাহর নাম আল-গাফূর (অতিশয় ক্ষমাশীল) থেকে",
+  "themes": [
+   "faith",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdush Shakur",
+  "bn": "আব্দুশ শাকুর",
+  "ar": "عَبْدُ الشَّكُوْر",
+  "g": "m",
+  "mean_en": "Servant of the Most Appreciative",
+  "mean_bn": "গুণগ্রাহীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Ash-Shakur (The Most Appreciative)",
+  "origin_bn": "আল্লাহর নাম আশ-শাকূর (গুণগ্রাহী) থেকে",
+  "themes": [
+   "faith",
+   "gratitude"
+  ]
+ },
+ {
+  "en": "Abdul Ali",
+  "bn": "আব্দুল আলী",
+  "ar": "عَبْدُ الْعَلِيُّ",
+  "g": "m",
+  "mean_en": "Servant of the Most High",
+  "mean_bn": "সমুন্নত সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-'Aliyy (The Most High)",
+  "origin_bn": "আল্লাহর নাম আল-আলী (সমুন্নত) থেকে",
+  "themes": [
+   "faith",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdul Kabir",
+  "bn": "আব্দুল কবির",
+  "ar": "عَبْدُ الْكَبِيْر",
+  "g": "m",
+  "mean_en": "Servant of the Most Great",
+  "mean_bn": "মহানের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Kabir (The Most Great)",
+  "origin_bn": "আল্লাহর নাম আল-কাবীর (মহান) থেকে",
+  "themes": [
+   "faith",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdul Hafiz",
+  "bn": "আব্দুল হাফিজ",
+  "ar": "عَبْدُ الْحَفِيْظ",
+  "g": "m",
+  "mean_en": "Servant of the Preserver",
+  "mean_bn": "সংরক্ষণকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Hafiz (The Preserver)",
+  "origin_bn": "আল্লাহর নাম আল-হাফীয (সংরক্ষণকারী) থেকে",
+  "themes": [
+   "faith",
+   "strength"
+  ]
+ },
+ {
+  "en": "Abdul Muqit",
+  "bn": "আব্দুল মুকিত",
+  "ar": "عَبْدُ الْمُقِيْت",
+  "g": "m",
+  "mean_en": "Servant of the Nourisher",
+  "mean_bn": "খাদ্য ও শক্তিদাতার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Muqit (The Nourisher)",
+  "origin_bn": "আল্লাহর নাম আল-মুকীত (খাদ্য ও শক্তিদাতা) থেকে",
+  "themes": [
+   "faith",
+   "gratitude"
+  ]
+ },
+ {
+  "en": "Abdul Hasib",
+  "bn": "আব্দুল হাসিব",
+  "ar": "عَبْدُ الْحَسِيْب",
+  "g": "m",
+  "mean_en": "Servant of the Reckoner",
+  "mean_bn": "হিসাবগ্রহণকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Hasib (The Reckoner)",
+  "origin_bn": "আল্লাহর নাম আল-হাসীব (হিসাবগ্রহণকারী) থেকে",
+  "themes": [
+   "faith",
+   "knowledge"
+  ]
+ },
+ {
+  "en": "Abdul Jalil",
+  "bn": "আব্দুল জলিল",
+  "ar": "عَبْدُ الْجَلِيْل",
+  "g": "m",
+  "mean_en": "Servant of the Majestic",
+  "mean_bn": "মহিমান্বিতের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Jalil (The Majestic)",
+  "origin_bn": "আল্লাহর নাম আল-জালীল (মহিমান্বিত) থেকে",
+  "themes": [
+   "faith",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdul Karim",
+  "bn": "আব্দুল করিম",
+  "ar": "عَبْدُ الْكَرِيْم",
+  "g": "m",
+  "mean_en": "Servant of the Most Generous",
+  "mean_bn": "মহানুভবের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Karim (The Most Generous)",
+  "origin_bn": "আল্লাহর নাম আল-কারীম (মহানুভব) থেকে",
+  "themes": [
+   "faith",
+   "kindness",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdur Raqib",
+  "bn": "আব্দুর রকিব",
+  "ar": "عَبْدُ الرَّقِيْب",
+  "g": "m",
+  "mean_en": "Servant of the Watchful",
+  "mean_bn": "পর্যবেক্ষকের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Ar-Raqib (The Watchful)",
+  "origin_bn": "আল্লাহর নাম আর-রাকীব (পর্যবেক্ষক) থেকে",
+  "themes": [
+   "faith",
+   "knowledge"
+  ]
+ },
+ {
+  "en": "Abdul Mujib",
+  "bn": "আব্দুল মুজিব",
+  "ar": "عَبْدُ الْمُجِيْب",
+  "g": "m",
+  "mean_en": "Servant of the Responder",
+  "mean_bn": "দোয়া কবুলকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Mujib (The Responder)",
+  "origin_bn": "আল্লাহর নাম আল-মুজীব (দোয়া কবুলকারী) থেকে",
+  "themes": [
+   "faith",
+   "gratitude"
+  ]
+ },
+ {
+  "en": "Abdul Wasi",
+  "bn": "আব্দুল ওয়াসি",
+  "ar": "عَبْدُ الْوَاسِع",
+  "g": "m",
+  "mean_en": "Servant of the All-Encompassing",
+  "mean_bn": "সর্বব্যাপীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Wasi' (The All-Encompassing)",
+  "origin_bn": "আল্লাহর নাম আল-ওয়াসি' (সর্বব্যাপী) থেকে",
+  "themes": [
+   "faith",
+   "nature"
+  ]
+ },
+ {
+  "en": "Abdul Hakim",
+  "bn": "আব্দুল হাকিম",
+  "ar": "عَبْدُ الْحَكِيْم",
+  "g": "m",
+  "mean_en": "Servant of the All-Wise",
+  "mean_bn": "প্রজ্ঞাময়ের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Hakim (The All-Wise)",
+  "origin_bn": "আল্লাহর নাম আল-হাকীম (প্রজ্ঞাময়) থেকে",
+  "themes": [
+   "faith",
+   "knowledge"
+  ]
+ },
+ {
+  "en": "Abdul Wadud",
+  "bn": "আব্দুল ওয়াদুদ",
+  "ar": "عَبْدُ الْوَدُوْد",
+  "g": "m",
+  "mean_en": "Servant of the Most Loving",
+  "mean_bn": "প্রেমময়ের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Wadud (The Most Loving)",
+  "origin_bn": "আল্লাহর নাম আল-ওয়াদূদ (প্রেমময়) থেকে",
+  "themes": [
+   "faith",
+   "kindness",
+   "joy"
+  ]
+ },
+ {
+  "en": "Abdul Majeed",
+  "bn": "আব্দুল মাজীদ",
+  "ar": "عَبْدُ الْمَجِيْد",
+  "g": "m",
+  "mean_en": "Servant of the Most Glorious",
+  "mean_bn": "মহাগৌরবান্বিতের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Majid (The Most Glorious)",
+  "origin_bn": "আল্লাহর নাম আল-মাজীদ (মহাগৌরবান্বিত) থেকে",
+  "themes": [
+   "faith",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdul Bais",
+  "bn": "আব্দুল বাইস",
+  "ar": "عَبْدُ الْبَاعِث",
+  "g": "m",
+  "mean_en": "Servant of the Resurrector",
+  "mean_bn": "পুনরুত্থানকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Ba'ith (The Resurrector)",
+  "origin_bn": "আল্লাহর নাম আল-বা'ইস (পুনরুত্থানকারী) থেকে",
+  "themes": [
+   "faith"
+  ]
+ },
+ {
+  "en": "Abdush Shahid",
+  "bn": "আব্দুশ শহীদ",
+  "ar": "عَبْدُ الشَّهِيْد",
+  "g": "m",
+  "mean_en": "Servant of the Witness",
+  "mean_bn": "সর্বদর্শী সাক্ষীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Ash-Shahid (The Witness)",
+  "origin_bn": "আল্লাহর নাম আশ-শাহীদ (সর্বদর্শী সাক্ষী) থেকে",
+  "themes": [
+   "faith",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdul Haqq",
+  "bn": "আব্দুল হক",
+  "ar": "عَبْدُ الْحَقُّ",
+  "g": "m",
+  "mean_en": "Servant of the Truth",
+  "mean_bn": "চিরসত্যের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Haqq (The Truth)",
+  "origin_bn": "আল্লাহর নাম আল-হাক্ক (চিরসত্য) থেকে",
+  "themes": [
+   "faith",
+   "knowledge"
+  ]
+ },
+ {
+  "en": "Abdul Wakil",
+  "bn": "আব্দুল ওয়াকিল",
+  "ar": "عَبْدُ الْوَكِيْل",
+  "g": "m",
+  "mean_en": "Servant of the Trustee",
+  "mean_bn": "কর্মবিধায়কের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Wakil (The Trustee)",
+  "origin_bn": "আল্লাহর নাম আল-ওয়াকীল (কর্মবিধায়ক) থেকে",
+  "themes": [
+   "faith",
+   "patience"
+  ]
+ },
+ {
+  "en": "Abdul Qawi",
+  "bn": "আব্দুল কাউই",
+  "ar": "عَبْدُ الْقَوِيُّ",
+  "g": "m",
+  "mean_en": "Servant of the All-Strong",
+  "mean_bn": "মহাশক্তিমানের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Qawiyy (The All-Strong)",
+  "origin_bn": "আল্লাহর নাম আল-কাউই (মহাশক্তিমান) থেকে",
+  "themes": [
+   "faith",
+   "strength"
+  ]
+ },
+ {
+  "en": "Abdul Matin",
+  "bn": "আব্দুল মতিন",
+  "ar": "عَبْدُ الْمَتِيْن",
+  "g": "m",
+  "mean_en": "Servant of the Firm",
+  "mean_bn": "সুদৃঢ় সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Matin (The Firm)",
+  "origin_bn": "আল্লাহর নাম আল-মাতীন (সুদৃঢ়) থেকে",
+  "themes": [
+   "faith",
+   "strength"
+  ]
+ },
+ {
+  "en": "Abdul Wali",
+  "bn": "আব্দুল ওয়ালী",
+  "ar": "عَبْدُ الْوَلِيُّ",
+  "g": "m",
+  "mean_en": "Servant of the Protecting Friend",
+  "mean_bn": "অভিভাবকের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Waliyy (The Protecting Friend)",
+  "origin_bn": "আল্লাহর নাম আল-ওয়ালী (অভিভাবক) থেকে",
+  "themes": [
+   "faith",
+   "leader",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdul Hamid",
+  "bn": "আব্দুল হামিদ",
+  "ar": "عَبْدُ الْحَمِيْد",
+  "g": "m",
+  "mean_en": "Servant of the Praiseworthy",
+  "mean_bn": "প্রশংসিতের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Hamid (The Praiseworthy)",
+  "origin_bn": "আল্লাহর নাম আল-হামীদ (প্রশংসিত) থেকে",
+  "themes": [
+   "faith",
+   "gratitude"
+  ]
+ },
+ {
+  "en": "Abdul Muhsi",
+  "bn": "আব্দুল মুহসি",
+  "ar": "عَبْدُ الْمُحْصِي",
+  "g": "m",
+  "mean_en": "Servant of the Counter",
+  "mean_bn": "হিসাবরক্ষকের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Muhsi (The Counter)",
+  "origin_bn": "আল্লাহর নাম আল-মুহসী (হিসাবরক্ষক) থেকে",
+  "themes": [
+   "faith",
+   "knowledge"
+  ]
+ },
+ {
+  "en": "Abdul Mubdi",
+  "bn": "আব্দুল মুবদি",
+  "ar": "عَبْدُ الْمُبْدِئ",
+  "g": "m",
+  "mean_en": "Servant of the Originator",
+  "mean_bn": "প্রথম সৃষ্টিকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Mubdi' (The Originator)",
+  "origin_bn": "আল্লাহর নাম আল-মুবদি' (প্রথম সৃষ্টিকারী) থেকে",
+  "themes": [
+   "faith",
+   "nature"
+  ]
+ },
+ {
+  "en": "Abdul Muid",
+  "bn": "আব্দুল মুঈদ",
+  "ar": "عَبْدُ الْمُعِيْد",
+  "g": "m",
+  "mean_en": "Servant of the Restorer",
+  "mean_bn": "পুনঃসৃষ্টিকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Mu'id (The Restorer)",
+  "origin_bn": "আল্লাহর নাম আল-মু'ঈদ (পুনঃসৃষ্টিকারী) থেকে",
+  "themes": [
+   "faith"
+  ]
+ },
+ {
+  "en": "Abdul Muhyi",
+  "bn": "আব্দুল মুহয়ী",
+  "ar": "عَبْدُ الْمُحْيِي",
+  "g": "m",
+  "mean_en": "Servant of the Giver of Life",
+  "mean_bn": "জীবনদাতার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Muhyi (The Giver of Life)",
+  "origin_bn": "আল্লাহর নাম আল-মুহয়ী (জীবনদাতা) থেকে",
+  "themes": [
+   "faith",
+   "nature"
+  ]
+ },
+ {
+  "en": "Abdul Hayy",
+  "bn": "আব্দুল হাই",
+  "ar": "عَبْدُ الْحَيُّ",
+  "g": "m",
+  "mean_en": "Servant of the Ever-Living",
+  "mean_bn": "চিরঞ্জীবের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Hayy (The Ever-Living)",
+  "origin_bn": "আল্লাহর নাম আল-হাইয়্যু (চিরঞ্জীব) থেকে",
+  "themes": [
+   "faith"
+  ]
+ },
+ {
+  "en": "Abdul Qayyum",
+  "bn": "আব্দুল কাইয়ুম",
+  "ar": "عَبْدُ الْقَيُّوْم",
+  "g": "m",
+  "mean_en": "Servant of the Self-Sustaining",
+  "mean_bn": "চিরস্থায়ী ধারকের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Qayyum (The Self-Sustaining)",
+  "origin_bn": "আল্লাহর নাম আল-কাইয়্যূম (চিরস্থায়ী ধারক) থেকে",
+  "themes": [
+   "faith",
+   "strength"
+  ]
+ },
+ {
+  "en": "Abdul Wajid",
+  "bn": "আব্দুল ওয়াজিদ",
+  "ar": "عَبْدُ الْوَاجِد",
+  "g": "m",
+  "mean_en": "Servant of the Finder",
+  "mean_bn": "সর্বপ্রাপকের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Wajid (The Finder)",
+  "origin_bn": "আল্লাহর নাম আল-ওয়াজিদ (অভাবমুক্ত) থেকে",
+  "themes": [
+   "faith"
+  ]
+ },
+ {
+  "en": "Abdul Majid",
+  "bn": "আব্দুল মজিদ",
+  "ar": "عَبْدُ الْمَاجِد",
+  "g": "m",
+  "mean_en": "Servant of the Noble",
+  "mean_bn": "মর্যাদাবানের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Majid (The Noble)",
+  "origin_bn": "আল্লাহর নাম আল-মাজিদ (মর্যাদাবান) থেকে",
+  "themes": [
+   "faith",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdul Wahid",
+  "bn": "আব্দুল ওয়াহিদ",
+  "ar": "عَبْدُ الْوَاحِد",
+  "g": "m",
+  "mean_en": "Servant of the One",
+  "mean_bn": "একক সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Wahid (The One)",
+  "origin_bn": "আল্লাহর নাম আল-ওয়াহিদ (এক) থেকে",
+  "themes": [
+   "faith"
+  ]
+ },
+ {
+  "en": "Abdul Ahad",
+  "bn": "আব্দুল আহাদ",
+  "ar": "عَبْدُ الْأَحَد",
+  "g": "m",
+  "mean_en": "Servant of the Unique",
+  "mean_bn": "অদ্বিতীয় সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Ahad (The Unique)",
+  "origin_bn": "আল্লাহর নাম আল-আহাদ (অদ্বিতীয়) থেকে",
+  "themes": [
+   "faith"
+  ]
+ },
+ {
+  "en": "Abdus Samad",
+  "bn": "আব্দুস সামাদ",
+  "ar": "عَبْدُ الصَّمَد",
+  "g": "m",
+  "mean_en": "Servant of the Eternal Refuge",
+  "mean_bn": "অমুখাপেক্ষী সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name As-Samad (The Eternal Refuge)",
+  "origin_bn": "আল্লাহর নাম আস-সামাদ (অমুখাপেক্ষী) থেকে",
+  "themes": [
+   "faith",
+   "peace"
+  ]
+ },
+ {
+  "en": "Abdul Qadir",
+  "bn": "আব্দুল কাদির",
+  "ar": "عَبْدُ الْقَادِر",
+  "g": "m",
+  "mean_en": "Servant of the All-Able",
+  "mean_bn": "সর্বশক্তিমানের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Qadir (The All-Able)",
+  "origin_bn": "আল্লাহর নাম আল-কাদির (সর্বশক্তিমান) থেকে",
+  "themes": [
+   "faith",
+   "strength"
+  ]
+ },
+ {
+  "en": "Abdul Muqtadir",
+  "bn": "আব্দুল মুকতাদির",
+  "ar": "عَبْدُ الْمُقْتَدِر",
+  "g": "m",
+  "mean_en": "Servant of the All-Powerful",
+  "mean_bn": "পরম ক্ষমতাধরের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Muqtadir (The All-Powerful)",
+  "origin_bn": "আল্লাহর নাম আল-মুকতাদির (পরম ক্ষমতাধর) থেকে",
+  "themes": [
+   "faith",
+   "strength"
+  ]
+ },
+ {
+  "en": "Abdul Awwal",
+  "bn": "আব্দুল আউয়াল",
+  "ar": "عَبْدُ الْأَوَّل",
+  "g": "m",
+  "mean_en": "Servant of the First",
+  "mean_bn": "অনাদি সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Awwal (The First)",
+  "origin_bn": "আল্লাহর নাম আল-আউয়াল (অনাদি) থেকে",
+  "themes": [
+   "faith",
+   "leader"
+  ]
+ },
+ {
+  "en": "Abdul Akhir",
+  "bn": "আব্দুল আখির",
+  "ar": "عَبْدُ الْآخِر",
+  "g": "m",
+  "mean_en": "Servant of the Last",
+  "mean_bn": "অনন্ত সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Akhir (The Last)",
+  "origin_bn": "আল্লাহর নাম আল-আখির (অনন্ত) থেকে",
+  "themes": [
+   "faith"
+  ]
+ },
+ {
+  "en": "Abduz Zahir",
+  "bn": "আব্দুয যাহির",
+  "ar": "عَبْدُ الظَّاهِر",
+  "g": "m",
+  "mean_en": "Servant of the Manifest",
+  "mean_bn": "প্রকাশমান সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Az-Zahir (The Manifest)",
+  "origin_bn": "আল্লাহর নাম আয-যাহির (প্রকাশমান) থেকে",
+  "themes": [
+   "faith",
+   "light"
+  ]
+ },
+ {
+  "en": "Abdul Batin",
+  "bn": "আব্দুল বাতিন",
+  "ar": "عَبْدُ الْبَاطِن",
+  "g": "m",
+  "mean_en": "Servant of the Hidden",
+  "mean_bn": "অপ্রকাশ্য সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Batin (The Hidden)",
+  "origin_bn": "আল্লাহর নাম আল-বাতিন (অপ্রকাশ্য) থেকে",
+  "themes": [
+   "faith",
+   "knowledge"
+  ]
+ },
+ {
+  "en": "Abdul Muta'ali",
+  "bn": "আব্দুল মুতাআলী",
+  "ar": "عَبْدُ الْمُتَعَالِي",
+  "g": "m",
+  "mean_en": "Servant of the Most Exalted",
+  "mean_bn": "সর্বোচ্চ মহিমান্বিতের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Muta'ali (The Most Exalted)",
+  "origin_bn": "আল্লাহর নাম আল-মুতা'আলী (সর্বোচ্চ মহিমান্বিত) থেকে",
+  "themes": [
+   "faith",
+   "honour"
+  ]
+ },
+ {
+  "en": "Abdul Barr",
+  "bn": "আব্দুল বার",
+  "ar": "عَبْدُ الْبَرُّ",
+  "g": "m",
+  "mean_en": "Servant of the Source of Goodness",
+  "mean_bn": "কল্যাণময়ের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Barr (The Source of Goodness)",
+  "origin_bn": "আল্লাহর নাম আল-বার্র (কল্যাণময়) থেকে",
+  "themes": [
+   "faith",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdut Tawwab",
+  "bn": "আব্দুত তাওয়াব",
+  "ar": "عَبْدُ التَّوَّاب",
+  "g": "m",
+  "mean_en": "Servant of the Accepter of Repentance",
+  "mean_bn": "তওবা কবুলকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name At-Tawwab (The Accepter of Repentance)",
+  "origin_bn": "আল্লাহর নাম আত-তাওয়াব (তওবা কবুলকারী) থেকে",
+  "themes": [
+   "faith",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdul Afuw",
+  "bn": "আব্দুল আফু",
+  "ar": "عَبْدُ الْعَفُوُّ",
+  "g": "m",
+  "mean_en": "Servant of the Pardoner",
+  "mean_bn": "মার্জনাকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-'Afuww (The Pardoner)",
+  "origin_bn": "আল্লাহর নাম আল-আফুউ (মার্জনাকারী) থেকে",
+  "themes": [
+   "faith",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdur Rauf",
+  "bn": "আব্দুর রউফ",
+  "ar": "عَبْدُ الرَّءُوْف",
+  "g": "m",
+  "mean_en": "Servant of the Most Kind",
+  "mean_bn": "পরম স্নেহশীলের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Ar-Ra'uf (The Most Kind)",
+  "origin_bn": "আল্লাহর নাম আর-রাঊফ (পরম স্নেহশীল) থেকে",
+  "themes": [
+   "faith",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdul Muqsit",
+  "bn": "আব্দুল মুকসিত",
+  "ar": "عَبْدُ الْمُقْسِط",
+  "g": "m",
+  "mean_en": "Servant of the Equitable",
+  "mean_bn": "ন্যায়পরায়ণের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Muqsit (The Equitable)",
+  "origin_bn": "আল্লাহর নাম আল-মুকসিত (ন্যায়পরায়ণ) থেকে",
+  "themes": [
+   "faith",
+   "leader"
+  ]
+ },
+ {
+  "en": "Abdul Jami",
+  "bn": "আব্দুল জামি",
+  "ar": "عَبْدُ الْجَامِع",
+  "g": "m",
+  "mean_en": "Servant of the Gatherer",
+  "mean_bn": "একত্রকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Jami' (The Gatherer)",
+  "origin_bn": "আল্লাহর নাম আল-জামি' (একত্রকারী) থেকে",
+  "themes": [
+   "faith",
+   "peace"
+  ]
+ },
+ {
+  "en": "Abdul Ghani",
+  "bn": "আব্দুল গনি",
+  "ar": "عَبْدُ الْغَنِيُّ",
+  "g": "m",
+  "mean_en": "Servant of the Self-Sufficient",
+  "mean_bn": "অভাবমুক্ত সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Ghaniyy (The Self-Sufficient)",
+  "origin_bn": "আল্লাহর নাম আল-গানী (অভাবমুক্ত) থেকে",
+  "themes": [
+   "faith",
+   "gratitude"
+  ]
+ },
+ {
+  "en": "Abdul Mughni",
+  "bn": "আব্দুল মুগনি",
+  "ar": "عَبْدُ الْمُغْنِي",
+  "g": "m",
+  "mean_en": "Servant of the Enricher",
+  "mean_bn": "অভাবমোচনকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Mughni (The Enricher)",
+  "origin_bn": "আল্লাহর নাম আল-মুগনী (অভাবমোচনকারী) থেকে",
+  "themes": [
+   "faith",
+   "gratitude"
+  ]
+ },
+ {
+  "en": "Abdun Nafi",
+  "bn": "আব্দুন নাফি",
+  "ar": "عَبْدُ النَّافِع",
+  "g": "m",
+  "mean_en": "Servant of the Benefactor",
+  "mean_bn": "কল্যাণদাতার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name An-Nafi' (The Benefactor)",
+  "origin_bn": "আল্লাহর নাম আন-নাফি' (কল্যাণদাতা) থেকে",
+  "themes": [
+   "faith",
+   "kindness"
+  ]
+ },
+ {
+  "en": "Abdun Nur",
+  "bn": "আব্দুন নূর",
+  "ar": "عَبْدُ النُّوْر",
+  "g": "m",
+  "mean_en": "Servant of the Light",
+  "mean_bn": "জ্যোতির্ময়ের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name An-Nur (The Light)",
+  "origin_bn": "আল্লাহর নাম আন-নূর (জ্যোতি) থেকে",
+  "themes": [
+   "faith",
+   "light"
+  ]
+ },
+ {
+  "en": "Abdul Hadi",
+  "bn": "আব্দুল হাদী",
+  "ar": "عَبْدُ الْهَادِي",
+  "g": "m",
+  "mean_en": "Servant of the Guide",
+  "mean_bn": "পথপ্রদর্শকের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Hadi (The Guide)",
+  "origin_bn": "আল্লাহর নাম আল-হাদী (পথপ্রদর্শক) থেকে",
+  "themes": [
+   "faith",
+   "light",
+   "leader"
+  ]
+ },
+ {
+  "en": "Abdul Badi",
+  "bn": "আব্দুল বাদী",
+  "ar": "عَبْدُ الْبَدِيْع",
+  "g": "m",
+  "mean_en": "Servant of the Incomparable Originator",
+  "mean_bn": "অনুপম স্রষ্টার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Badi' (The Incomparable Originator)",
+  "origin_bn": "আল্লাহর নাম আল-বাদী' (অনুপম স্রষ্টা) থেকে",
+  "themes": [
+   "faith",
+   "beauty",
+   "nature"
+  ]
+ },
+ {
+  "en": "Abdul Baqi",
+  "bn": "আব্দুল বাকী",
+  "ar": "عَبْدُ الْبَاقِي",
+  "g": "m",
+  "mean_en": "Servant of the Everlasting",
+  "mean_bn": "চিরস্থায়ী সত্তার বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Baqi (The Everlasting)",
+  "origin_bn": "আল্লাহর নাম আল-বাকী (চিরস্থায়ী) থেকে",
+  "themes": [
+   "faith"
+  ]
+ },
+ {
+  "en": "Abdul Warith",
+  "bn": "আব্দুল ওয়ারিস",
+  "ar": "عَبْدُ الْوَارِث",
+  "g": "m",
+  "mean_en": "Servant of the Inheritor",
+  "mean_bn": "উত্তরাধিকারীর বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Al-Warith (The Inheritor)",
+  "origin_bn": "আল্লাহর নাম আল-ওয়ারিস (উত্তরাধিকারী) থেকে",
+  "themes": [
+   "faith"
+  ]
+ },
+ {
+  "en": "Abdur Rashid",
+  "bn": "আব্দুর রশীদ",
+  "ar": "عَبْدُ الرَّشِيْد",
+  "g": "m",
+  "mean_en": "Servant of the Guide to What Is Right",
+  "mean_bn": "সঠিক পথপ্রদর্শকের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name Ar-Rashid (The Guide to What Is Right)",
+  "origin_bn": "আল্লাহর নাম আর-রাশীদ (সঠিক পথপ্রদর্শক) থেকে",
+  "themes": [
+   "faith",
+   "knowledge",
+   "leader"
+  ]
+ },
+ {
+  "en": "Abdus Sabur",
+  "bn": "আব্দুস সবুর",
+  "ar": "عَبْدُ الصَّبُوْر",
+  "g": "m",
+  "mean_en": "Servant of the Most Patient",
+  "mean_bn": "পরম ধৈর্যশীলের বান্দা",
+  "cat": "abd",
+  "origin_en": "From Allah's name As-Sabur (The Most Patient)",
+  "origin_bn": "আল্লাহর নাম আস-সাবূর (পরম ধৈর্যশীল) থেকে",
+  "themes": [
+   "faith",
+   "patience"
+  ]
+ }
+]

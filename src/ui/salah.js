@@ -26,7 +26,8 @@ const SGT = {
   surahs_d: ['Short surahs to recite after Al-Fatiha. Tap ▶ to hear one on repeat.', 'সূরা ফাতিহার পর পড়ার ছোট সূরা। ▶ চাপলে বারবার শোনা যাবে।'],
   recitations: ['All recitations', 'নামাজের সব দোয়া'], recitations_d: ['Every word said in salah, in one place', 'নামাজে যা পড়া হয় সব এক জায়গায়'],
   fard: ['Fard', 'ফরজ'], sunnah: ['Sunnah', 'সুন্নত'], wajib: ['Wajib', 'ওয়াজিব'], nafl: ['Nafl', 'নফল'], sunnah_g: ['Sunnah (optional)', 'সুন্নত (গায়রে মুয়াক্কাদা)'],
-  men: ['Men', 'পুরুষ'], women: ['Women', 'নারী'], who_d: ['Show the method for', 'কার নিয়ম দেখাবে'],
+  ask: ['Who is learning?', 'কে শিখছেন?'], ask_d: ['The postures differ a little for men and women.', 'নারী ও পুরুষের নামাজের ভঙ্গিতে সামান্য পার্থক্য আছে।'],
+  men: ['Men', 'পুরুষ'], women: ['Women', 'নারী'], boy: ['Boy', 'ছেলে'], girl: ['Girl', 'মেয়ে'], who_d: ['Show the method for', 'কার নিয়ম দেখাবে'],
   well_done: ['Masha\'Allah — well done', 'মাশাআল্লাহ — চমৎকার'], open_quran: ['Open in Quran', 'কুরআনে খুলুন'],
 };
 const sgt = (k) => tr2(SGT[k]);
@@ -76,13 +77,16 @@ const REC = {
 // ---------- The figure: illustrated postures that crossfade ----------
 /// Each step's posture, and the picture that shows it.
 const POSE_IMG = { stand: 'qiyam', niyyah: 'rest', rest: 'rest', takbir: 'takbir', ruku: 'ruku', sujud: 'sujud', sit: 'sit', tashahhud: 'tashahhud', salam: 'salam' };
-const poseSrc = (name) => `/salah/${sgFemale() ? 'f-' : ''}${POSE_IMG[name] || 'qiyam'}.webp`;
+/// In Kids mode the guide shows a boy or a girl instead of a man or a woman.
+const sgKid = () => document.body.classList.contains('kidspace');
+const posePre = () => `${sgKid() ? 'k' : ''}${sgFemale() ? 'f-' : sgKid() ? '-' : ''}`;
+const poseSrc = (name) => `/salah/${posePre()}${POSE_IMG[name] || 'qiyam'}.webp`;
 // Load them all once, so moving between steps is instant.
 let posesLoaded = '';
 function preloadPoses() {
-  if (posesLoaded === sgWho()) return;
-  posesLoaded = sgWho();
-  for (const f of new Set(Object.values(POSE_IMG))) { const im = new Image(); im.src = `/salah/${sgFemale() ? 'f-' : ''}${f}.webp`; }
+  if (posesLoaded === posePre()) return;
+  posesLoaded = posePre();
+  for (const f of new Set(Object.values(POSE_IMG))) { const im = new Image(); im.src = `/salah/${posePre()}${f}.webp`; }
 }
 
 function sgFigure() {
@@ -109,7 +113,9 @@ const ART_IMG = { body: 'arm' };
 /// Women's pictures: for the head and ears only the wet hands are shown.
 const ART_IMG_F = { body: 'arm', head: 'wet', ear: 'wet' };
 function sgArt(kind, n) {
-  return `<div class="sg-photo"><div class="sg-floor"></div><img class="on" alt="" src="/salah/${sgFemale() ? `fw-${ART_IMG_F[kind] || kind}` : `w-${ART_IMG[kind] || kind}`}.webp"></div>${n ? `<span class="sg-times">×${N(n)}</span>` : ''}`;
+  // Children's pictures, where we have them (the feet, and the girl's mouth, stay the adults').
+  const k = sgKid() && kind !== 'feet' && !(sgFemale() && kind === 'mouth') ? 'k' : '';
+  return `<div class="sg-photo"><div class="sg-floor"></div><img class="on" alt="" src="/salah/${sgFemale() ? `${k}fw-${ART_IMG_F[kind] || kind}` : `${k}w-${ART_IMG[kind] || kind}`}.webp"></div>${n ? `<span class="sg-times">×${N(n)}</span>` : ''}`;
 }
 
 // ---------- The guided flows ----------
@@ -250,7 +256,7 @@ VIEWS.salah = async (tok) => {
   return sgHome();
 };
 // Full-screen flows (salah steps, azkar sessions) hide the bars; leaving them shows the bars again.
-window.addEventListener('hashchange', () => { if (!/^#\/(salah\/(learn|wudu|ghusl|tayammum)|azkar\/s\/|quran\/hifz\/p\/)/.test(location.hash)) document.body.classList.remove('focus'); });
+window.addEventListener('hashchange', () => { if (!/^#\/(salah\/(learn|wudu|ghusl|tayammum)|azkar\/s\/|quran\/hifz\/p\/|qaida\/[a-z]+\/quiz|names\/(learn|quiz)|hajj\/(umrah|hajj|count)|kids\/quiz)/.test(location.hash)) document.body.classList.remove('focus'); });
 
 function sgHome() {
   const done = sgDone();
@@ -263,7 +269,7 @@ function sgHome() {
       <div class="sg-hero-art">${sgFigure()}</div>
       <div class="sg-hero-t"><small>${esc(N(FLOWS.prayer.steps.length))} ${esc(sgt('steps'))}</small><b>${esc(sgt('learn'))}</b><span>${esc(sgt('learn_d'))}</span>
         <span class="btn gold small">${icon('play')}${esc(done.learn ? sgt('again') : sgt('start'))}</span></div></a>
-    <div class="sg-who"><span>${esc(sgt('who_d'))}</span><div class="p-seg"><button class="${sgFemale() ? '' : 'on'}" data-sa="who" data-v="m">${esc(sgt('men'))}</button><button class="${sgFemale() ? 'on' : ''}" data-sa="who" data-v="f">${esc(sgt('women'))}</button></div></div>
+    <div class="sg-who"><span>${esc(sgt('who_d'))}</span><div class="p-seg"><button class="${sgFemale() ? '' : 'on'}" data-sa="who" data-v="m">${esc(sgKid() ? sgt('boy') : sgt('men'))}</button><button class="${sgFemale() ? 'on' : ''}" data-sa="who" data-v="f">${esc(sgKid() ? sgt('girl') : sgt('women'))}</button></div></div>
     <div class="sg-progress"><div class="hx-prog"><i style="width:${(n / topics.length) * 100}%"></i></div><small>${esc(sgt('learned'))}: ${N(n)} / ${N(topics.length)}</small></div>
     <div class="p-head">${esc(sgt('g_before'))}</div><div class="p-group">
       ${row('#/salah/wudu', 'drop', '#0091ff', FLOWS.wudu.title, 'wudu')}${row('#/salah/ghusl', 'wave', '#12a594', FLOWS.ghusl.title, 'ghusl')}${row('#/salah/tayammum', 'hand', '#a18072', FLOWS.tayammum.title, 'tayammum')}${pg('conditions')}</div>
@@ -273,6 +279,11 @@ function sgHome() {
     <div class="p-head">${esc(sgt('g_learn'))}</div><div class="p-group">
       ${row('#/salah/surahs', 'book', '#30a46c', [`Surahs for salah`, 'নামাজের সূরা'])}${row('#/salah/recitations', 'list', '#8e4ec6', SGT.recitations)}</div>
     <div class="p-foot">${esc(sgt('hanafi'))}</div></div>`;
+  // The first visit: ask whose method to show (it can be changed on this page).
+  let asked = true;
+  try { asked = localStorage.getItem('salah-who') != null; } catch { /* ignore */ }
+  if (!asked) setTimeout(() => qSheet(`<div class="sg-ask"><b>${esc(sgt('ask'))}</b><small>${esc(sgt('ask_d'))}</small>
+    <div class="sg-ask-two"><button data-sa="who" data-v="m"><img src="/salah/${sgKid() ? 'k-' : ''}rest.webp" alt=""><span>${esc(sgKid() ? sgt('boy') : sgt('men'))}</span></button><button data-sa="who" data-v="f"><img src="/salah/${sgKid() ? 'kf-' : 'f-'}rest.webp" alt=""><span>${esc(sgKid() ? sgt('girl') : sgt('women'))}</span></button></div></div>`), 350);
   // The hero's figure bows gently, over and over.
   sgPose('stand');
   let i = 0;
@@ -401,7 +412,7 @@ document.addEventListener('click', async (e) => {
   const a = e.target.closest('[data-sa]');
   if (!a) return;
   const d = a.dataset;
-  if (d.sa === 'who') { try { localStorage.setItem('salah-who', d.v); } catch { /* private mode */ } nativeUi('haptic'); render(); return; }
+  if (d.sa === 'who') { try { localStorage.setItem('salah-who', d.v); } catch { /* private mode */ } nativeUi('haptic'); qSheetClose(); render(); return; }
   if (d.sa === 'next') sgMove(1);
   else if (d.sa === 'prev') sgMove(-1);
   else if (d.sa === 'play') {

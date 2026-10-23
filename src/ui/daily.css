@@ -1,0 +1,89 @@
+/* Waqt Duas and Prayer tracker, redesigned for phones. */
+
+/* ---------- Duas ---------- */
+.dy-row .p-lab { min-width: 0; }
+.dy-prev { display: block; font-family: var(--arabic); font-size: 16px; line-height: 1.7; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; }
+.dy-more { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 12px 14px; border-radius: 18px; background: var(--panel); border: 1px solid var(--line); color: var(--text); }
+.dy-more .p-lab { flex: 1; }
+.dy-card { position: relative; margin-top: 8px; padding: 22px 18px 16px; border-radius: 26px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--dc) 25%, transparent);
+  background: linear-gradient(170deg, color-mix(in srgb, var(--dc) 16%, var(--panel)), var(--panel) 55%); }
+[data-light] .dy-card { background: linear-gradient(170deg, color-mix(in srgb, var(--dc) 9%, #fff), #fff 55%); border-color: transparent; box-shadow: var(--lift); }
+.dy-ic { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: #fff; background: linear-gradient(160deg, color-mix(in srgb, var(--dc) 70%, #fff), var(--dc)); box-shadow: 0 6px 16px -6px var(--dc); }
+.dy-ic svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.dy-ar { margin: 16px 0 6px; font-family: var(--arabic); font-size: 28px; line-height: 2.05; color: var(--text-ar); text-align: right; }
+.dy-sec { margin-top: 14px; }
+.dy-sec small { font-size: 11.5px; font-weight: 650; letter-spacing: .6px; text-transform: uppercase; color: color-mix(in srgb, var(--dc) 70%, var(--text)); }
+html[lang="bn"] .dy-sec small { text-transform: none; letter-spacing: 0; font-size: 12.5px; }
+.dy-sec p { margin: 4px 0 0; font-size: 15.5px; line-height: 1.65; }
+.dy-tr { font-style: italic; color: var(--text-2, var(--text)); }
+html[lang="bn"] .dy-mn { font-family: "Hind Siliguri", var(--font); }
+.dy-src { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); }
+.dy-acts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.dy-acts .btn { height: 46px; border-radius: 14px; justify-content: center; }
+
+/* ---------- Tracker: today ---------- */
+.tk-today { margin-top: 6px; padding: 18px 12px 14px; border-radius: 26px; background: var(--panel); border: 1px solid var(--line); text-align: center; }
+[data-light] .tk-today, [data-light] .tk-st, [data-light] .tk-card, [data-light] .dy-more { background: var(--panel); border-color: transparent; box-shadow: var(--lift); }
+.tk-ring { position: relative; width: 132px; height: 132px; margin: 0 auto; }
+.tk-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.tk-ring circle { fill: none; stroke-width: 9; }
+.tk-ring .bg { stroke: rgba(var(--ink), .1); }
+.tk-ring .fg { stroke: var(--ok); stroke-linecap: round; transition: stroke-dashoffset 1s var(--ease); }
+.tk-ring > div { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.tk-ring b { font-size: 36px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.tk-ring b small { font-size: 17px; color: var(--muted); font-weight: 600; }
+.tk-ring span { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.tk-ps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 16px; }
+.tk-p { display: flex; flex-direction: column; align-items: center; gap: 6px; border: 0; background: none; color: var(--text); font: inherit; padding: 2px; -webkit-tap-highlight-color: transparent; }
+.tk-c { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; border: 2px dashed rgba(var(--ink), .22); color: var(--muted); transition: transform .3s var(--spring), background .25s; }
+.tk-c svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.tk-p:active .tk-c { transform: scale(.9); }
+.tk-p b { font-size: 12.5px; font-weight: 600; }
+.tk-p.s1 .tk-c, .tk-dot.s1, .tk-key i.s1 { background: var(--ok); }
+.tk-p.s2 .tk-c, .tk-dot.s2, .tk-key i.s2 { background: var(--g2); }
+.tk-p.s3 .tk-c, .tk-dot.s3, .tk-key i.s3 { background: var(--violet); }
+.tk-p.s4 .tk-c, .tk-dot.s4, .tk-key i.s4 { background: var(--rose); }
+.tk-p:is(.s1, .s2, .s3, .s4) .tk-c { border: 0; color: #fff; box-shadow: 0 6px 16px -8px rgba(0, 0, 0, .5); animation: pop .45s var(--spring); }
+.tk-p.s2 .tk-c { color: #1d1405; }
+.tk-key { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px; margin-top: 14px; font-size: 11.5px; color: var(--muted); }
+.tk-key span { display: inline-flex; align-items: center; gap: 5px; }
+.tk-key i { width: 8px; height: 8px; border-radius: 50%; }
+
+/* ---------- Tracker: stats ---------- */
+.tk-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.tk-st { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 20px; background: var(--panel); border: 1px solid var(--line); min-width: 0; }
+.tk-l { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.tk-l svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tk-st:first-child .tk-l { color: #ff8a3d; }
+.tk-st > b { font-size: 28px; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.tk-st > b small { font-size: 14px; font-weight: 600; color: var(--muted); }
+.tk-st > small { font-size: 12px; color: var(--muted); }
+.tk-bar { display: block; height: 6px; border-radius: 4px; background: rgba(var(--ink), .1); overflow: hidden; margin-top: 4px; }
+.tk-bar i { display: block; height: 100%; border-radius: 4px; background: var(--ok); }
+.tk-mini { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; padding: 4px 10px; border-radius: 99px; border: 0; background: rgba(var(--ink), .08); color: var(--text); font: inherit; font-size: 12px; font-weight: 600; }
+.tk-mini svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; }
+
+/* ---------- Tracker: week, per prayer, history ---------- */
+.tk-card { padding: 14px; border-radius: 22px; background: var(--panel); border: 1px solid var(--line); }
+.tk-week { display: grid; grid-template-columns: 68px repeat(5, 1fr); align-items: center; row-gap: 8px; }
+.tk-wh { text-align: center; font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.tk-wd { font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.tk-wd i { font-style: normal; font-weight: 400; color: var(--faint); }
+.tk-wd.on { color: var(--gold); }
+.tk-dot { justify-self: center; width: 28px; height: 28px; border-radius: 50%; border: 0; display: grid; place-items: center; background: rgba(var(--ink), .08); color: #fff; padding: 0; }
+.tk-dot svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.tk-dot.s2 { color: #1d1405; }
+.tk-per { display: flex; flex-direction: column; gap: 12px; }
+.tk-per > div { display: grid; grid-template-columns: 64px 1fr 42px; align-items: center; gap: 10px; font-size: 13.5px; }
+.tk-per .tk-bar { margin: 0; height: 8px; }
+.tk-per b { text-align: right; font-variant-numeric: tabular-nums; font-size: 13.5px; }
+.tk-heat { display: grid; grid-template-rows: repeat(7, 1fr); grid-auto-flow: column; grid-auto-columns: 13px; gap: 3px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.tk-heat::-webkit-scrollbar { display: none; }
+.tk-heat i, .tk-hk i { width: 13px; height: 13px; border-radius: 3px; background: rgba(var(--ink), .07); }
+.tk-heat i.l1, .tk-hk i.l1 { background: color-mix(in srgb, var(--ok) 25%, transparent); }
+.tk-heat i.l2, .tk-hk i.l2 { background: color-mix(in srgb, var(--ok) 42%, transparent); }
+.tk-heat i.l3, .tk-hk i.l3 { background: color-mix(in srgb, var(--ok) 60%, transparent); }
+.tk-heat i.l4, .tk-hk i.l4 { background: color-mix(in srgb, var(--ok) 80%, transparent); }
+.tk-heat i.l5, .tk-hk i.l5 { background: var(--ok); }
+.tk-hk { display: flex; align-items: center; justify-content: flex-end; gap: 3px; margin-top: 10px; font-size: 11px; color: var(--muted); }
+.tk-hk span { margin: 0 4px; }

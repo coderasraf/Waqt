@@ -2,7 +2,9 @@
 @font-face { font-family: "Amiri"; src: url(/fonts/Amiri-Bold.ttf) format("truetype"); font-weight: 700; font-display: swap; }
 @font-face { font-family: "Outfit"; src: url(/fonts/Outfit-Variable.ttf) format("truetype"); font-weight: 100 900; font-display: swap; }
 @font-face { font-family: "Hind Siliguri"; src: url(/fonts/HindSiliguri-Regular.ttf) format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Hind Siliguri"; src: url(/fonts/HindSiliguri-Medium.ttf) format("truetype"); font-weight: 500; font-display: swap; }
 @font-face { font-family: "Hind Siliguri"; src: url(/fonts/HindSiliguri-SemiBold.ttf) format("truetype"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Hind Siliguri"; src: url(/fonts/HindSiliguri-Bold.ttf) format("truetype"); font-weight: 700 900; font-display: swap; }
 
 :root {
   --bg: #060c1b;
@@ -52,27 +54,27 @@
 
 /* ---------- Themes (Night is the default above) ---------- */
 [data-theme="day"] {
-  --bg: #f6f2ea; --bg-2: #efe7d8; --panel: rgba(255, 255, 255, .78); --panel-2: #fff; --panel-solid: #fff;
-  --line: rgba(70, 55, 30, .13); --line-2: rgba(70, 55, 30, .22);
-  --text: #1d2331; --muted: #586175; --faint: #8a90a0;
-  --gold: #a5741c; --gold-2: #8a5c0e; --gold-deep: #7a510b;
-  --teal: #0d8a7b; --rose: #cf3f58; --violet: #6352d1; --sky: #2777c9; --ok: #1a9459;
-  --ink: 40, 40, 60; --sink: 110, 85, 40; --sk: .4; --acc: 200, 150, 50;
-  --g1: #ffe2a0; --g2: #f3c66b; --g3: #d9a443;
-  --surface: #fffdf8; --bar: rgba(250, 246, 238, .95); --bar-2: rgba(243, 237, 225, .95);
-  --hero-a: #fff8e8; --hero-b: #f2e5c6; --text-ar: #231b10; --text-2: #343a49; --pattern: .09;
+  --bg: #f2f2f7; --bg-2: #e9e9ef; --panel: #ffffff; --panel-2: #ffffff; --panel-solid: #ffffff;
+  --line: rgba(60, 60, 67, .11); --line-2: rgba(60, 60, 67, .2);
+  --text: #1c1c1e; --muted: #6c6c72; --faint: #a1a1a7;
+  --gold: #9a6400; --gold-2: #8a5800; --gold-deep: #6e4700;
+  --teal: #00897b; --rose: #d63a50; --violet: #5e4fd6; --sky: #1f73d6; --ok: #1f9d55;
+  --ink: 60, 60, 67; --sink: 0, 0, 0; --sk: .22; --acc: 214, 150, 30;
+  --g1: #ffd77a; --g2: #f5b83d; --g3: #e09a1a;
+  --surface: #ffffff; --bar: rgba(249, 249, 251, .86); --bar-2: rgba(249, 249, 251, .86);
+  --hero-a: #ffffff; --hero-b: #f6f1e7; --text-ar: #1c1c1e; --text-2: #3a3a3c; --pattern: 0;
   color-scheme: light;
 }
 [data-theme="sepia"] {
-  --bg: #f2e7cf; --bg-2: #e9d9b7; --panel: rgba(255, 250, 236, .72); --panel-2: #fffaf0; --panel-solid: #fffaf0;
-  --line: rgba(95, 65, 20, .15); --line-2: rgba(95, 65, 20, .26);
-  --text: #3a2b17; --muted: #6d5a3f; --faint: #9a8666;
-  --gold: #976518; --gold-2: #7a4f0e; --gold-deep: #6a440b;
+  --bg: #f3ede2; --bg-2: #ebe3d3; --panel: #fffcf6; --panel-2: #fffcf6; --panel-solid: #fffcf6;
+  --line: rgba(90, 62, 25, .11); --line-2: rgba(90, 62, 25, .2);
+  --text: #2c2216; --muted: #6f604c; --faint: #a3937a;
+  --gold: #8f5d12; --gold-2: #7a4e0c; --gold-deep: #63400a;
   --teal: #2a7a69; --rose: #b33f3a; --violet: #6a4c9b; --sky: #36699f; --ok: #3a8549;
-  --ink: 95, 65, 20; --sink: 120, 80, 30; --sk: .4; --acc: 185, 130, 45;
-  --g1: #f8dc98; --g2: #e6b558; --g3: #c48b30;
-  --surface: #fdf5e3; --bar: rgba(244, 234, 210, .96); --bar-2: rgba(237, 224, 196, .96);
-  --hero-a: #fbf0d6; --hero-b: #ecd6a9; --text-ar: #2b1f10; --text-2: #46372a; --pattern: .1;
+  --ink: 90, 62, 25; --sink: 60, 40, 10; --sk: .25; --acc: 190, 135, 50;
+  --g1: #f8dc98; --g2: #e9b75a; --g3: #cc9338;
+  --surface: #fffcf6; --bar: rgba(247, 242, 233, .88); --bar-2: rgba(247, 242, 233, .88);
+  --hero-a: #fffcf6; --hero-b: #f4ead6; --text-ar: #2b1f10; --text-2: #46372a; --pattern: 0;
   color-scheme: light;
 }
 /* Madinah: the green of the Prophet's mosque, gold details, green highlights. */
@@ -89,15 +91,15 @@
 }
 /* Rawdah: light, mint and cream, green highlights. */
 [data-theme="rawdah"] {
-  --bg: #eef4ec; --bg-2: #e2ede0; --panel: rgba(255, 255, 255, .8); --panel-2: #fff; --panel-solid: #fff;
-  --line: rgba(20, 70, 45, .12); --line-2: rgba(20, 70, 45, .2);
-  --text: #15291f; --muted: #4f6a5c; --faint: #86a094;
-  --gold: #1d7a4c; --gold-2: #7d5d12; --gold-deep: #145c38;
+  --bg: #eef3ef; --bg-2: #e3ebe5; --panel: #ffffff; --panel-2: #ffffff; --panel-solid: #ffffff;
+  --line: rgba(20, 60, 40, .1); --line-2: rgba(20, 60, 40, .18);
+  --text: #13201a; --muted: #5a6b62; --faint: #98a69e;
+  --gold: #17774a; --gold-2: #7a5b10; --gold-deep: #125c38;
   --teal: #0f7a5a; --rose: #c43f55; --violet: #5b4fc4; --sky: #2775c4; --ok: #198a52;
-  --ink: 20, 60, 40; --sink: 30, 80, 55; --sk: .35; --acc: 40, 150, 95;
-  --g1: #a6ecc4; --g2: #4cc78a; --g3: #23905c;
-  --surface: #fbfdf9; --bar: rgba(240, 246, 238, .95); --bar-2: rgba(232, 241, 229, .95);
-  --hero-a: #e3f1e2; --hero-b: #c5e0c6; --text-ar: #12261b; --text-2: #2c4236; --pattern: .1;
+  --ink: 20, 60, 40; --sink: 10, 40, 25; --sk: .22; --acc: 40, 150, 95;
+  --g1: #8fe0b2; --g2: #3fbf7f; --g3: #1f9259;
+  --surface: #ffffff; --bar: rgba(246, 250, 247, .88); --bar-2: rgba(246, 250, 247, .88);
+  --hero-a: #ffffff; --hero-b: #e8f3ea; --text-ar: #12261b; --text-2: #2c4236; --pattern: 0;
   color-scheme: light;
 }
 [data-theme="emerald"] {
@@ -811,3 +813,36 @@ body.is-mini .app, body.is-mini .pattern-bg { display: none; }
 .theme-sw i { position: relative; width: 54px; height: 38px; border-radius: 11px; overflow: hidden; border: 1px solid rgba(var(--ink), .15); box-shadow: 0 4px 12px rgba(var(--sink), calc(.25 * var(--sk))); }
 .theme-sw i::before { content: ""; position: absolute; left: 7px; right: 7px; top: 8px; height: 7px; border-radius: 4px; background: var(--c-panel); }
 .theme-sw i::after { content: ""; position: absolute; left: 7px; width: 22px; bottom: 7px; height: 8px; border-radius: 4px; background: var(--c-acc); }
+
+/* =====================================================================
+   Light themes: white cards that sit on the page with a soft shadow, no
+   pattern, colour kept for icons and accents, and system-style controls.
+   ===================================================================== */
+[data-light] { --lift: 0 1px 2px rgba(0, 0, 0, .04), 0 3px 12px rgba(0, 0, 0, .045); }
+[data-light] .pattern-bg { display: none; }
+[data-light] :is(.card, .p-group, .pcard, .banner, .hm-day, .hc-month, .hc-detail, .hc-evs, .nm-act, .nm-card, .hj-day, .hj-open, .wg-card, .pr-all,
+  .pr-lesson, .pr-nav a, .qd-mq, .qd-opt, .qd-intro, .qp-card, .qs-row, .sg-rec, .sg-rk, .az-card, .az-cat, .az-quick, .tb-card, .rm-row, .rm-day, .zk-result,
+  .hx-min, .hx-compact, .hb-row, .table-wrap, .theme-sw, .qd-t, .mx-grid, .mx-rows, .tr-p, .chip) {
+  background-color: var(--panel); border-color: transparent; box-shadow: var(--lift); backdrop-filter: none;
+}
+[data-light] .p-group .p-row + .p-row, [data-light] .hc-ev + .hc-ev { border-color: var(--line); }
+/* Segmented controls: a white pill on a grey track, as in iOS. */
+[data-light] :is(.seg, .p-seg) { background: rgba(118, 118, 128, .12); border-color: transparent; }
+[data-light] :is(.seg, .p-seg) button.on { background: #fff; color: var(--text); font-weight: 600; box-shadow: 0 1px 3px rgba(0, 0, 0, .1), 0 3px 8px rgba(0, 0, 0, .06); }
+/* Bars: frosted white with a hairline. */
+[data-light] .tabbar { background: var(--bar); backdrop-filter: saturate(1.8) blur(20px); -webkit-backdrop-filter: saturate(1.8) blur(20px); border-top: .5px solid var(--line-2); }
+[data-light] .tabbar a { color: #8e8e93; }
+[data-light] .tabbar a.on { color: var(--gold); }
+[data-light] .icon-btn { background: var(--panel); border-color: transparent; box-shadow: var(--lift); }
+/* Search fields and inputs: the grey fill of iOS. */
+[data-light] :is(.mx-search, .nm-search, .q-search, input[type="search"]) { background-color: rgba(118, 118, 128, .12); border-color: transparent; }
+/* Widgets on Today: white, coloured only at the label, with the faintest tint. */
+[data-light] .hw { background: linear-gradient(165deg, color-mix(in srgb, var(--wc) 8%, #fff), #fff 60%); border-color: transparent; box-shadow: var(--lift); }
+[data-light] .hw-l { color: color-mix(in srgb, var(--wc) 82%, #000); }
+[data-light] .hw-big-ev .hw-num { color: color-mix(in srgb, var(--wc) 75%, #000); }
+[data-light] .hw.name .hw-ar { color: color-mix(in srgb, var(--wc) 70%, #000); }
+[data-light] .hw-compass .ring { fill: rgba(0, 0, 0, .03); }
+/* Text: true weights, no faux bold, and no tight tracking on Bengali. */
+html[lang="bn"] :is(.p-title, h1, h2, .hx-name, .mx-head b) { letter-spacing: 0; }
+[data-light] .p-sub, [data-light] .p-foot { color: var(--muted); }
+[data-light] :is(.mx-search, .nm-search) input { background: none; }
