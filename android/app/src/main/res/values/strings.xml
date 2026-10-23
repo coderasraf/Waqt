@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Waqt</string>
+    <string name="next_prayer">Next prayer</string>
+    <string name="widget_description">Next prayer with a live countdown and today\'s times</string>
+    <string name="ch_adhan">Adhan</string>
+    <string name="ch_adhan_desc">The adhan at prayer times</string>
+    <string name="ch_reminders">Reminders</string>
+    <string name="ch_reminders_desc">Before prayers, Sehri, Jumu\'ah, leaving for the mosque</string>
+    <string name="ch_quiet">Silent notices</string>
+    <string name="ch_quiet_desc">Prayer-time notices without sound</string>
+    <string name="ch_fajr">Fajr wake-up alarm</string>
+    <string name="ch_fajr_desc">Keeps ringing until you are up for Fajr</string>
+    <string name="stop_adhan">Stop adhan</string>
+    <string name="im_up">I\'m up</string>
+</resources>

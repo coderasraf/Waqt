@@ -1,0 +1,151 @@
+/* Waqt on phones: the five styles of Today's next-prayer card. */
+.hx { position: relative; margin-top: 4px; border-radius: 26px; overflow: hidden; isolation: isolate; }
+.hx .ar { font-family: var(--arabic); }
+.hx-style { position: absolute; top: 12px; right: 12px; z-index: 5; width: 34px; height: 34px; border-radius: 50%; border: 0; display: grid; place-items: center;
+  background: rgba(var(--ink), .12); color: var(--text); backdrop-filter: blur(10px); }
+.hx-style svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linejoin: round; }
+.hx-date { display: flex; flex-direction: column; gap: 1px; font-size: 13px; color: var(--muted); padding-right: 44px; }
+.hx-date b { font-weight: 550; color: var(--text); opacity: .9; }
+.hx-date span { color: var(--gold); }
+.hx-lbl { font-size: 11px; font-weight: 650; letter-spacing: 1.6px; text-transform: uppercase; color: var(--muted); }
+.hx-name { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.hx-name b { font-size: 30px; font-weight: 700; letter-spacing: -.6px; line-height: 1.1; }
+.hx-name .ar { font-size: 26px; color: var(--gold-2); }
+.hx-cd { font-size: 54px; font-weight: 300; letter-spacing: -1px; line-height: 1; font-variant-numeric: tabular-nums; }
+.hx-at { font-size: 14px; color: var(--muted); }
+.hx-prog { height: 5px; border-radius: 5px; background: rgba(var(--ink), .12); overflow: hidden; }
+.hx-prog i { display: block; height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--g3), var(--g1)); transition: width 1s linear; }
+.hx-foot { font-size: 13px; color: var(--muted); }
+.hx-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.hx-chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; font-size: 12px; background: rgba(var(--ink), .08); color: var(--text); }
+.hx-chip svg { width: 13px; height: 13px; stroke: var(--gold); fill: none; stroke-width: 2; }
+.hx-chip.alert { background: rgba(255,125,142,.18); }
+.hx-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 14px; }
+.hx-strip span { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px; border-radius: 14px; min-width: 0; }
+.hx-strip i { display: grid; color: var(--muted); }
+.hx-strip i svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.hx-strip b { font-size: 11.5px; font-weight: 550; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.hx-strip em { font-style: normal; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.hx-strip .past { opacity: .45; }
+.hx-strip .on { background: rgba(var(--acc), .16); box-shadow: inset 0 0 0 1px rgba(var(--acc), .45); }
+.hx-strip .on i, .hx-strip .on b { color: var(--gold); }
+
+/* Always-dark cards (sun path) wear the night palette in every theme. */
+.hx-dark {
+  --text: #eef2fb; --muted: #b6c1dc; --faint: #7b89ad; --gold: #f3c66b; --gold-2: #ffe2a0;
+  --ink: 255, 255, 255; --acc: 243, 198, 107; color: var(--text);
+}
+
+/* Sky: the live canvas, with clean type and a glass strip over the mosque. */
+.hx-skycard { height: 340px; }
+.hx-sky { position: absolute; inset: 0; z-index: 2; padding: 20px 20px 0; display: flex; flex-direction: column; gap: 2px; text-shadow: 0 1px 14px rgba(0,0,0,.35); }
+.hx-sky .hx-date { margin-bottom: 18px; color: rgba(255,255,255,.8); }
+.hx-sky .hx-date b { color: #fff; }
+.hx-sky .hx-date span { color: #ffe2a0; }
+.hx-sky .hx-lbl { color: rgba(255,255,255,.75); }
+.hx-sky .hx-cd { font-size: 58px; margin-top: 6px; color: #fff; }
+.hx-sky .hx-at { color: rgba(255,255,255,.85); }
+.hx-sky .hx-style { background: rgba(0,0,0,.25); color: #fff; }
+.hx-glass { position: absolute; left: 12px; right: 12px; bottom: 12px; padding: 10px 14px; border-radius: 16px; background: rgba(8,14,32,.55); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.12); font-size: 13px; color: rgba(255,255,255,.9); text-shadow: none; display: flex; flex-direction: column; gap: 7px; }
+.hx-glass .hx-prog { background: rgba(255,255,255,.18); }
+
+/* Sun path: the day's arc from Fajr to Isha, the sun (or moon) on it. */
+.hx-arc { padding: 18px 16px 16px; background: radial-gradient(420px 220px at 50% 30%, rgba(255,255,255,.08), transparent), linear-gradient(170deg, var(--ta), var(--tb)); }
+.hx-arcsvg { display: block; width: 100%; margin: 6px 0 -18px; overflow: visible; }
+.hx-track { fill: none; stroke: rgba(255,255,255,.2); stroke-width: 2; stroke-dasharray: 2 5; stroke-linecap: round; }
+.hx-done { fill: none; stroke: #ffe2a0; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(255,214,140,.7)); transition: stroke-dashoffset 1s; }
+.hx-hz { stroke: rgba(255,255,255,.22); stroke-width: 1; }
+.hx-m { fill: rgba(255,255,255,.55); }
+.hx-m.nx { fill: #ffe2a0; stroke: rgba(255,226,160,.35); stroke-width: 6; }
+#hx-body { transition: transform 1s; }
+.hx-under { position: relative; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.hx-under .hx-name { justify-content: center; }
+.hx-under .hx-cd { margin: 4px 0 2px; }
+.hx-arc .hx-strip .on { background: rgba(255,226,160,.16); box-shadow: inset 0 0 0 1px rgba(255,226,160,.4); }
+.hx-arc .hx-chip { background: rgba(255,255,255,.12); }
+
+/* Ring: a big ring that fills until the next prayer. */
+.hx-ringc { padding: 18px 16px 18px; background: radial-gradient(360px 220px at 50% 45%, rgba(var(--acc), .12), transparent), var(--panel); border: 1px solid var(--line); border-radius: 26px; text-align: center; }
+.hx-ringc .hx-date { text-align: left; }
+.hx-rwrap { position: relative; width: min(260px, 72vw); aspect-ratio: 1; margin: 6px auto 4px; }
+.hx-rwrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.hx-rtrack { fill: none; stroke: rgba(var(--ink), .09); stroke-width: 14; }
+.hx-rbar { fill: none; stroke: url(#hxr); stroke-width: 14; stroke-linecap: round; transition: stroke-dashoffset 1s linear; filter: drop-shadow(0 0 8px rgba(var(--acc), .45)); }
+.hx-rin { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+.hx-rin small { font-size: 12px; color: var(--muted); }
+.hx-rin small:first-child { letter-spacing: 1.4px; text-transform: uppercase; font-weight: 650; font-size: 10.5px; }
+.hx-rin .hx-name { flex-direction: column; align-items: center; gap: 0; }
+.hx-rin .hx-name b { font-size: 26px; }
+.hx-rin .hx-name .ar { font-size: 20px; }
+.hx-rin .hx-cd { font-size: 40px; margin: 2px 0; }
+.hx-ringc .hx-chips { justify-content: center; }
+
+/* Minimal: big numbers on the theme's own surface. */
+.hx-min { padding: 18px 18px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 26px; }
+.hx-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin: 22px 0 14px; }
+.hx-row .hx-name { flex-direction: column; gap: 0; }
+.hx-row .hx-name b { font-size: 34px; }
+.hx-r { text-align: right; }
+.hx-r .hx-cd { font-size: 46px; font-weight: 250; }
+.hx-min .hx-foot { margin-top: 7px; }
+
+/* Compact: one line. */
+.hx-compact { display: grid; grid-template-columns: 44px 1fr auto 34px; align-items: center; gap: 12px; padding: 14px 14px 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 22px; }
+.hx-compact .hx-style { position: static; }
+.hx-ic { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: rgba(var(--acc), .14); color: var(--gold); }
+.hx-ic svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.hx-ct { min-width: 0; }
+.hx-ct .hx-name b { font-size: 19px; }
+.hx-ct .hx-name .ar { font-size: 17px; }
+.hx-ct small { display: block; color: var(--muted); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hx-compact .hx-cd { font-size: 26px; font-weight: 400; }
+.hx-compact .hx-prog { position: absolute; left: 14px; right: 14px; bottom: 8px; height: 3px; }
+
+/* The picker. */
+.hx-picks { display: flex; flex-direction: column; gap: 8px; padding: 0 4px 6px; }
+.hx-pick { display: flex; align-items: center; gap: 14px; padding: 10px 12px; border-radius: 16px; border: 1.5px solid var(--line); background: var(--panel); color: var(--text); text-align: left; }
+.hx-pick.on { border-color: var(--gold); }
+.hx-pick > span:not(.p-check) { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.hx-pick b { font-size: 15.5px; }
+.hx-pick small { color: var(--muted); font-size: 12.5px; }
+.hx-thumb { position: relative; width: 64px; height: 44px; flex: none; border-radius: 11px; overflow: hidden; }
+.hx-thumb s, .hx-thumb u { position: absolute; display: block; text-decoration: none; }
+.th-sky { background: linear-gradient(180deg, #3f7fd6, #e8c38a); }
+.th-sky s { left: 0; right: 0; bottom: 0; height: 12px; background: #0d1838; clip-path: polygon(0 60%, 18% 60%, 18% 30%, 30% 30%, 34% 0, 38% 30%, 50% 30%, 56% 10%, 62% 30%, 100% 30%, 100% 100%, 0 100%); }
+.th-sky u { left: 7px; top: 9px; width: 26px; height: 5px; border-radius: 3px; background: #fff; }
+.th-arc { background: linear-gradient(170deg, #1c5fae, #4f97da); }
+.th-arc s { left: 8px; right: 8px; top: 10px; height: 44px; border-radius: 50% 50% 0 0; border: 2px dashed rgba(255,255,255,.55); border-bottom: 0; }
+.th-arc u { left: 22px; top: 12px; width: 9px; height: 9px; border-radius: 50%; background: #ffe2a0; box-shadow: 0 0 8px #ffd36b; }
+.th-ring { background: var(--panel-2); border: 1px solid var(--line); }
+.th-ring s { left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; border: 4px solid rgba(var(--ink), .12); border-top-color: #f3c66b; border-right-color: #f3c66b; }
+.th-minimal { background: var(--panel-2); border: 1px solid var(--line); }
+.th-minimal s { left: 8px; top: 9px; width: 22px; height: 7px; border-radius: 3px; background: var(--text); opacity: .8; }
+.th-minimal u { right: 8px; top: 9px; width: 18px; height: 12px; border-radius: 3px; background: var(--muted); box-shadow: -14px 18px 0 -2px #f3c66b; }
+.th-compact { background: var(--panel-2); border: 1px solid var(--line); }
+.th-compact s { left: 8px; top: 14px; width: 14px; height: 14px; border-radius: 5px; background: rgba(var(--acc), .5); }
+.th-compact u { left: 27px; right: 8px; top: 18px; height: 6px; border-radius: 3px; background: var(--muted); }
+
+/* Illustrated cards: Madinah, Makkah, Al-Aqsa. */
+.hxs-madinah, .hxs-makkah, .hxs-aqsa {
+  height: 380px; --text: #fff; --muted: rgba(255,255,255,.8); --gold: #ffe2a0; --gold-2: #ffe2a0; --ink: 255, 255, 255; --acc: 243, 198, 107; color: #fff;
+}
+.il-art { position: absolute; inset: 0; width: 100%; height: 100%; }
+.il-shade { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(0,0,0,.28), transparent 62%); pointer-events: none; }
+.il-text { z-index: 2; padding-bottom: 0; }
+.il-prog { width: min(58%, 230px); margin-top: 12px; display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: rgba(255,255,255,.9); }
+.il-prog .hx-prog { background: rgba(255,255,255,.22); }
+.il-star { fill: #fff; animation: ilTwinkle 3.6s ease-in-out infinite; }
+@keyframes ilTwinkle { 50% { opacity: .25; } }
+.il-tawaf { animation: ilTawaf 16s linear infinite; }
+@keyframes ilTawaf { to { stroke-dashoffset: 50; } }
+@media (prefers-reduced-motion: reduce) { .il-star, .il-tawaf { animation: none; } }
+.th-madinah { background: linear-gradient(180deg, #2468bd, #c4e3f6); }
+.th-madinah s { left: 28px; top: 13px; width: 20px; height: 20px; border-radius: 50% 50% 0 0; background: linear-gradient(90deg, #41b878, #136b3e); }
+.th-madinah u { left: 10px; right: 0; bottom: 0; height: 12px; background: #f3ead6; }
+.th-makkah { background: linear-gradient(180deg, #211a50, #f2895a); }
+.th-makkah s { left: 24px; top: 20px; width: 14px; height: 16px; background: #111; box-shadow: inset 0 3px 0 #d4a841; }
+.th-makkah u { left: 6px; right: 6px; bottom: 3px; height: 8px; border-radius: 50%; border: 1.5px dotted #f5f2ea; }
+.th-aqsa { background: linear-gradient(180deg, #2c62b0, #f3cf93); }
+.th-aqsa s { left: 23px; top: 12px; width: 20px; height: 13px; border-radius: 50% 50% 0 0; background: linear-gradient(90deg, #ffe08a, #b8862a); }
+.th-aqsa u { left: 19px; top: 25px; width: 28px; height: 12px; background: #2f64b8; }

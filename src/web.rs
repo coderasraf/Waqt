@@ -32,6 +32,7 @@ use crate::text;
 const INDEX_HTML: &str = include_str!("ui/index.html");
 const APP_CSS: &str = include_str!("ui/app.css");
 const APP_JS: &str = include_str!("ui/app.js");
+const OVERLAY_HTML: &str = include_str!("ui/overlay.html");
 const LOGO_PNG: &[u8] = include_bytes!("../assets/icon-256.png");
 static FONTS: [(&str, &[u8]); 5] = [
     ("Amiri-Regular.ttf", include_bytes!("ui/fonts/Amiri-Regular.ttf")),
@@ -83,6 +84,8 @@ pub enum DesktopEvent {
     Show,
     /// The adhan started and the user wants the window to come up.
     Adhan,
+    /// Settings changed (the desktop countdown may need to show or hide).
+    Config,
 }
 
 pub type Hook = Arc<dyn Fn(DesktopEvent) + Send + Sync>;
@@ -367,6 +370,20 @@ impl App {
         }
     }
 
+    /// Turns the desktop countdown on or off, or locks it (click-through).
+    pub fn set_overlay(&self, enabled: Option<bool>, locked: Option<bool>) {
+        let mut cfg = self.config();
+        if let Some(e) = enabled {
+            cfg.overlay.enabled = e;
+        }
+        if let Some(l) = locked {
+            cfg.overlay.locked = l;
+        }
+        if let Err(e) = self.save_config(cfg) {
+            eprintln!("saving the countdown setting: {e:#}");
+        }
+    }
+
     pub fn is_muted_today(&self) -> bool {
         self.muted(&self.config())
     }
@@ -381,6 +398,9 @@ impl App {
         *self.config.write().unwrap() = cfg;
         // Times may have moved; anything now in the past must not sound.
         self.mark_past_fired();
+        if let Some(h) = &self.hook {
+            h(DesktopEvent::Config);
+        }
         Ok(())
     }
 }
@@ -416,6 +436,7 @@ fn router(state: AppState) -> Router {
         .route("/", get(|| async { Html(INDEX_HTML) }))
         .route("/app.css", get(|| async { ([(header::CONTENT_TYPE, "text/css")], APP_CSS) }))
         .route("/app.js", get(|| async { ([(header::CONTENT_TYPE, "text/javascript")], APP_JS) }))
+        .route("/overlay", get(|| async { Html(OVERLAY_HTML) }))
         .route("/logo.png", get(|| async { ([(header::CONTENT_TYPE, "image/png")], LOGO_PNG) }))
         .route("/fonts/{name}", get(font))
         .route("/api/today", get(today))

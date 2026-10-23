@@ -1,0 +1,236 @@
+/* Waqt Quran (phones). */
+@font-face { font-family: "QHafs"; src: url(/qfonts/UthmanicHafs.woff2) format("woff2"); font-display: block; }
+@font-face { font-family: "QIndoPak"; src: url(/qfonts/IndoPak.woff2) format("woff2"); font-display: block; }
+
+.qa { font-family: "QHafs", var(--arabic); direction: rtl; text-align: right; font-size: var(--ars, 30px); line-height: 2.05; color: var(--text-ar); word-spacing: 2px; }
+.qa.ip { font-family: "QIndoPak", var(--arabic); line-height: 2.25; }
+.qa i { font-style: normal; }
+.qa .w { border-radius: 8px; padding: 0 1px; transition: background .2s, color .2s, box-shadow .2s; -webkit-tap-highlight-color: transparent; }
+.qa .w.hl { background: rgba(var(--acc), .22); color: var(--gold-2); box-shadow: 0 0 0 3px rgba(var(--acc), .12); }
+.qend { font-family: "QHafs", var(--arabic); color: var(--gold); font-size: .9em; }
+.qa.ip .qend { font-family: "QHafs", var(--arabic); }
+
+/* Tajweed colours, tuned to stay readable on the dark sky. */
+.tj-ham_wasl, .tj-slnt, .tj-laam_shamsiyah { color: #9aa3b8; }
+.tj-madda_normal { color: #7fa6ff; }
+.tj-madda_permissible { color: #6c7bff; }
+.tj-madda_obligatory_mottasel, .tj-madda_obligatory_monfasel { color: #b48cff; }
+.tj-madda_necessary { color: #d27bff; }
+.tj-qalaqah { color: #ff6b6b; }
+.tj-ikhafa_shafawi { color: #ff7ad9; }
+.tj-ikhafa { color: #e389ff; }
+.tj-idgham_shafawi { color: #8fdc5a; }
+.tj-iqlab { color: #4fd3ff; }
+.tj-idgham_ghunnah { color: #3fd6a0; }
+.tj-idgham_wo_ghunnah { color: #7fcf6a; }
+.tj-idgham_mutajanisayn, .tj-idgham_mutaqaribayn { color: #b8b8b8; }
+.tj-ghunnah { color: #ffa24d; }
+.qlegend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: var(--muted); padding: 2px 0 10px; }
+.qlegend span { display: inline-flex; align-items: center; gap: 5px; }
+.qlegend i { font-style: normal; font-size: 15px; }
+
+/* Home */
+.qh-head { display: flex; align-items: flex-start; gap: 10px; }
+.qh-head > div { flex: 1; min-width: 0; }
+.qh-ar { font-size: .8em; margin-left: 6px; font-weight: 400; }
+.qh-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.qh-cards:has(> :only-child) { grid-template-columns: 1fr; }
+.qh-card { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 18px; border: 1px solid var(--line); min-width: 0; }
+.qh-card.read { background: radial-gradient(240px 120px at 0 0, rgba(var(--acc), .18), transparent), var(--panel); }
+.qh-card.listen { background: radial-gradient(240px 120px at 0 0, rgba(63,214,193,.16), transparent), var(--panel); }
+.qh-card svg { width: 26px; height: 26px; stroke: var(--gold); fill: none; stroke-width: 1.7; flex: none; margin-top: 2px; }
+.qh-card.listen svg { stroke: var(--teal); }
+.qh-card div { min-width: 0; }
+.qh-card small { display: block; color: var(--muted); font-size: 12px; }
+.qh-card b { display: block; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+.qh-card span { font-size: 12.5px; color: var(--gold); }
+.qsearch { margin: 14px 0 10px; }
+.qtabs { display: flex; width: 100%; margin-bottom: 8px; }
+.qtabs button { flex: 1; padding: 8px; }
+.qlist { display: flex; flex-direction: column; gap: 6px; }
+.qs-row { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 16px; background: var(--panel); border: 1px solid var(--line); }
+.qs-row:active { background: var(--panel-2); }
+.qs-n { width: 40px; height: 40px; flex: none; display: grid; place-items: center; position: relative; color: var(--gold-2); font-size: 13px; }
+.qs-n::before { content: ""; position: absolute; inset: 4px; border: 1.5px solid rgba(var(--acc), .5); border-radius: 8px; transform: rotate(45deg); }
+.qs-n::after { content: ""; position: absolute; inset: 4px; border: 1.5px solid rgba(var(--acc), .5); border-radius: 8px; }
+.qs-n b { position: relative; z-index: 1; font-weight: 600; }
+.qs-t { flex: 1; min-width: 0; }
+.qs-t b { display: block; font-weight: 600; }
+.qs-t small { display: block; color: var(--muted); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.qs-row.bm .qs-t small { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.qs-ar { font-family: "QHafs", var(--arabic); font-size: 22px; color: var(--gold-2); flex: none; }
+.qs-meta { font-size: 12px; color: var(--muted); flex: none; }
+
+/* Reader */
+.qr-bar { position: sticky; top: -10px; z-index: 5; display: flex; align-items: center; gap: 10px; padding: 10px 0; margin: -10px 0 6px; background: linear-gradient(var(--bg) 70%, transparent); }
+.qr-t { flex: 1; min-width: 0; }
+.qr-t b { display: block; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.qr-t small { color: var(--muted); font-size: 12px; }
+.qr-head { text-align: center; padding: 18px 12px 16px; border-radius: 22px; margin-bottom: 12px; border: 1px solid rgba(var(--acc), .22);
+  background: radial-gradient(420px 200px at 50% 0, rgba(var(--acc), .16), transparent), linear-gradient(160deg, var(--hero-a), var(--hero-b)); }
+.qr-name { font-family: "QHafs", var(--arabic); font-size: 40px; color: var(--gold-2); line-height: 1.4; }
+.qr-head b { display: block; font-size: 18px; }
+.qr-head small { color: var(--muted); }
+.qr-bism { font-family: "QHafs", var(--arabic); font-size: 28px; margin-top: 12px; color: var(--text-ar); direction: rtl; }
+.qr-bism.ip { font-family: "QIndoPak", var(--arabic); }
+.qjuz { text-align: center; margin: 14px 0 8px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 10px; }
+.qjuz::before, .qjuz::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(var(--acc), .4), transparent); }
+.qverses { display: flex; flex-direction: column; gap: 8px; }
+.qv { padding: 12px 14px 14px; border-radius: 18px; background: var(--panel); border: 1px solid var(--line); transition: border-color .3s, background .3s, box-shadow .3s; content-visibility: auto; contain-intrinsic-size: auto 260px; scroll-margin-top: 70px; }
+.qv.now { border-color: rgba(var(--acc), .55); background: radial-gradient(400px 160px at 100% 0, rgba(var(--acc), .1), transparent), var(--panel-2); box-shadow: 0 0 24px rgba(var(--acc), .12); }
+.qv-h { display: flex; align-items: center; gap: 8px; }
+.qv-k { font-size: 12px; color: var(--gold); background: rgba(var(--acc), .1); border: 1px solid rgba(var(--acc), .25); border-radius: 999px; padding: 1px 9px; font-variant-numeric: tabular-nums; }
+.qv-sj { font-size: 11.5px; color: var(--teal); }
+.qv-acts { margin-left: auto; display: flex; gap: 2px; }
+.qv-acts button { width: 34px; height: 34px; border: 0; background: none; color: var(--faint); display: grid; place-items: center; border-radius: 10px; }
+.qv-acts button:active { background: var(--panel-2); }
+.qv-acts button.on { color: var(--gold); }
+.qv-acts svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linejoin: round; }
+.qv .qa { margin: 6px 0 4px; }
+.qa.wbw { display: flex; flex-wrap: wrap; gap: 10px 6px; align-items: flex-start; line-height: 1.7; }
+.qa .wb { display: inline-flex; flex-direction: column; align-items: center; text-align: center; padding: 2px 6px 4px; background: rgba(var(--ink), .03); border: 1px solid var(--line); border-radius: 12px; max-width: 46%; }
+.qa .wb small { font-family: var(--font); direction: ltr; font-size: calc(var(--trs, 16px) * .78); line-height: 1.3; color: var(--muted); }
+.qa .wb em { font-family: var(--font); direction: ltr; font-size: calc(var(--trs, 16px) * .72); color: var(--teal); font-style: normal; }
+.qa .wb.hl small { color: var(--gold-2); }
+.qa.wbw .qend { align-self: center; }
+.qtl { margin: 2px 0 6px; color: var(--teal); font-size: calc(var(--trs, 16px) * .9); font-style: italic; }
+.qt { margin: 6px 0 0; font-size: var(--trs, 16px); line-height: 1.65; color: var(--text-2); }
+.qt.bn { font-family: "Hind Siliguri", var(--font); color: var(--text-2); }
+.qt.en + .qt.bn { padding-top: 6px; border-top: 1px dashed var(--line); }
+.qr-nav { display: flex; justify-content: space-between; gap: 10px; margin: 18px 0 6px; }
+.qr-nav .btn { max-width: 48%; }
+
+/* Mini player */
+body.qb-on .view { padding-bottom: calc(160px + var(--sab)); }
+.qbar { position: fixed; left: 8px; right: 8px; bottom: calc(var(--sab) + 70px); z-index: 45; display: flex; align-items: center; gap: 2px; padding: 6px 6px 6px 14px; border-radius: 18px;
+  background: linear-gradient(135deg, var(--hero-a), var(--hero-b)); border: 1px solid rgba(var(--acc), .3); box-shadow: 0 10px 30px rgba(var(--sink), calc(.45 * var(--sk))); backdrop-filter: blur(16px); animation: rise .3s var(--ease); }
+.qb-info { flex: 1; min-width: 0; position: relative; padding: 2px 0 6px; }
+.qb-info b { display: block; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.qb-info small { color: var(--teal); font-size: 11.5px; }
+.qb-info i { position: absolute; left: 0; right: 8px; bottom: 0; height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--gold) var(--p), rgba(var(--ink), .1) var(--p)); }
+.qbar button { width: 38px; height: 38px; border: 0; background: none; color: var(--text); display: grid; place-items: center; border-radius: 12px; flex: none; }
+.qbar button svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.qbar .qb-play { background: linear-gradient(135deg, var(--g1), var(--g2)); color: #1d1405; width: 42px; height: 42px; border-radius: 50%; }
+
+/* Audiobook */
+.ql-card { padding: 18px 16px; border-radius: 24px; border: 1px solid rgba(var(--acc), .28); text-align: center;
+  background: radial-gradient(500px 240px at 50% -10%, rgba(var(--acc), .18), transparent), linear-gradient(165deg, var(--hero-a), var(--hero-b)); min-height: 300px; }
+#ql-stage.fade .ql-card { animation: rise .45s var(--ease); }
+.ql-head .ar { font-family: "QHafs", var(--arabic); display: block; font-size: 26px; color: var(--gold-2); }
+.ql-head b { display: block; }
+.ql-head small { display: inline-block; margin-top: 4px; font-size: 12px; color: var(--teal); background: rgba(63,214,193,.1); border-radius: 999px; padding: 1px 10px; }
+.ql-ar { text-align: center; font-size: calc(var(--ars, 30px) * 1.08); margin: 14px 0 10px; }
+.ql-tr { font-size: 15.5px; line-height: 1.6; color: var(--text-2); margin: 10px 0 0; padding: 10px 12px; border-radius: 14px; transition: background .3s, color .3s; text-align: left; }
+.ql-tr.bn { font-family: "Hind Siliguri", var(--font); }
+.ql-tr.on { background: rgba(63,214,193,.12); color: var(--text); box-shadow: inset 3px 0 0 var(--teal); }
+.ql-read { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 13px; color: var(--muted); }
+.ql-read svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.ql-ctl { display: flex; justify-content: center; align-items: center; gap: 22px; margin: 18px 0 8px; }
+.ql-ctl button { width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line-2); background: var(--panel-2); color: var(--text); display: grid; place-items: center; }
+.ql-ctl button svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.ql-ctl .ql-play { width: 74px; height: 74px; border: 0; background: radial-gradient(circle at 35% 30%, #fff3cf, var(--g2) 60%, var(--g3)); color: #1d1405; box-shadow: 0 0 0 8px rgba(var(--acc), .12), 0 10px 30px rgba(var(--acc), .35); }
+.ql-ctl .ql-play svg { width: 30px; height: 30px; }
+.ql-prog { display: flex; align-items: center; gap: 12px; margin: 6px 4px 14px; font-size: 13px; color: var(--muted); }
+.ql-prog input { flex: 1; }
+.ql-opts { padding: 14px; }
+.ql-row { padding: 8px 0; border-top: 1px solid var(--line); }
+.ql-row:first-child { border-top: 0; padding-top: 0; }
+.ql-row > b { display: block; font-size: 13px; color: var(--muted); font-weight: 550; margin-bottom: 8px; }
+.ql-row .chips { gap: 6px; }
+.ql-row .chip { padding: 6px 11px; font-size: 13px; }
+.ql-row select { width: 100%; }
+.ql-note { font-size: 12px; margin: 10px 0 0; }
+.ql-start { display: flex; flex-direction: column; gap: 12px; }
+.ql-start label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
+
+/* Search */
+.qresults { display: flex; flex-direction: column; gap: 8px; }
+.qres { display: block; padding: 12px 14px; border-radius: 16px; background: var(--panel); border: 1px solid var(--line); }
+.qres b { color: var(--gold); font-size: 13px; }
+.qres .ar { font-family: "QHafs", var(--arabic); font-size: 22px; line-height: 1.9; text-align: right; }
+.qres p { margin: 4px 0 0; color: var(--text-2); font-size: 14px; }
+.qres mark { background: rgba(var(--acc), .3); color: #fff; border-radius: 4px; padding: 0 2px; }
+
+/* Settings */
+.qpreview { margin: 6px 0 4px; padding: 12px 14px; border-radius: 16px; background: rgba(var(--sink), calc(.18 * var(--sk))); border: 1px solid var(--line); }
+.qpreview .qt { margin-top: 4px; }
+.qsz { width: 30px; text-align: right; color: var(--muted); }
+.qdl-new { display: flex; gap: 8px; }
+.qdl-new select { flex: 1; min-width: 0; }
+.qdl-prog { display: flex; align-items: center; gap: 10px; margin: 10px 0 0; font-size: 12.5px; color: var(--muted); }
+.qdl-prog > div { flex: 1; height: 6px; border-radius: 6px; background: rgba(var(--ink), .1); overflow: hidden; }
+.qdl-prog i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--g2), var(--g1)); transition: width .3s; }
+.qdl-list { margin-top: 10px; }
+.qdl-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line); }
+.qdl-row span { flex: 1; min-width: 0; }
+.qdl-row small { color: var(--muted); }
+
+/* Sheets */
+.qsheet:not([hidden]) { position: fixed; inset: 0; z-index: 70; display: block; }
+.qsheet-bg { position: absolute; inset: 0; background: rgba(var(--sink), calc(.5 * var(--sk))); animation: fadeIn .2s; }
+.qsheet-box { position: absolute; left: 0; right: 0; bottom: 0; max-height: 82vh; overflow: auto; background: var(--surface); border-top: 1px solid var(--line-2); border-radius: 22px 22px 0 0; padding: 10px 10px calc(var(--sab) + 14px); animation: rise .3s var(--ease); }
+.qsheet-box > button { display: flex; align-items: center; gap: 14px; width: 100%; padding: 13px 12px; border: 0; background: none; border-radius: 12px; font-size: 15.5px; text-align: left; }
+.qsheet-box > button:active { background: var(--panel-2); }
+.qsheet-box > button svg { width: 21px; height: 21px; stroke: var(--gold); fill: none; stroke-width: 1.7; flex: none; }
+.qsh-t { padding: 8px 12px 6px; font-weight: 600; color: var(--gold-2); }
+.qsh-t.sm { font-size: 12px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); border-top: 1px solid var(--line); margin-top: 6px; padding-top: 12px; }
+.qtafsir { padding: 4px 12px 10px; line-height: 1.7; font-size: 15px; color: var(--text-2); }
+.qtafsir[lang="bn"] { font-family: "Hind Siliguri", var(--font); }
+.qtafsir h2, .qtafsir h3 { font-size: 16px; color: var(--gold-2); margin: 14px 0 6px; }
+.qtafsir p { margin: 0 0 10px; }
+.qword { text-align: center; padding: 10px 12px 4px; }
+.qword .qa { text-align: center; font-size: 46px; line-height: 1.8; }
+.qword em { display: block; color: var(--teal); font-style: normal; }
+.qword p { margin: 6px 0; font-size: 17px; }
+.qword p[lang="bn"] { font-family: "Hind Siliguri", var(--font); }
+.qword .btn { margin-top: 10px; }
+
+/* ---------- Hadith ---------- */
+.hd-day { display: block; margin: 4px 0 12px; background: radial-gradient(420px 180px at 100% 0, rgba(63,214,193,.14), transparent), var(--panel); }
+.hd-day p { margin: 0 0 8px; font-size: 15.5px; line-height: 1.65; color: var(--text-2); }
+.hd-day small { color: var(--gold); }
+html[lang="bn"] .hd-day p { font-family: "Hind Siliguri", var(--font); }
+.hd-last { margin-bottom: 4px; }
+.hb-row { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 18px; background: var(--panel); border: 1px solid var(--line); }
+.hb-row:active { background: var(--panel-2); }
+.hb-ar { width: 64px; flex: none; text-align: center; font-family: "Amiri", var(--arabic); font-size: 17px; line-height: 1.35; color: var(--gold-2); padding: 8px 4px; border-radius: 14px; background: rgba(var(--acc), .08); border: 1px solid rgba(var(--acc), .2); }
+.hb-t { flex: 1; min-width: 0; }
+.hb-t b { display: block; font-weight: 600; }
+.hb-t small { display: block; color: var(--muted); font-size: 12.5px; }
+.hb-st { display: inline-block; margin-top: 4px; font-size: 11.5px; color: var(--faint); }
+.hb-st.ok { color: var(--ok); }
+.hb-tick { color: var(--ok); font-size: 14px; flex: none; }
+.hb-head .qr-name { font-family: "Amiri", var(--arabic); font-size: 34px; }
+.hb-save { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 12px; }
+.hb-save .qdl-prog { width: 100%; }
+.hlist { display: flex; flex-direction: column; gap: 10px; }
+.hd { padding: 12px 14px 14px; border-radius: 18px; background: var(--panel); border: 1px solid var(--line); content-visibility: auto; contain-intrinsic-size: auto 340px; scroll-margin-top: 70px; }
+.hgs { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 2px; }
+.hg { font-size: 11.5px; padding: 2px 9px; border-radius: 999px; background: var(--panel-2); color: var(--muted); border: 1px solid var(--line); }
+.hg i { font-style: normal; opacity: .65; margin-left: 5px; }
+.hg.sahih { color: var(--ok); border-color: rgba(79,219,154,.35); background: rgba(79,219,154,.08); }
+.hg.hasan { color: var(--teal); border-color: rgba(63,214,193,.35); background: rgba(63,214,193,.08); }
+.hg.weak { color: var(--rose); border-color: rgba(255,125,142,.35); background: rgba(255,125,142,.08); }
+.hd-ar { font-family: "Amiri", var(--arabic); direction: rtl; text-align: right; font-size: var(--hars, 22px); line-height: 1.95; color: var(--text-ar); margin: 10px 0 4px; }
+.hd-tx { margin: 8px 0 0; font-size: var(--hs, 16px); line-height: 1.7; color: var(--text-2); white-space: pre-line; }
+.hd-tx.bn { font-family: "Hind Siliguri", var(--font); color: var(--text-2); }
+.hd-ar + .hd-tx, .hd-tx + .hd-tx { padding-top: 8px; border-top: 1px dashed var(--line); }
+.hpreview { margin: 6px 0 4px; padding: 12px 14px; border-radius: 16px; background: rgba(var(--sink), calc(.18 * var(--sk))); border: 1px solid var(--line); }
+.qres p.ar { font-family: "Amiri", var(--arabic); font-size: 19px; text-align: right; }
+
+/* Tajweed on light pages: the standard colours, which are made for paper. */
+[data-light] .tj-ham_wasl, [data-light] .tj-slnt, [data-light] .tj-laam_shamsiyah { color: #9a9a9a; }
+[data-light] .tj-madda_normal { color: #3f6fe8; }
+[data-light] .tj-madda_permissible { color: #3446e6; }
+[data-light] .tj-madda_obligatory_mottasel, [data-light] .tj-madda_obligatory_monfasel { color: #2144c1; }
+[data-light] .tj-madda_necessary { color: #000ebc; }
+[data-light] .tj-qalaqah { color: #dd0008; }
+[data-light] .tj-ikhafa_shafawi { color: #d500b7; }
+[data-light] .tj-ikhafa { color: #9400a8; }
+[data-light] .tj-idgham_shafawi { color: #4f9e00; }
+[data-light] .tj-iqlab { color: #0f9fd8; }
+[data-light] .tj-idgham_ghunnah { color: #169777; }
+[data-light] .tj-idgham_wo_ghunnah { color: #169200; }
+[data-light] .tj-idgham_mutajanisayn, [data-light] .tj-idgham_mutaqaribayn { color: #8f8f8f; }
+[data-light] .tj-ghunnah { color: #e86a00; }
+[data-light] .qa .w.hl { background: rgba(var(--acc), .25); color: var(--gold-deep); }

@@ -2,10 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Waqt</title>
 <link rel="icon" href="/logo.png">
 <link rel="stylesheet" href="/app.css">
+<script>
+  // The saved theme before the first paint, so the page never flashes dark.
+  // (Wrapped: app.js owns the global names, `t` among them.)
+  (function () {
+    try {
+      var name = localStorage.getItem('waqt-theme') || 'auto';
+      if (name === 'auto') name = matchMedia('(prefers-color-scheme: light)').matches ? 'day' : 'night';
+      document.documentElement.dataset.theme = name;
+      if (name === 'day' || name === 'sepia' || name === 'rawdah') document.documentElement.setAttribute('data-light', '');
+    } catch (e) { /* storage unavailable */ }
+  })();
+</script>
 </head>
 <body>
 <div class="pattern-bg" aria-hidden="true"></div>
@@ -22,7 +34,10 @@
     <header class="top" id="top"></header>
     <div class="scroll" id="scroll"><div id="view" class="view"></div></div>
   </main>
+  <!-- Bottom tab bar on phones (the rail is hidden there). -->
+  <nav class="tabbar" id="tabbar"></nav>
 </div>
+<div class="sheet" id="sheet" hidden></div>
 
 <!-- Compact always-on-top widget (desktop mini mode). -->
 <div class="mini" id="mini" hidden></div>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ওয়াক্ত</string>
+    <string name="next_prayer">পরবর্তী নামাজ</string>
+    <string name="widget_description">পরবর্তী নামাজের কাউন্টডাউন ও আজকের সময়</string>
+    <string name="ch_adhan">আজান</string>
+    <string name="ch_adhan_desc">নামাজের সময়ে আজান</string>
+    <string name="ch_reminders">রিমাইন্ডার</string>
+    <string name="ch_reminders_desc">নামাজের আগে, সাহরি, জুমা, মসজিদে রওনা</string>
+    <string name="ch_quiet">নীরব নোটিফিকেশন</string>
+    <string name="ch_quiet_desc">শব্দ ছাড়া নামাজের সময়ের নোটিফিকেশন</string>
+    <string name="ch_fajr">ফজরের জাগানোর অ্যালার্ম</string>
+    <string name="ch_fajr_desc">ফজরের জন্য না ওঠা পর্যন্ত বাজতে থাকবে</string>
+    <string name="stop_adhan">আজান থামান</string>
+    <string name="im_up">উঠেছি</string>
+</resources>

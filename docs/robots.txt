@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://coderasraf.github.io/Waqt/sitemap.xml

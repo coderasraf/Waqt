@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Settings and the prayer tracker move to a new phone; caches and sounds don't. -->
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="file" path="config.json" />
+        <include domain="file" path="state.json" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="file" path="config.json" />
+        <include domain="file" path="state.json" />
+        <include domain="file" path="sounds" />
+    </device-transfer>
+</data-extraction-rules>

@@ -70,4 +70,16 @@ class CoreTest {
         val full = LocalDate.of(2026, 10, 26).atTime(4, 0).toInstant(ZoneOffset.UTC).toEpochMilli()
         assertTrue(Astro.moonPhase(full).illumination > 0.97)
     }
+
+    @Test fun announcedMonthStartsWin() {
+        // The model predicts 19 Apr 2026 for Dhul Qadah 1447; Bangladesh's
+        // committee announced 20 Apr (moon not sighted).
+        val plain = Hijri.Cal("sighting", 0, 23.8103, 90.4125)
+        assertEquals(HijriDate(1447, 11, 1), plain.fromGregorian(LocalDate.of(2026, 4, 19)))
+        val ann = Hijri.parseOverrides(org.json.JSONObject("""{"months": {"1447-11": "2026-04-20"}}"""))
+        val c = Hijri.Cal("sighting", 0, 23.8103, 90.4125, ann)
+        assertEquals(HijriDate(1447, 10, 30), c.fromGregorian(LocalDate.of(2026, 4, 19)))
+        assertEquals(HijriDate(1447, 11, 1), c.fromGregorian(LocalDate.of(2026, 4, 20)))
+        assertEquals(LocalDate.of(2026, 4, 20), c.toGregorian(HijriDate(1447, 11, 1)))
+    }
 }

@@ -31,7 +31,12 @@ object Schedule {
         return if (tz.isEmpty()) ZoneId.systemDefault() else runCatching { ZoneId.of(tz) }.getOrDefault(ZoneId.systemDefault())
     }
 
-    fun calendar(cfg: Config) = Hijri.Cal(cfg.calc.optString("hijri_rule", "sighting"), cfg.calc.optInt("hijri_offset"), cfg.lat, cfg.lng)
+    fun calendar(cfg: Config): Hijri.Cal {
+        val rule = cfg.calc.optString("hijri_rule", "sighting")
+        // Bangladesh's announced month starts apply to its own sighting calendar.
+        val bd = rule == "sighting" && cfg.location.optString("country_code").equals("BD", true)
+        return Hijri.Cal(rule, cfg.calc.optInt("hijri_offset"), cfg.lat, cfg.lng, if (bd) Hijri.bangladesh else emptyMap())
+    }
 
     fun localDate(cfg: Config, nowMs: Long): LocalDate = Instant.ofEpochMilli(nowMs).atZone(zone(cfg)).toLocalDate()
 

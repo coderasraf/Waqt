@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Waqt countdown</title>
+<style>
+  @font-face { font-family: "Outfit"; src: url(/fonts/Outfit-Variable.ttf) format("truetype"); font-weight: 100 900; }
+  @font-face { font-family: "Amiri"; src: url(/fonts/Amiri-Regular.ttf) format("truetype"); }
+  @font-face { font-family: "Hind Siliguri"; src: url(/fonts/HindSiliguri-SemiBold.ttf) format("truetype"); font-weight: 600; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; user-select: none; }
+  body { font-family: "Outfit", "Hind Siliguri", "Segoe UI", sans-serif; color: #fff; padding: 6px; }
+  html[lang="bn"] body { font-family: "Hind Siliguri", "Outfit", "Segoe UI", sans-serif; }
+  /* The pill: dark glass tinted by the time of day, with a gold rim. */
+  .pill { position: relative; height: 100%; display: flex; align-items: center; gap: 12px; padding: 0 14px 0 10px; border-radius: 999px; cursor: grab;
+    background: linear-gradient(120deg, var(--a, #0b1d3a) 0%, var(--b, #132a55) 100%);
+    box-shadow: 0 0 0 1px rgba(243,198,107,.35), 0 6px 18px rgba(0,0,0,.45); transition: box-shadow .4s; }
+  .pill::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(180deg, rgba(255,255,255,.12), transparent 55%); pointer-events: none; }
+  .ico { width: 42px; height: 42px; flex: none; border-radius: 50%; display: grid; place-items: center; background: rgba(0,0,0,.25); color: #ffe2a0; }
+  .ico svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .txt { flex: 1; min-width: 0; line-height: 1.15; }
+  .name { font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 6px rgba(0,0,0,.4); }
+  .name .ar { font-family: "Amiri", serif; color: #ffe2a0; font-size: 17px; margin-left: 4px; }
+  .sub { font-size: 11.5px; color: rgba(255,255,255,.72); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .count { font-size: 26px; font-weight: 300; font-variant-numeric: tabular-nums; letter-spacing: .5px; text-shadow: 0 1px 8px rgba(0,0,0,.4); }
+  .tools { position: absolute; top: -2px; right: 10px; display: flex; gap: 4px; opacity: 0; transition: opacity .2s; }
+  .pill:hover .tools { opacity: 1; }
+  .tools button, .stop { border: 0; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,.55); color: #fff; font-size: 12px; line-height: 22px; padding: 0; cursor: pointer; }
+  .tools button:hover { background: rgba(0,0,0,.8); }
+  /* The last ten minutes before a prayer: a slow gold pulse. */
+  .pill.soon { animation: soon 2.4s ease-in-out infinite; }
+  .pill.soon .count { color: #ffe2a0; }
+  @keyframes soon { 50% { box-shadow: 0 0 0 2px rgba(243,198,107,.9), 0 0 26px rgba(243,198,107,.7), 0 6px 18px rgba(0,0,0,.45); } }
+  /* During the adhan. */
+  .pill.adhan { animation: adhan 1.6s ease-in-out infinite; }
+  @keyframes adhan { 50% { box-shadow: 0 0 0 2px #ffe2a0, 0 0 34px rgba(255,214,140,.9), 0 6px 18px rgba(0,0,0,.45); } }
+  .stop { width: auto; height: 30px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 600; background: linear-gradient(135deg, #ffe2a0, #f3c66b); color: #1d1405; }
+  .eq { display: inline-flex; gap: 2px; align-items: flex-end; height: 12px; margin-right: 6px; }
+  .eq i { width: 3px; background: #ffe2a0; border-radius: 2px; animation: eq 1s ease-in-out infinite; }
+  .eq i:nth-child(2) { animation-delay: .2s; } .eq i:nth-child(3) { animation-delay: .4s; }
+  @keyframes eq { 0%, 100% { height: 3px; } 50% { height: 12px; } }
+</style>
+</head>
+<body>
+<div class="pill" id="pill">
+  <div class="ico" id="ico"></div>
+  <div class="txt"><div class="name" id="name"></div><div class="sub" id="sub"></div></div>
+  <div id="right"><div class="count" id="count"></div></div>
+  <div class="tools"><button id="open" title="Open Waqt">⤢</button><button id="hide" title="Hide countdown">×</button></div>
+</div>
+<script>
+'use strict';
+// The desktop countdown: a separate always-on-top window that stays when
+// Waqt's main window is closed. It reads the same local API.
+const $ = (s) => document.querySelector(s);
+const send = (m) => { try { window.ipc.postMessage(m); } catch { /* not in the desktop app */ } };
+const api = async (p, opts) => (await fetch(p, opts)).json();
+
+const ICONS = {
+  fajr: '<path d="M3 18h18"/><path d="M7 18a5 5 0 0 1 10 0"/><path d="M12 7v3M6.2 10.2l1.6 1.6M17.8 10.2l-1.6 1.6"/>',
+  dhuhr: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  asr: '<circle cx="15" cy="8" r="3.5"/><path d="M3 20h18"/><path d="M6 20V12M6 20l9-3"/>',
+  maghrib: '<path d="M3 17h18"/><path d="M7 17a5 5 0 0 1 10 0"/><path d="m9 6 3 3 3-3M12 9V2"/>',
+  isha: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+};
+const NAMES = {
+  en: { fajr: 'Fajr', dhuhr: 'Dhuhr', jumuah: "Jumu'ah", asr: 'Asr', maghrib: 'Maghrib', isha: 'Isha', at: 'at', adhan: 'Adhan', stop: 'Stop' },
+  bn: { fajr: 'ফজর', dhuhr: 'যোহর', jumuah: 'জুমা', asr: 'আসর', maghrib: 'মাগরিব', isha: 'এশা', at: '', adhan: 'আজান', stop: 'থামান' },
+};
+const AR = { fajr: 'الفجر', dhuhr: 'الظهر', jumuah: 'الجمعة', asr: 'العصر', maghrib: 'المغرب', isha: 'العشاء' };
+// Sky tints by prayer, matching the main window's palette.
+const TINT = { fajr: ['#1d2a63', '#6a5aa0'], dhuhr: ['#2f7fd6', '#3a78c8'], asr: ['#3c5aa8', '#a0507a'], maghrib: ['#2b2f6e', '#b0567a'], isha: ['#060c22', '#1d2a5a'] };
+
+const S = { cfg: null, day: null, live: null };
+const L = () => (S.cfg?.language === 'bn' ? 'bn' : 'en');
+const N = (s) => (L() === 'bn' && S.cfg?.bangla_digits !== false ? String(s).replace(/\d/g, (d) => '০১২৩৪৫৬৭৮৯'[d]) : String(s));
+
+function fmtTime(ms, off) {
+  const mins = (((Math.floor(ms / 60000) + off) % 1440) + 1440) % 1440;
+  const h = Math.floor(mins / 60), m = String(mins % 60).padStart(2, '0');
+  if (S.cfg?.clock === 24) return N(`${String(h).padStart(2, '0')}:${m}`);
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  if (L() === 'bn') {
+    const part = h < 4 ? 'রাত' : h < 6 ? 'ভোর' : h < 12 ? 'সকাল' : h < 15 ? 'দুপুর' : h < 18 ? 'বিকাল' : h < 20 ? 'সন্ধ্যা' : 'রাত';
+    return `${part} ${N(`${h12}:${m}`)}`;
+  }
+  return `${h12}:${m} ${h < 12 ? 'AM' : 'PM'}`;
+}
+const isFriday = (ms) => new Date(ms + S.day.today.tz_offset * 60000).getUTCDay() === 5;
+
+async function load() {
+  try {
+    const s = await api('/api/settings');
+    S.cfg = s.config;
+    document.documentElement.lang = L();
+    S.day = await api('/api/today');
+  } catch { /* the server is starting */ }
+}
+
+async function live() {
+  try { S.live = await api('/api/live'); } catch { /* ignore */ }
+}
+
+function draw() {
+  if (!S.day) return;
+  const n = S.day.next, now = Date.now();
+  const key = n.key === 'dhuhr' && isFriday(n.at) ? 'jumuah' : n.key;
+  const W = NAMES[L()];
+  const playing = S.live?.playing && S.live.playing.label !== 'test' && S.live.playing.label !== 'reminder';
+  const pill = $('#pill');
+  const [a, b] = TINT[n.key] || TINT.isha;
+  pill.style.setProperty('--a', a);
+  pill.style.setProperty('--b', b);
+  pill.classList.toggle('adhan', !!playing);
+  pill.classList.toggle('soon', !playing && n.at - now < 10 * 60000);
+  if (playing) {
+    const p = S.live.playing.label;
+    const pk = p === 'dhuhr' && isFriday(now) ? 'jumuah' : p;
+    $('#ico').innerHTML = `<svg viewBox="0 0 24 24">${ICONS[p] || ICONS.isha}</svg>`;
+    $('#name').innerHTML = `<span class="eq"><i></i><i></i><i></i></span>${W.adhan} · ${W[pk] || ''}<span class="ar">${AR[pk] || ''}</span>`;
+    $('#sub').textContent = fmtTime(now, S.day.today.tz_offset);
+    if (!$('#right .stop')) $('#right').innerHTML = `<button class="stop" id="stop">■ ${W.stop}</button>`;
+    return;
+  }
+  if (!$('#count')) $('#right').innerHTML = '<div class="count" id="count"></div>';
+  $('#ico').innerHTML = `<svg viewBox="0 0 24 24">${ICONS[n.key] || ICONS.isha}</svg>`;
+  $('#name').innerHTML = `${W[key]}<span class="ar">${AR[key]}</span>`;
+  const h = S.day.hijri_now;
+  $('#sub').textContent = `${W.at} ${fmtTime(n.at, S.day.today.tz_offset)} · ${N(h.d)} ${L() === 'bn' ? h.month_bn : h.month_en}`.trim();
+  const s = Math.max(0, Math.floor((n.at - now) / 1000));
+  const hh = Math.floor(s / 3600), mm = String(Math.floor((s % 3600) / 60)).padStart(2, '0'), ss = String(s % 60).padStart(2, '0');
+  $('#count').textContent = N(hh ? `${hh}:${mm}:${ss}` : `${mm}:${ss}`);
+}
+
+// Drag from anywhere on the pill; double-click opens Waqt.
+$('#pill').addEventListener('mousedown', (e) => { if (e.button === 0 && !e.target.closest('button')) send('drag'); });
+$('#pill').addEventListener('dblclick', () => send('open'));
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+document.addEventListener('click', async (e) => {
+  if (e.target.closest('#open')) send('open');
+  else if (e.target.closest('#hide')) send('overlay:hide');
+  else if (e.target.closest('#stop')) { await fetch('/api/stop', { method: 'POST' }); await live(); draw(); }
+});
+window.reloadOverlay = async () => { await load(); draw(); };
+
+(async () => {
+  await load(); await live(); draw();
+  setInterval(async () => {
+    // A prayer began or the day turned: fetch the next one.
+    if (S.day && Date.now() >= S.day.next.at) await load();
+    draw();
+  }, 1000);
+  setInterval(async () => { await live(); draw(); }, 2000);
+  setInterval(load, 5 * 60000);
+})();
+</script>
+</body>
+</html>

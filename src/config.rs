@@ -28,6 +28,8 @@ pub struct Config {
     pub adhan: Adhan,
     pub alerts: Alerts,
     pub startup: Startup,
+    /// The floating countdown on the desktop.
+    pub overlay: Overlay,
 }
 
 impl Default for Config {
@@ -42,6 +44,7 @@ impl Default for Config {
             adhan: Adhan::default(),
             alerts: Alerts::default(),
             startup: Startup::default(),
+            overlay: Overlay::default(),
         }
     }
 }
@@ -254,6 +257,22 @@ pub struct Startup {
 impl Default for Startup {
     fn default() -> Self {
         Startup { autostart: true, close_to_tray: true }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct Overlay {
+    /// Show the next-prayer countdown on the desktop, even with Waqt's
+    /// window closed.
+    pub enabled: bool,
+    /// Clicks pass through it, so it never gets in the way.
+    pub locked: bool,
+}
+
+impl Default for Overlay {
+    fn default() -> Self {
+        Overlay { enabled: true, locked: false }
     }
 }
 

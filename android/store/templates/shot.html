@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Outfit"; src: url(../../../src/ui/fonts/Outfit-Variable.ttf); font-weight: 100 900; }
+  @font-face { font-family: "Hind Siliguri"; src: url(../../../src/ui/fonts/HindSiliguri-SemiBold.ttf); font-weight: 600; }
+  @font-face { font-family: "Hind Siliguri"; src: url(../../../src/ui/fonts/HindSiliguri-Regular.ttf); font-weight: 400; }
+  @font-face { font-family: "Amiri"; src: url(../../../src/ui/fonts/Amiri-Regular.ttf); }
+  html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; }
+  body {
+    font-family: "Outfit", "Hind Siliguri", sans-serif; color: #eef2fb; position: relative;
+    background: radial-gradient(900px 600px at 50% 8%, rgba(243,198,107,.28), transparent 70%),
+                radial-gradient(800px 700px at 100% 100%, rgba(14,77,92,.65), transparent 70%),
+                linear-gradient(180deg, #0b1d3a 0%, #060c1b 100%);
+  }
+  body.bn { font-family: "Hind Siliguri", "Outfit", sans-serif; }
+  .pattern { position: absolute; inset: 0; opacity: .07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23f3c66b' stroke-width='1.2'%3E%3Cpath d='M60 18 72 48 102 60 72 72 60 102 48 72 18 60 48 48Z'/%3E%3Cpath d='M30 30h60v60H30z' transform='rotate(45 60 60)'/%3E%3Cpath d='M30 30h60v60H30z'/%3E%3Ccircle cx='60' cy='60' r='9'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 160px 160px; }
+  .cap { position: absolute; top: 110px; left: 70px; right: 70px; text-align: center; }
+  .cap h1 { margin: 0; font-size: 76px; font-weight: 700; line-height: 1.12; letter-spacing: -1px; }
+  body.bn .cap h1 { font-size: 78px; font-weight: 600; letter-spacing: 0; line-height: 1.25; }
+  .cap h1 em { font-style: normal; color: #f3c66b; }
+  .cap p { margin: 22px auto 0; font-size: 36px; color: #b9c4de; line-height: 1.4; max-width: 900px; }
+  .phone { position: absolute; left: 50%; top: 480px; width: 640px; height: 1422px; transform: translateX(-50%);
+    border-radius: 64px; padding: 14px; background: linear-gradient(160deg, #2a3656, #121a30);
+    box-shadow: 0 60px 120px rgba(0,0,0,.6), 0 0 0 2px rgba(255,255,255,.08), 0 0 80px rgba(243,198,107,.18); }
+  .phone img { width: 100%; height: 100%; border-radius: 52px; object-fit: cover; object-position: top; display: block; }
+</style>
+</head>
+<body>
+<div class="pattern"></div>
+<div class="cap"><h1 id="t"></h1><p id="s"></p></div>
+<div class="phone"><img id="img" alt=""></div>
+<script>
+  const q = new URLSearchParams(location.search);
+  document.body.className = q.get('lang') || 'en';
+  document.getElementById('t').innerHTML = q.get('t');
+  document.getElementById('s').textContent = q.get('s');
+  document.getElementById('img').src = q.get('img');
+</script>
+</body>
+</html>

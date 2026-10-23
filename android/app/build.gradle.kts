@@ -16,6 +16,8 @@ val keystore = Properties().apply {
 /// and the adhan recordings into the APK's assets, so desktop and phone
 /// never drift apart.
 abstract class SyncSharedAssets : DefaultTask() {
+    private val bundled = listOf("makkah", "madinah", "mishary", "makkah-fajr", "short")
+
     @get:InputDirectory abstract val ui: DirectoryProperty
     @get:InputDirectory abstract val adhan: DirectoryProperty
     @get:InputFile abstract val logo: RegularFileProperty
@@ -27,7 +29,8 @@ abstract class SyncSharedAssets : DefaultTask() {
         fs.sync {
             from(ui) { into("web") }
             from(logo) { into("web"); rename { "logo.png" } }
-            from(adhan) { into("adhan") }
+            // Five voices ship in the app; the rest download on demand.
+            from(adhan) { into("adhan"); include(bundled.map { "$it.mp3" }) }
             into(output)
         }
     }
@@ -48,8 +51,8 @@ android {
         applicationId = "com.coderashraf.waqt"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 7
+        versionName = "1.6.0"
     }
 
     signingConfigs {
@@ -70,6 +73,10 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             if (keystore.isNotEmpty()) signingConfig = signingConfigs.getByName("release")
         }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     compileOptions {
@@ -98,6 +105,8 @@ dependencies {
     implementation("androidx.core:core-ktx:1.19.1")
     implementation("androidx.activity:activity-ktx:1.13.0")
     implementation("androidx.webkit:webkit:1.18.0")
+    implementation("androidx.media3:media3-exoplayer:1.11.1")
+    implementation("androidx.media3:media3-session:1.11.1")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.json:json:20260814")
 }

@@ -27,6 +27,25 @@ object Hijri {
 
     private fun dsin(d: Double) = sin(Math.toRadians(d))
 
+    /**
+     * Month starts announced by Bangladesh's National Moon Sighting
+     * Committee (month index year*12+month-1 → first day), published in
+     * the app's hijri.json. They replace the prediction for those months
+     * when the user's calendar follows Bangladesh's sighting.
+     */
+    @Volatile var bangladesh: Map<Long, LocalDate> = emptyMap()
+
+    /** Parses hijri.json's "months": {"1448-05": "2026-10-13", ...}. */
+    fun parseOverrides(json: org.json.JSONObject): Map<Long, LocalDate> {
+        val months = json.optJSONObject("months") ?: return emptyMap()
+        val out = HashMap<Long, LocalDate>()
+        for (k in months.keys()) {
+            val (y, m) = k.split("-").map { it.toLong() }
+            runCatching { out[y * 12 + m - 1] = LocalDate.parse(months.getString(k)) }
+        }
+        return out
+    }
+
     /** Julian Ephemeris Day of new moon number k (k = 0 is 6 Jan 2000). */
     fun newMoonJde(kk: Long): Double {
         val k = kk.toDouble()
@@ -114,10 +133,11 @@ object Hijri {
     }
 
     /** A calendar: rule ("sighting", "umm_al_qura", "arithmetic"), day offset, place. */
-    class Cal(val rule: String, val offset: Int, val lat: Double, val lng: Double) {
+    class Cal(val rule: String, val offset: Int, val lat: Double, val lng: Double, private val announced: Map<Long, LocalDate> = emptyMap()) {
         private val starts = HashMap<Long, LocalDate>()
 
         private fun monthStart(k: Long): LocalDate = starts.getOrPut(k) {
+            announced[k + K0_MONTH]?.let { return@getOrPut it }
             val conj = newMoonMs(k)
             if (rule == "umm_al_qura") {
                 val d = msToDate(conj + 3 * 3_600_000L)

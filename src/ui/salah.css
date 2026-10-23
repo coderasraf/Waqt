@@ -1,0 +1,115 @@
+/* Waqt Salah guide (phones). */
+
+/* The figure: limbs morph between postures. */
+.sg-fig { width: 100%; height: 100%; overflow: visible; }
+.sg-fig path, .sg-fig circle { transition: d .7s cubic-bezier(.34, 1.2, .64, 1), cx .7s cubic-bezier(.34, 1.2, .64, 1), cy .7s cubic-bezier(.34, 1.2, .64, 1), r .7s, opacity .5s; }
+.sg-near { fill: none; stroke: var(--text); stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; }
+.sg-near.thin { stroke-width: 5; }
+.sg-far { fill: none; stroke: rgba(var(--ink), .32); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+.sg-head { fill: var(--text); }
+.sg-mat { fill: var(--g2); opacity: .9; }
+.sg-cue { opacity: 0; }
+.sg-fig[data-pose="niyyah"] .sg-cue.niyyah, .sg-fig[data-pose="salam"] .sg-cue.salam { opacity: 1; }
+
+/* Home */
+.sg-hero { display: grid; grid-template-columns: 42% 1fr; align-items: center; gap: 6px; margin-top: 10px; padding: 14px 16px 14px 8px; border-radius: 24px; color: var(--text);
+  border: 1px solid rgba(var(--acc), .35); background: radial-gradient(320px 180px at 20% 30%, rgba(var(--acc), .2), transparent), linear-gradient(160deg, var(--hero-a), var(--hero-b)); }
+.sg-hero-art { aspect-ratio: 1; }
+.sg-hero-t { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+.sg-hero-t small { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--gold); font-weight: 650; }
+.sg-hero-t b { font-size: 22px; font-weight: 700; letter-spacing: -.3px; line-height: 1.15; }
+.sg-hero-t span:not(.btn) { color: var(--muted); font-size: 13px; line-height: 1.4; }
+.sg-hero-t .btn { margin-top: 10px; }
+.sg-progress { display: flex; align-items: center; gap: 12px; margin: 14px 4px 0; }
+.sg-progress .hx-prog { flex: 1; }
+.sg-progress small { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+.sg-tick { color: var(--ok); display: grid; }
+.sg-tick svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Focus mode: the guided flows take the whole screen. */
+body.focus .tabbar, body.focus .top, body.focus #qbar { display: none !important; }
+body.focus .view { padding-top: calc(var(--sat) + 4px); padding-bottom: calc(var(--sab) + 110px); }
+.sg-flow { max-width: 620px; margin: 0 auto; }
+.sg-bar { display: grid; grid-template-columns: 40px 1fr 60px; align-items: center; gap: 8px; padding: 6px 0 10px; }
+.sg-bar b { text-align: center; font-size: 16px; }
+.sg-bar span { text-align: right; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.sg-close { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: rgba(var(--ink), .08); color: var(--text); }
+.sg-close svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; }
+.sg-seg { display: flex; gap: 4px; margin-bottom: 14px; }
+.sg-seg i { flex: 1; height: 4px; border-radius: 4px; background: rgba(var(--ink), .12); transition: background .4s; }
+.sg-seg i.done { background: rgba(var(--acc), .55); }
+.sg-seg i.on { background: var(--g2); }
+.sg-stage { height: min(270px, 34vh); border-radius: 26px; border: 1px solid var(--line); overflow: hidden; display: grid; place-items: center; padding: 6px;
+  background: radial-gradient(260px 200px at 50% 40%, rgba(var(--acc), .16), transparent), linear-gradient(170deg, var(--panel-2), var(--panel)); }
+.sg-stage .sg-fig { width: auto; height: 100%; }
+.sg-body { margin-top: 18px; }
+.sg-step.fwd { animation: sgIn .45s var(--ease); }
+.sg-step.bwd { animation: sgInB .45s var(--ease); }
+@keyframes sgIn { from { opacity: 0; transform: translateX(24px); } }
+@keyframes sgInB { from { opacity: 0; transform: translateX(-24px); } }
+.sg-term { font-family: var(--arabic); color: var(--gold-2); font-size: 22px; line-height: 1.4; }
+.sg-step h2 { font-size: 26px; font-weight: 700; letter-spacing: -.4px; margin: 2px 0 6px; }
+.sg-step > p { margin: 0 0 14px; font-size: 16px; line-height: 1.6; color: var(--text-2, var(--text)); }
+html[lang="bn"] .sg-step > p { font-family: "Hind Siliguri", var(--font); }
+.sg-nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: 1fr 1.6fr; gap: 10px; padding: 12px 16px calc(var(--sab) + 12px);
+  background: linear-gradient(transparent, var(--bg) 30%); }
+.sg-nav .btn { height: 52px; font-size: 16px; border-radius: 16px; }
+.sg-end { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 18px 0 4px; color: var(--gold); font-weight: 600; }
+.sg-end svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+
+/* Wudu, ghusl and tayammum art. */
+#sg-art { height: 100%; aspect-ratio: 1; }
+#sg-art.in { animation: sgPop .5s var(--spring); }
+@keyframes sgPop { from { opacity: 0; transform: scale(.9); } }
+.sg-art { width: 100%; height: 100%; }
+.sg-art-bg { fill: rgba(var(--acc), .1); stroke: rgba(var(--acc), .3); stroke-width: 1.5; }
+.sg-art-part > * { fill: rgba(var(--ink), .1); stroke: var(--text); stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+.sg-art-part .ln { fill: none; }
+.sg-art-part .dot { fill: var(--text); stroke: none; }
+.sg-drops path { fill: #5ab0ff; opacity: 0; animation: sgDrop 2.4s ease-in infinite; }
+@keyframes sgDrop { 0% { opacity: 0; transform: translateY(-8px); } 30% { opacity: .9; } 100% { opacity: 0; transform: translateY(16px); } }
+.sg-n { font-size: 22px; font-weight: 700; fill: var(--gold); }
+
+/* Recitation cards. */
+.sg-rec { position: relative; padding: 16px; margin: 10px 0; border-radius: 20px; border: 1px solid var(--line); background: var(--panel); }
+.sg-x { position: absolute; top: 12px; left: 12px; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; background: linear-gradient(135deg, var(--g1), var(--g2)); color: #1d1405; }
+.sg-ar { font-family: var(--arabic); font-size: 26px; line-height: 2; text-align: right; color: var(--text-ar, var(--text)); }
+.sg-ar.quran { font-family: "QHafs", var(--arabic); font-size: 25px; }
+.sg-ar .qend { color: var(--gold); font-size: .85em; }
+.sg-tr { margin-top: 6px; color: var(--teal); font-style: italic; font-size: 14.5px; line-height: 1.55; }
+.sg-mean { margin-top: 8px; font-size: 15px; line-height: 1.6; color: var(--text-2, var(--text)); }
+html[lang="bn"] .sg-mean { font-family: "Hind Siliguri", var(--font); }
+.sg-src { margin-top: 8px; font-size: 12px; color: var(--faint); }
+.sg-rec-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
+.sg-rec-h b { font-size: 16px; }
+.sg-play { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-radius: 999px; border: 0; font-weight: 600; font-size: 13.5px;
+  background: linear-gradient(135deg, var(--g1), var(--g2)); color: #1d1405; }
+.sg-play svg { width: 14px; height: 14px; fill: currentColor; }
+.sg-play.on { box-shadow: 0 0 0 3px rgba(var(--acc), .3); }
+.sg-list { display: flex; flex-direction: column; }
+
+/* Reference pages. */
+.sg-badge { margin: 12px 0 4px; }
+.sg-para { font-size: 16px; line-height: 1.65; margin: 14px 2px; color: var(--text-2, var(--text)); }
+html[lang="bn"] .sg-para { font-family: "Hind Siliguri", var(--font); }
+.sg-para.quote { padding: 14px 16px; border-radius: 18px; background: rgba(var(--acc), .08); border-left: 3px solid var(--gold); font-style: italic; }
+.sg-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); flex: none; margin: 0 4px; }
+.sg-num { width: 28px; height: 28px; border-radius: 50%; flex: none; display: grid; place-items: center; font-size: 13px; font-weight: 700; background: rgba(var(--acc), .16); color: var(--gold); }
+.p-group .p-row .p-lab b { font-weight: 500; }
+.sg-rks { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.sg-rk { padding: 14px; border-radius: 20px; border: 1px solid var(--line); background: var(--panel); }
+.sg-rk-h { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.sg-rk-h svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sg-rk-h b { font-size: 17px; }
+.sg-rk-h .ar { color: var(--gold-2); font-size: 17px; }
+.sg-rk-n { margin-left: auto; font-size: 12.5px; color: var(--muted); }
+.sg-pills { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.sg-pills > i { color: var(--faint); font-style: normal; font-size: 12px; }
+.sg-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 5px; border-radius: 999px; font-size: 12.5px; font-weight: 550; white-space: nowrap; }
+.sg-pill b { display: grid; place-items: center; min-width: 22px; height: 22px; border-radius: 50%; font-size: 12.5px; color: #fff; }
+.sg-pill.k-fard { background: rgba(var(--acc), .16); color: var(--gold); } .sg-pill.k-fard b { background: var(--g3); }
+.sg-pill.k-wajib { background: rgba(229,72,77,.14); color: var(--rose); } .sg-pill.k-wajib b { background: #e5484d; }
+.sg-pill.k-sunnah { background: rgba(63,214,193,.14); color: var(--teal); } .sg-pill.k-sunnah b { background: #12a594; }
+.sg-pill.k-sunnah_g { background: rgba(111,182,255,.14); color: var(--sky); } .sg-pill.k-sunnah_g b { background: #0091ff; }
+.sg-pill.k-nafl { background: rgba(var(--ink), .08); color: var(--muted); } .sg-pill.k-nafl b { background: #6b7690; }
+.p-row > .sg-pill { padding: 4px 10px; flex: none; }

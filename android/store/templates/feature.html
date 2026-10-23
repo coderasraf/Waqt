@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Outfit"; src: url(../../../src/ui/fonts/Outfit-Variable.ttf); font-weight: 100 900; }
+  @font-face { font-family: "Hind Siliguri"; src: url(../../../src/ui/fonts/HindSiliguri-SemiBold.ttf); font-weight: 600; }
+  @font-face { font-family: "Amiri"; src: url(../../../src/ui/fonts/Amiri-Bold.ttf); }
+  html, body { margin: 0; width: 1024px; height: 500px; overflow: hidden; }
+  body { position: relative; font-family: "Outfit", sans-serif; color: #fff;
+    background: linear-gradient(180deg, #2b2f6e 0%, #b0567a 58%, #ff8a5c 100%); }
+  .glow { position: absolute; left: 640px; top: 210px; width: 360px; height: 360px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,214,140,.95) 0, rgba(255,170,100,.55) 18%, rgba(255,140,90,0) 60%); }
+  .sun { position: absolute; left: 790px; top: 345px; width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #fffbe8, #ffb05a); }
+  svg.sky { position: absolute; left: 0; bottom: 0; width: 1024px; height: 230px; }
+  .stars i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff; opacity: .8; }
+  .left { position: absolute; left: 64px; top: 70px; }
+  .brand { display: flex; align-items: center; gap: 22px; }
+  .brand img { width: 112px; height: 112px; border-radius: 28px; box-shadow: 0 16px 40px rgba(0,0,0,.35); }
+  .brand b { font-size: 92px; font-weight: 700; letter-spacing: -2px; line-height: 1; }
+  .brand .ar { font-family: "Amiri"; font-size: 54px; color: #ffe2a0; margin-left: 6px; }
+  .tag { margin-top: 26px; font-size: 38px; font-weight: 600; }
+  .tag2 { margin-top: 8px; font-family: "Hind Siliguri"; font-size: 34px; color: #ffe2a0; }
+</style>
+</head>
+<body>
+<div class="stars"><i style="left:120px;top:40px"></i><i style="left:430px;top:28px"></i><i style="left:700px;top:60px"></i><i style="left:900px;top:30px"></i><i style="left:560px;top:110px;opacity:.5"></i><i style="left:980px;top:140px;opacity:.5"></i></div>
+<div class="glow"></div><div class="sun"></div>
+<svg class="sky" viewBox="0 0 1024 230" preserveAspectRatio="none">
+  <path fill="#0b1430" d="M0 230V178h40v-22h46v36h30v-48h52v40h28v-26h40v40h24v-60h12l6-24 6 24h12v60h20v-34h20a40 40 0 0 1 80 0h20v-20h30v38h22v-50h44v46h30v-30h36v42h20V96h14l8-34 8 34h14v40h26a64 64 0 0 1 128 0h26V96h14l8-34 8 34h14v122h26v-38h40v28h30v-46h44v54h34v-22h40V230z"/>
+</svg>
+<div class="left">
+  <div class="brand"><img src="../icon-512.png" alt=""><div><b>Waqt</b><span class="ar">وقت</span></div></div>
+  <div class="tag">Prayer times · Azan · Qibla · Hijri</div>
+  <div class="tag2">প্রতিটি ওয়াক্ত, সময়মতো</div>
+</div>
+</body>
+</html>

@@ -4,3 +4,6 @@
 /local.properties
 /keystore.properties
 *.jks
+/release/
+/store/raw/
+/tools/_*.mjs

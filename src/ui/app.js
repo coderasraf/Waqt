@@ -8,7 +8,30 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 // Not named `ipc`: the desktop window already defines that global.
 const toNative = (msg) => { try { window.ipc && window.ipc.postMessage(msg); } catch { /* browser */ } };
 
+// On Android the page is served from the APK and `/api` calls go to Kotlin
+// through this bridge; answers come back via window.__nativeReply.
+const NATIVE = window.WaqtNative || null;
+const nativeWaiting = new Map();
+let nativeSeq = 0;
+window.__nativeReply = (id, status, body) => {
+  const w = nativeWaiting.get(id);
+  if (!w) return;
+  nativeWaiting.delete(id);
+  let data = null;
+  try { data = JSON.parse(body); } catch { /* empty */ }
+  if (status >= 200 && status < 300) w.res(data); else w.rej(new Error(data?.error || `Request failed (${status})`));
+};
+const nativeUi = (cmd, arg = '') => { try { NATIVE && NATIVE.ui(cmd, String(arg)); } catch { /* not android */ } };
+if (NATIVE) document.documentElement.classList.add('android');
+
 async function api(path, opts) {
+  if (NATIVE) {
+    return new Promise((res, rej) => {
+      const id = `r${++nativeSeq}`;
+      nativeWaiting.set(id, { res, rej });
+      NATIVE.request(id, opts?.method || 'GET', path, opts?.body || '');
+    });
+  }
   const r = await fetch(path, opts);
   let data = null;
   try { data = await r.json(); } catch { /* empty */ }
@@ -20,6 +43,10 @@ const put = (p, b) => api(p, { method: 'PUT', headers: { 'content-type': 'applic
 
 // ---------- Icons (stroke, 24px) ----------
 const IC = {
+  shield: '<path d="M12 3 4 6v6c0 4.6 3.4 8.3 8 9 4.6-.7 8-4.4 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+  menu: '<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
+  walk: '<circle cx="13" cy="4.5" r="1.8"/><path d="m10 21 2-6 3 3v3M8 12l2-4 4 1 2 3h3M10 8 7 9.5 6 13"/>',
+  plane: '<path d="M10.2 21 12 15l-6-1-2 2-1.5-.5L4 12 2.5 8.5 4 8l2 2 6-1-1.8-6h2.3L17 9h3.5a1.5 1.5 0 0 1 0 3H17l-4.5 9z"/>',
   today: '<path d="M12 3v2M5.6 5.6 7 7M3 12h2M19 12h2M17 7l1.4-1.4"/><path d="M7 15a5 5 0 0 1 10 0"/><path d="M3 19h18"/>',
   table: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M9 9v11M15 9v11"/>',
   calendar: '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="M15.5 13.2a2.8 2.8 0 1 0 0 4.6 3.4 3.4 0 0 1 0-4.6z"/>',
@@ -84,7 +111,7 @@ const SIX = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'];
 
 const T = {
   en: {
-    today: 'Today', timetable: 'Timetable', calendar: 'Hijri Calendar', qibla: 'Qibla', tracker: 'Prayer Tracker', tasbih: 'Tasbih', duas: 'Duas', settings: 'Settings',
+    today: 'Today', timetable: 'Timetable', calendar: 'Hijri Calendar', qibla: 'Qibla', tracker: 'Prayer Tracker', tasbih: 'Tasbih', duas: 'Duas', quran: 'Quran', hadith: 'Hadith', salah: 'Salah guide', settings: 'Settings',
     next_prayer: 'Next prayer', at: 'at', now: 'Now', next: 'Next', ends: 'ends', remaining: 'remaining', time_left: 'left',
     duha_time: 'Duha time', no_prayer: 'Until Dhuhr',
     ayah: 'Verse of the day', moon: 'Moon & Hijri', events: 'Coming up', special: 'Special times', progress: "Today's prayers", qibla_short: 'Qibla',
@@ -95,7 +122,7 @@ const T = {
     mode_adhan: 'Adhan', mode_chime: 'Chime', mode_notify: 'Notification only', mode_off: 'Off',
     st0: 'Not marked', st1: 'Prayed on time', st2: 'Prayed in jamaah', st3: 'Prayed late (qada)', st4: 'Missed', clear: 'Clear',
     muted: 'Adhan silenced today', mute_tip: 'Silence adhan for today', unmute: 'Adhan is silenced today — click to turn it back on',
-    mini_tip: 'Mini widget (always on top)',
+    mini_tip: 'Countdown on desktop',
     night: 'Night', fajr_seg: 'Fajr', forbidden: 'Forbidden time', duha_seg: 'Duha', dhuhr_seg: 'Dhuhr', asr_seg: 'Asr', maghrib_seg: 'Maghrib', isha_seg: 'Isha', tahajjud_seg: 'Tahajjud',
     export: 'Export', print: 'Print', ramadan_tt: 'Ramadan timetable', this_month: 'This month', date: 'Date', hijri: 'Hijri',
     upcoming_year: 'The year ahead', white_days: 'White days (fast 13–15)', monday: 'Monday fast (sunnah)', thursday: 'Thursday fast (sunnah)', friday: 'Friday — Jumu\'ah',
@@ -109,14 +136,44 @@ const T = {
     hijri_rule: 'Month start', rule_sighting: 'Local moon sighting (predicted)', rule_uaq: 'Saudi Arabia (Umm al-Qura)', rule_arith: 'Arithmetic (tabular)', hijri_offset: 'Adjust by days', hijri_preview: 'Today will show as', at_maghrib: 'New Hijri day at Maghrib',
     volume: 'Adhan volume', test: 'Test', fade: 'Fade in gently', show_window: 'Show the adhan screen', reminder: 'Remind before', none: 'None', min: 'min',
     sunrise_warn: 'Warn before sunrise (Fajr ending)', sehri_alarm: 'Sehri alarm', in_ramadan: 'In Ramadan', always: 'Every day', off: 'Off', before_fajr: 'before Sehri ends', jumuah_rem: "Friday reminder (Jumu'ah & Surah Al-Kahf)", tahajjud_rem: 'Tahajjud reminder',
-    import_sound: 'Add your own adhan…', language: 'Language', clock: 'Clock', bn_digits: 'Bangla digits', autostart: 'Start with Windows', autostart_help: 'Waqt starts quietly in the tray so the adhan always works.', close_tray: 'Close button keeps Waqt in the tray',
+    import_sound: 'Add your own adhan…', language: 'Language', clock: 'Clock', bn_digits: 'Bangla digits', theme: 'Theme', theme_help: 'Auto follows the light or dark setting of your device.', th_auto: 'Auto', th_night: 'Night', th_day: 'Day', th_sepia: 'Sepia', th_madinah: 'Madinah', th_rawdah: 'Rawdah', th_emerald: 'Emerald', th_ocean: 'Ocean', th_royal: 'Royal', th_black: 'Black', autostart: 'Start with Windows', autostart_help: 'Waqt starts quietly in the tray so the adhan always works.', close_tray: 'Close button keeps Waqt in the tray', overlay: 'Countdown on desktop', overlay_help: 'A small always-on-top timer to the next prayer. It stays when the window is closed; drag it to any screen.', overlay_lock: 'Lock countdown', overlay_lock_help: 'Clicks pass through it to the windows below. Unlock from the tray icon.',
     saved: 'Saved ✓', applied_method: 'Applied the method used in', about: 'Prayer times are calculated on this computer from the sun\'s position — no internet needed. Adhan recordings are public-domain recordings from the Internet Archive. City search uses Open-Meteo; daily verses come from alquran.cloud.',
     stop_adhan: 'Stop adhan', close: 'Close', time_for: "It's time for", dua_after: 'Dua after the adhan', iftar_dua: 'Dua at iftar',
     welcome: 'Welcome to Waqt', welcome_sub: 'Prayer times, adhan and the Hijri calendar — beautifully, and always on time.', choose_lang: 'Choose your language', where: 'Where do you pray?', detecting: 'Finding your location…', found: 'We found you in', calc_title: 'How times are calculated', voice: 'Choose an adhan voice', voice_reg: 'For Dhuhr, Asr, Maghrib and Isha', voice_fajr: 'For Fajr', finish: 'Start', back: 'Back', continue: 'Continue', all_set: 'All set!', all_set_sub: 'The adhan will sound five times a day, even when this window is closed.',
     mini_next: 'Next', loading: 'Loading…', offline_ayah: 'The verse of the day needs an internet connection once a day.',
+    health: 'Adhan check', more: 'More', hc_ok: 'Your adhan is protected', hc_bad: '{n} setting(s) can stop the adhan',
+    hc_sub: 'Phones save battery by stopping apps. These checks make sure the adhan still rings at the exact minute.',
+    fix: 'Fix', done_it: "I've done this", open_settings: 'Open settings',
+    hc_notifications: 'Notifications', hc_notifications_d: 'Lets the adhan and reminders appear on your screen.',
+    hc_exact_alarm: 'Alarms & reminders', hc_exact_alarm_d: 'Lets Waqt ring at the exact minute, even while the phone sleeps.',
+    hc_battery: 'Battery: unrestricted', hc_battery_d: "Stops Android pausing Waqt to save battery. Choose 'Unrestricted' or 'Don't optimise'.",
+    hc_oem: 'Your phone brand\'s app killer', hc_alarm_volume: 'Alarm volume', hc_alarm_volume_d: 'The adhan plays at alarm volume, which is now 0.',
+    hc_dnd: 'Do Not Disturb access', hc_dnd_d: 'Needed to put the phone on vibrate during jamaat.',
+    oem_xiaomi: 'Xiaomi / Redmi / POCO: Settings → Apps → Manage apps → Waqt → turn on Autostart, and set Battery saver to “No restrictions”. Then lock Waqt in Recents.',
+    oem_oppo: 'Oppo / Realme: Settings → Battery → Waqt → allow background activity and auto launch.',
+    oem_oneplus: "OnePlus: Settings → Battery → Battery optimisation → Waqt → Don't optimise, and allow auto-launch.",
+    oem_vivo: 'Vivo / iQOO: i Manager → App manager → Autostart → Waqt on; Settings → Battery → Background power use → Waqt → Allow.',
+    oem_huawei: 'Huawei / Honor: Phone Manager → App launch → Waqt → Manage manually, with all three switches on.',
+    oem_samsung: 'Samsung: Settings → Battery → Background usage limits → Never sleeping apps → add Waqt.',
+    oem_transsion: "Tecno / Infinix / itel: Phone Master → App management → Auto-start → Waqt on, and turn off power saving for Waqt.",
+    oem_asus: 'Asus: Mobile Manager → Auto-start manager → Waqt on.',
+    test_title: 'Test the full adhan path', test_d: 'Plays a real test adhan in one minute through the same alarm the prayers use. Lock your phone and wait: if it plays, every prayer will too.',
+    test_btn: 'Test in 1 minute', test_wait: 'Test adhan in', deliveries: 'Recent adhans', on_time: 'on time', late_by: 'late by', no_deliveries: 'No adhan has played yet.',
+    next_alarm: 'Next alarm', exact: 'exact', inexact: 'may be delayed', hc_banner: 'Your adhan may not ring on time.', check_now: 'Check now',
+    travel_on: "You're traveling", travel_d: '{km} km from home — Qasr: pray 2 rak\'ahs for Dhuhr, Asr and Isha.', travel_update: 'Prayer times are for {city}. Use where you are now?', update: 'Update',
+    jamaat: 'Jamaat', wake_title: 'Wake up for Fajr', wake_d: 'Tap the circle {n} times to stop the alarm.', wake_done: 'May Allah accept your Fajr',
+    s_phone: 'Phone', in_silent: 'Play the adhan even in silent mode', in_silent_d: 'Uses the alarm volume, like an alarm clock.',
+    auto_silent: 'Auto-silent at the mosque', auto_silent_d: 'Puts the phone on vibrate for each jamaat, then turns the sound back on.', silent_for: 'for',
+    jamaat_times: 'My mosque jamaat times', jamaat_help: 'Minutes after the adhan (like 15) or a fixed time (like 13:30). Leave empty if you don\'t know.',
+    walk: 'Remind me to leave for the mosque', walk_d: 'How long it takes to walk there.',
+    travel: 'Travel mode (Qasr)', travel_help: 'Tells you when you are far enough from home to shorten prayers. Uses your approximate location only while the app is open.',
+    set_home: 'Set current location as home', home: 'Home', fajr_wake: 'Fajr wake-up alarm', fajr_wake_d: 'The Fajr adhan keeps ringing until you get up and finish a short tasbih.',
+    volume_tasbih: 'Count tasbih with the volume buttons', download: 'Download', downloading: 'Downloading…', not_downloaded: 'download',
+    facing: 'You are facing the Qibla', turn_left: 'Turn left', turn_right: 'Turn right', calibrate: 'Move your phone in a figure-8 to calibrate the compass.',
+    permissions_title: 'Make sure the adhan rings', permissions_sub: 'Allow these so Waqt can ring at the exact minute, even when your phone sleeps.', jumuah_t: "Jumu'ah",
   },
   bn: {
-    today: 'আজ', timetable: 'সময়সূচি', calendar: 'হিজরি ক্যালেন্ডার', qibla: 'কিবলা', tracker: 'নামাজ ট্র্যাকার', tasbih: 'তাসবিহ', duas: 'দোয়া', settings: 'সেটিংস',
+    today: 'আজ', timetable: 'সময়সূচি', calendar: 'হিজরি ক্যালেন্ডার', qibla: 'কিবলা', tracker: 'নামাজ ট্র্যাকার', tasbih: 'তাসবিহ', duas: 'দোয়া', quran: 'কুরআন', hadith: 'হাদীস', salah: 'নামাজ শিক্ষা', settings: 'সেটিংস',
     next_prayer: 'পরবর্তী নামাজ', at: '', now: 'এখন', next: 'পরবর্তী', ends: 'শেষ', remaining: 'বাকি', time_left: 'বাকি',
     duha_time: 'চাশতের সময়', no_prayer: 'যোহর পর্যন্ত',
     ayah: 'আজকের আয়াত', moon: 'চাঁদ ও হিজরি', events: 'সামনে', special: 'বিশেষ সময়', progress: 'আজকের নামাজ', qibla_short: 'কিবলা',
@@ -127,7 +184,7 @@ const T = {
     mode_adhan: 'আজান', mode_chime: 'ঘণ্টাধ্বনি', mode_notify: 'শুধু নোটিফিকেশন', mode_off: 'বন্ধ',
     st0: 'চিহ্নিত নয়', st1: 'সময়মতো পড়েছি', st2: 'জামাতে পড়েছি', st3: 'দেরিতে পড়েছি (কাজা)', st4: 'ছুটে গেছে', clear: 'মুছুন',
     muted: 'আজ আজান নীরব', mute_tip: 'আজকের জন্য আজান নীরব করুন', unmute: 'আজ আজান নীরব — চালু করতে ক্লিক করুন',
-    mini_tip: 'মিনি উইজেট (সবার উপরে)',
+    mini_tip: 'ডেস্কটপে কাউন্টডাউন',
     night: 'রাত', fajr_seg: 'ফজর', forbidden: 'নিষিদ্ধ সময়', duha_seg: 'চাশত', dhuhr_seg: 'যোহর', asr_seg: 'আসর', maghrib_seg: 'মাগরিব', isha_seg: 'এশা', tahajjud_seg: 'তাহাজ্জুদ',
     export: 'এক্সপোর্ট', print: 'প্রিন্ট', ramadan_tt: 'রমজানের সময়সূচি', this_month: 'এই মাস', date: 'তারিখ', hijri: 'হিজরি',
     upcoming_year: 'সামনের বছর', white_days: 'আইয়ামে বীজ (১৩–১৫ রোজা)', monday: 'সোমবারের রোজা (সুন্নত)', thursday: 'বৃহস্পতিবারের রোজা (সুন্নত)', friday: 'শুক্রবার — জুমা',
@@ -141,11 +198,41 @@ const T = {
     hijri_rule: 'মাস শুরুর নিয়ম', rule_sighting: 'স্থানীয় চাঁদ দেখা (অনুমিত)', rule_uaq: 'সৌদি আরব (উম্মুল কুরা)', rule_arith: 'গাণিতিক (তাবুলার)', hijri_offset: 'দিন সমন্বয়', hijri_preview: 'আজ দেখাবে', at_maghrib: 'মাগরিবে নতুন হিজরি দিন',
     volume: 'আজানের ভলিউম', test: 'শুনুন', fade: 'ধীরে ধীরে শুরু', show_window: 'আজানের পর্দা দেখান', reminder: 'আগে মনে করান', none: 'না', min: 'মি',
     sunrise_warn: 'সূর্যোদয়ের আগে সতর্ক করুন (ফজর শেষ)', sehri_alarm: 'সাহরির অ্যালার্ম', in_ramadan: 'রমজানে', always: 'প্রতিদিন', off: 'বন্ধ', before_fajr: 'সাহরি শেষের আগে', jumuah_rem: 'শুক্রবারের রিমাইন্ডার (জুমা ও সূরা কাহফ)', tahajjud_rem: 'তাহাজ্জুদ রিমাইন্ডার',
-    import_sound: 'নিজের আজান যোগ করুন…', language: 'ভাষা', clock: 'ঘড়ি', bn_digits: 'বাংলা সংখ্যা', autostart: 'উইন্ডোজের সাথে চালু', autostart_help: 'আজান যেন সবসময় বাজে, তাই ওয়াক্ত ট্রেতে নীরবে চালু থাকে।', close_tray: 'বন্ধ করলে ট্রেতে থাকবে',
+    import_sound: 'নিজের আজান যোগ করুন…', language: 'ভাষা', clock: 'ঘড়ি', bn_digits: 'বাংলা সংখ্যা', theme: 'থিম', theme_help: 'স্বয়ংক্রিয়: ডিভাইসের লাইট বা ডার্ক সেটিং অনুযায়ী চলে।', th_auto: 'স্বয়ংক্রিয়', th_night: 'রাত', th_day: 'দিন', th_sepia: 'সেপিয়া', th_madinah: 'মদিনা', th_rawdah: 'রওজা', th_emerald: 'পান্না', th_ocean: 'সমুদ্র', th_royal: 'রাজকীয়', th_black: 'কালো', autostart: 'উইন্ডোজের সাথে চালু', autostart_help: 'আজান যেন সবসময় বাজে, তাই ওয়াক্ত ট্রেতে নীরবে চালু থাকে।', close_tray: 'বন্ধ করলে ট্রেতে থাকবে', overlay: 'ডেস্কটপে কাউন্টডাউন', overlay_help: 'পরের নামাজ পর্যন্ত ছোট একটি টাইমার, সব উইন্ডোর ওপরে। উইন্ডো বন্ধ করলেও থাকে; যেকোনো স্ক্রিনে টেনে নিন।', overlay_lock: 'কাউন্টডাউন লক', overlay_lock_help: 'ক্লিক এর ভেতর দিয়ে নিচের উইন্ডোতে যাবে। ট্রে আইকন থেকে আনলক করুন।',
     saved: 'সংরক্ষিত ✓', applied_method: 'যে পদ্ধতি ব্যবহৃত হয় তা প্রয়োগ করা হয়েছে:', about: 'নামাজের সময় এই কম্পিউটারেই সূর্যের অবস্থান থেকে হিসাব করা হয় — ইন্টারনেট লাগে না। আজানগুলো ইন্টারনেট আর্কাইভের পাবলিক-ডোমেইন রেকর্ডিং। শহর খোঁজা Open-Meteo দিয়ে; আজকের আয়াত alquran.cloud থেকে।',
     stop_adhan: 'আজান থামান', close: 'বন্ধ', time_for: 'ওয়াক্ত হয়েছে', dua_after: 'আজানের পরের দোয়া', iftar_dua: 'ইফতারের দোয়া',
     welcome: 'ওয়াক্তে স্বাগতম', welcome_sub: 'নামাজের সময়, আজান ও হিজরি ক্যালেন্ডার — সুন্দরভাবে, সবসময় সময়মতো।', choose_lang: 'ভাষা বেছে নিন', where: 'আপনি কোথায় নামাজ পড়েন?', detecting: 'আপনার অবস্থান খোঁজা হচ্ছে…', found: 'আপনার অবস্থান', calc_title: 'সময় কীভাবে হিসাব হবে', voice: 'আজানের কণ্ঠ বেছে নিন', voice_reg: 'যোহর, আসর, মাগরিব ও এশার জন্য', voice_fajr: 'ফজরের জন্য', finish: 'শুরু করুন', back: 'পেছনে', continue: 'পরবর্তী', all_set: 'সব প্রস্তুত!', all_set_sub: 'এই উইন্ডো বন্ধ থাকলেও দিনে পাঁচবার আজান বাজবে।',
     mini_next: 'পরবর্তী', loading: 'লোড হচ্ছে…', offline_ayah: 'আজকের আয়াতের জন্য দিনে একবার ইন্টারনেট লাগে।',
+    health: 'আজান চেক', more: 'আরও', hc_ok: 'আপনার আজান সুরক্ষিত', hc_bad: '{n}টি সেটিং আজান বন্ধ করতে পারে',
+    hc_sub: 'ব্যাটারি বাঁচাতে ফোন অ্যাপ বন্ধ করে দেয়। এই চেকগুলো নিশ্চিত করে আজান ঠিক মিনিটে বাজবে।',
+    fix: 'ঠিক করুন', done_it: 'করেছি', open_settings: 'সেটিংস খুলুন',
+    hc_notifications: 'নোটিফিকেশন', hc_notifications_d: 'আজান ও রিমাইন্ডার স্ক্রিনে দেখানোর জন্য।',
+    hc_exact_alarm: 'অ্যালার্ম ও রিমাইন্ডার', hc_exact_alarm_d: 'ফোন ঘুমিয়ে থাকলেও ঠিক মিনিটে আজান বাজাতে।',
+    hc_battery: 'ব্যাটারি: সীমাহীন', hc_battery_d: 'ব্যাটারি বাঁচাতে অ্যান্ড্রয়েড যেন ওয়াক্ত থামিয়ে না দেয়। “Unrestricted” বা “Don’t optimise” বেছে নিন।',
+    hc_oem: 'আপনার ফোন কোম্পানির অ্যাপ-বন্ধকারী', hc_alarm_volume: 'অ্যালার্ম ভলিউম', hc_alarm_volume_d: 'আজান অ্যালার্ম ভলিউমে বাজে, যা এখন ০।',
+    hc_dnd: 'বিরক্ত করবেন না (DND) অনুমতি', hc_dnd_d: 'জামাতের সময় ফোন ভাইব্রেশনে রাখতে লাগে।',
+    oem_xiaomi: 'শাওমি / রেডমি / পোকো: Settings → Apps → Manage apps → Waqt → Autostart চালু করুন, Battery saver “No restrictions” করুন। তারপর Recents-এ ওয়াক্ত লক করুন।',
+    oem_oppo: 'অপো / রিয়েলমি: Settings → Battery → Waqt → background activity ও auto launch চালু করুন।',
+    oem_oneplus: 'ওয়ানপ্লাস: Settings → Battery → Battery optimisation → Waqt → Don’t optimise; auto-launch চালু করুন।',
+    oem_vivo: 'ভিভো / iQOO: i Manager → App manager → Autostart → Waqt চালু; Settings → Battery → Background power use → Waqt → Allow।',
+    oem_huawei: 'হুয়াওয়ে / অনার: Phone Manager → App launch → Waqt → Manage manually, তিনটি সুইচই চালু।',
+    oem_samsung: 'স্যামসাং: Settings → Battery → Background usage limits → Never sleeping apps → Waqt যোগ করুন।',
+    oem_transsion: 'টেকনো / ইনফিনিক্স / আইটেল: Phone Master → App management → Auto-start → Waqt চালু; ওয়াক্তের power saving বন্ধ করুন।',
+    oem_asus: 'আসুস: Mobile Manager → Auto-start manager → Waqt চালু।',
+    test_title: 'পুরো আজান পরীক্ষা করুন', test_d: 'নামাজের অ্যালার্মের মতোই এক মিনিট পরে একটি পরীক্ষামূলক আজান বাজবে। ফোন লক করে অপেক্ষা করুন: বাজলে প্রতিটি ওয়াক্তেই বাজবে।',
+    test_btn: '১ মিনিটে পরীক্ষা', test_wait: 'পরীক্ষামূলক আজান', deliveries: 'সাম্প্রতিক আজান', on_time: 'সময়মতো', late_by: 'দেরি', no_deliveries: 'এখনো কোনো আজান বাজেনি।',
+    next_alarm: 'পরবর্তী অ্যালার্ম', exact: 'নির্ভুল', inexact: 'দেরি হতে পারে', hc_banner: 'আপনার আজান সময়মতো নাও বাজতে পারে।', check_now: 'এখনই দেখুন',
+    travel_on: 'আপনি সফরে আছেন', travel_d: 'বাড়ি থেকে {km} কিমি — কসর: যোহর, আসর ও এশা ২ রাকাত।', travel_update: 'নামাজের সময় {city}-এর। বর্তমান স্থানের সময় দেখাবেন?', update: 'বদলান',
+    jamaat: 'জামাত', wake_title: 'ফজরের জন্য উঠুন', wake_d: 'অ্যালার্ম থামাতে বৃত্তে {n} বার চাপুন।', wake_done: 'আল্লাহ আপনার ফজর কবুল করুন',
+    s_phone: 'ফোন', in_silent: 'সাইলেন্ট মোডেও আজান বাজুক', in_silent_d: 'অ্যালার্ম ঘড়ির মতো অ্যালার্ম ভলিউমে বাজে।',
+    auto_silent: 'মসজিদে স্বয়ংক্রিয় সাইলেন্ট', auto_silent_d: 'প্রতিটি জামাতে ফোন ভাইব্রেশনে, পরে আবার শব্দ চালু।', silent_for: 'সময়',
+    jamaat_times: 'আমার মসজিদের জামাতের সময়', jamaat_help: 'আজানের কত মিনিট পর (যেমন ১৫) বা নির্দিষ্ট সময় (যেমন 13:30)। না জানলে খালি রাখুন।',
+    walk: 'মসজিদে রওনা দেওয়ার রিমাইন্ডার', walk_d: 'হেঁটে যেতে কত মিনিট লাগে।',
+    travel: 'সফর মোড (কসর)', travel_help: 'বাড়ি থেকে যথেষ্ট দূরে গেলে কসরের কথা জানায়। শুধু অ্যাপ খোলা থাকলে আনুমানিক অবস্থান দেখে।',
+    set_home: 'বর্তমান স্থানকে বাড়ি হিসেবে রাখুন', home: 'বাড়ি', fajr_wake: 'ফজরের জাগানোর অ্যালার্ম', fajr_wake_d: 'উঠে ছোট একটি তাসবিহ শেষ না করা পর্যন্ত ফজরের আজান বাজতে থাকবে।',
+    volume_tasbih: 'ভলিউম বাটনে তাসবিহ গণনা', download: 'ডাউনলোড', downloading: 'ডাউনলোড হচ্ছে…', not_downloaded: 'ডাউনলোড',
+    facing: 'আপনি কিবলামুখী', turn_left: 'বাঁয়ে ঘুরুন', turn_right: 'ডানে ঘুরুন', calibrate: 'কম্পাস ঠিক করতে ফোনটি ৮-এর মতো করে ঘোরান।',
+    permissions_title: 'আজান যেন ঠিকমতো বাজে', permissions_sub: 'ফোন ঘুমিয়ে থাকলেও ঠিক মিনিটে আজান বাজাতে এগুলো চালু করুন।', jumuah_t: 'জুমা',
   },
 };
 
@@ -430,6 +517,48 @@ class Sky {
   }
 }
 
+// ---------- Themes ----------
+// [name, page, panel, accent] — the colours the picker's swatches show.
+const THEMES = [
+  ['auto', '', '', ''], ['night', '#060c1b', '#13224a', '#f3c66b'], ['day', '#f6f2ea', '#ffffff', '#d9a443'], ['sepia', '#f2e7cf', '#fffaf0', '#c48b30'],
+  ['madinah', '#062419', '#13583c', '#47c486'], ['rawdah', '#eef4ec', '#ffffff', '#3fb97a'],
+  ['emerald', '#03140f', '#0f3a2d', '#f3c66b'], ['ocean', '#03131b', '#0f3d52', '#f3c66b'], ['royal', '#0b0720', '#2a1c5c', '#f3c66b'], ['black', '#000000', '#1a1a1a', '#f3c66b'],
+];
+const LIGHT_THEMES = new Set(['day', 'sepia', 'rawdah']);
+const lightMedia = matchMedia('(prefers-color-scheme: light)');
+const themePref = () => { try { return localStorage.getItem('waqt-theme') || 'auto'; } catch { return 'auto'; } };
+
+/// Paints the page in a theme; "auto" follows the device's light or dark setting.
+function applyTheme() {
+  const pref = themePref();
+  const name = pref === 'auto' ? (lightMedia.matches ? 'day' : 'night') : pref;
+  const root = document.documentElement;
+  const light = LIGHT_THEMES.has(name);
+  root.dataset.theme = name;
+  root.toggleAttribute('data-light', light);
+  const bg = THEMES.find((x) => x[0] === name)?.[1] || '#060c1b';
+  // The phone's status bar icons and the window behind the page follow along.
+  nativeUi('theme', `${light ? 'light' : 'dark'},${bg}`);
+  toNative(`theme:${light ? 'light' : 'dark'}`);
+}
+function setTheme(v) {
+  try { localStorage.setItem('waqt-theme', v); } catch { /* private mode */ }
+  applyTheme();
+}
+lightMedia.addEventListener('change', () => { if (themePref() === 'auto') applyTheme(); });
+applyTheme();
+
+/// The theme picker, for Settings (and the Quran's reading settings).
+function themeRow() {
+  const pref = themePref();
+  const sw = THEMES.map(([k, bg, panel, acc]) => {
+    const look = k === 'auto' ? 'background:linear-gradient(135deg,#060c1b 50%,#f6f2ea 50%);--c-panel:rgba(255,255,255,.35);--c-acc:#f3c66b'
+      : `background:${bg};--c-panel:${panel};--c-acc:${acc}`;
+    return `<button class="theme-sw ${pref === k ? 'on' : ''}" data-act="theme" data-v="${k}"><i style="${look}"></i>${esc(t('th_' + k))}</button>`;
+  }).join('');
+  return `<div class="srow" style="flex-wrap:wrap"><div class="lab" style="flex-basis:100%"><b>${esc(t('theme'))}</b><small>${esc(t('theme_help'))}</small></div><div class="themes">${sw}</div></div>`;
+}
+
 // ---------- Data ----------
 async function loadToday() {
   S.day = await api('/api/today');
@@ -441,6 +570,7 @@ async function loadSettings() {
   S.sounds = s.sounds;
   S.methods = s.methods;
   S.desktop = s.desktop;
+  S.android = !!s.android;
   document.documentElement.lang = L();
   return s;
 }
@@ -457,13 +587,21 @@ async function saveCfg(note = true) {
 }
 
 // ---------- Chrome: rail, top bar ----------
-const ROUTES = ['today', 'timetable', 'calendar', 'qibla', 'tracker', 'tasbih', 'duas', 'settings'];
-const ROUTE_ICON = { today: 'today', timetable: 'table', calendar: 'calendar', qibla: 'qibla', tracker: 'tracker', tasbih: 'tasbih', duas: 'dua', settings: 'settings' };
+const ROUTES = ['today', 'quran', 'hadith', 'salah', 'timetable', 'calendar', 'qibla', 'tracker', 'tasbih', 'duas', 'health', 'settings', 'wake'];
+const ROUTE_ICON = { today: 'today', timetable: 'table', calendar: 'calendar', qibla: 'qibla', tracker: 'tracker', tasbih: 'tasbih', duas: 'dua', quran: 'book', hadith: 'scroll', salah: 'pray', health: 'shield', settings: 'settings' };
+/// The pages listed in navigation: the Adhan check and the Quran are
+/// phone-only; the Fajr wake-up page is reached from its alarm only.
+const navRoutes = () => ROUTES.filter((k) => k !== 'wake' && (!['health', 'quran', 'hadith', 'salah'].includes(k) || S.android));
+const tabs = () => (S.android ? ['today', 'quran', 'hadith', 'qibla'] : ['today', 'calendar', 'qibla', 'tasbih']);
 const route = () => { const r = location.hash.replace(/^#\/?/, '').split('/')[0]; return ROUTES.includes(r) ? r : 'today'; };
 
 function renderChrome() {
   const r = route();
-  $('#nav').innerHTML = ROUTES.map((k) => `<a href="#/${k}" class="${r === k ? 'on' : ''}">${icon(ROUTE_ICON[k])}<span>${t(k)}</span></a>`).join('');
+  const badge = (k) => (k === 'health' && S.day?.health_failing ? `<span class="badge">${N(S.day.health_failing)}</span>` : '');
+  $('#nav').innerHTML = navRoutes().map((k) => `<a href="#/${k}" class="${r === k ? 'on' : ''}">${icon(ROUTE_ICON[k])}<span>${t(k)}</span>${badge(k)}</a>`).join('');
+  const more = !tabs().includes(r);
+  $('#tabbar').innerHTML = tabs().map((k) => `<a href="#/${k}" class="${r === k ? 'on' : ''}">${icon(ROUTE_ICON[k])}<span>${t(k === 'calendar' ? 'hijri' : k)}</span></a>`).join('') +
+    `<a data-act="more" class="${more ? 'on' : ''}">${icon('menu')}<span>${t('more')}</span>${S.day?.health_failing && S.android ? '<i class="dotb"></i>' : ''}</a>`;
   const muted = S.live?.muted;
   const loc = S.cfg?.location;
   $('#top').innerHTML = `
@@ -498,6 +636,8 @@ const live = (tok) => tok === renderToken;
 async function render() {
   const tok = ++renderToken;
   if (sky) { sky.stop(); sky = null; }
+  nativeUi('compass', 0); nativeUi('volumeTasbih', 0); nativeUi('keepScreenOn', 0);
+  closeSheet();
   renderChrome();
   $('#scroll').scrollTop = 0;
   view.style.animation = 'none'; void view.offsetWidth; view.style.animation = '';
@@ -532,6 +672,7 @@ VIEWS.today = async (tok) => {
       <div class="ico">${icon(k)}</div>
       <div class="nm"><b>${esc(pname(k, fri))}</b><span class="ar">${parab(k, fri)}</span></div>
       <div class="tm">${timeHTML(at, off)}</div>
+      ${d.jamaat?.[k] ? `<div class="jm">${icon('walk')}${esc(t('jamaat'))} ${fmtTime(d.jamaat[k], off)}</div>` : ''}
       <div class="row">${idx >= 0 ? `<button class="mode m-${mode}" data-act="mode" data-p="${k}" title="${esc(t('mode_' + mode))}">${icon(mIcon)}</button>
         <button class="check s${st}" data-act="track" data-i="${idx}" data-date="${d.today.date}" title="${esc(t('st' + st))}">${icon(st === 4 ? 'x' : 'check')}</button>` : `<span class="faint" style="font-size:12.5px">${esc(t('ishraq'))} ${fmtTime(T0.ishraq, off)}</span>`}</div>
     </div>`;
@@ -544,7 +685,8 @@ VIEWS.today = async (tok) => {
       <div class="hero-content">
         <div class="left">
           <div class="dates"><span class="greg">${esc(fmtGDate(d.today.date))}</span>
-            <span class="hij">${esc(hijriText(d.hijri_now))} <span class="ar">${d.hijri_now.month_ar}</span></span></div>
+            <span class="hij">${esc(hijriText(d.hijri_now))} <span class="ar">${d.hijri_now.month_ar}</span></span>
+            ${d.bangla ? `<span class="greg bdate">${esc(banglaText(d.bangla))}</span>` : ''}</div>
           <div class="label">${esc(t('next_prayer'))}</div>
           <div class="pname" id="h-name"></div>
           <div class="countdown" id="h-count"></div>
@@ -556,6 +698,7 @@ VIEWS.today = async (tok) => {
         </div>
       </div>
     </section>
+    <div id="banners"></div>
     <div class="prayers stagger">${cards}</div>
     <div class="card timeline" id="timeline"></div>
     <div class="widgets stagger" id="widgets"></div>`;
@@ -565,6 +708,7 @@ VIEWS.today = async (tok) => {
   sky.start();
   renderTimeline();
   renderWidgets(tok);
+  renderBanners(tok);
   tickToday(true);
 };
 
@@ -706,7 +850,7 @@ VIEWS.timetable = async (tok) => {
       <div style="flex:1"></div>
       ${hasRamadan ? `<span class="hchip" style="text-shadow:none">${icon('moon')}${esc(t('ramadan'))}</span>` : `<button class="btn small" data-act="tt-ramadan">${icon('moon')}${esc(t('ramadan_tt'))}</button>`}
       <button class="btn small" data-act="export">${icon('download')}${esc(t('export'))}</button>
-      <button class="btn small" data-act="print">${icon('print')}${esc(t('print'))}</button>
+      ${S.android ? '' : `<button class="btn small" data-act="print">${icon('print')}${esc(t('print'))}</button>`}
     </div>
     <div class="table-wrap"><table class="tt"><thead><tr><th>${esc(t('date'))}</th><th>${esc(t('hijri'))}</th><th>${esc(t('sehri_ends'))}</th>${th('fajr', pname('fajr'))}${th('sunrise', pname('sunrise'))}${th('dhuhr', pname('dhuhr'))}${th('asr', pname('asr'))}${th('maghrib', pname('maghrib'))}${th('isha', pname('isha'))}</tr></thead><tbody>${rows}</tbody></table></div>`;
   const today = $('tr.today');
@@ -786,17 +930,19 @@ VIEWS.qibla = async (tok) => {
           <linearGradient id="ng" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe2a0"/><stop offset="1" stop-color="#c9953a"/></linearGradient></defs>
         <circle cx="250" cy="250" r="232" fill="url(#cg)" stroke="rgba(243,198,107,.35)" stroke-width="2"/>
         <circle class="glow" cx="250" cy="250" r="232" fill="none" stroke="rgba(243,198,107,.25)" stroke-width="10"/>
-        ${ticks}${card}
+        <g id="dial" class="dial">${ticks}${card}
         <circle cx="250" cy="250" r="150" fill="none" stroke="rgba(255,255,255,.06)" stroke-dasharray="3 6"/>
         ${sunUp ? `<g class="sunmark" id="sunmark" style="transform:rotate(0deg)"><circle cx="250" cy="44" r="13" fill="#ffd36b"/><circle cx="250" cy="44" r="22" fill="rgba(255,211,107,.25)"/></g>` : ''}
         <g class="needle" id="needle" style="transform:rotate(0deg)">
           <path d="M250 62 268 250 250 236 232 250Z" fill="url(#ng)" style="filter:drop-shadow(0 0 12px rgba(243,198,107,.6))"/>
           <path d="M250 438 262 250 250 262 238 250Z" fill="rgba(255,255,255,.15)"/>
           <g transform="translate(232 18)"><rect width="36" height="36" rx="5" fill="#111" stroke="#f3c66b" stroke-width="2"/><rect y="10" width="36" height="5" fill="#f3c66b"/></g>
-        </g>
+        </g></g>
+        ${q.compass ? '<path d="M250 0 262 22 238 22Z" fill="#fff" opacity=".9"/>' : ''}
         <circle cx="250" cy="250" r="16" fill="#0a1430" stroke="#f3c66b" stroke-width="3"/><circle cx="250" cy="250" r="5" fill="#f3c66b"/>
       </svg></div>
       <div>
+        ${q.compass ? `<div class="facing" id="facing">${esc(t('loading'))}</div>` : ''}
         <div class="faint" style="text-transform:uppercase;letter-spacing:1.5px;font-size:12px">${esc(t('qibla_title'))}</div>
         <div class="qstat">${N(b.toFixed(1))}°<small>${dir} · ${esc(t('from_north'))}</small></div>
         <div class="muted" style="font-size:17px;margin-top:6px">🕋 ${N(Math.round(q.distance).toLocaleString('en-US'))} km ${esc(t('distance'))}</div>
@@ -809,6 +955,7 @@ VIEWS.qibla = async (tok) => {
     const n = $('#needle'); if (n) n.style.transform = `rotate(${b}deg)`;
     const s = $('#sunmark'); if (s) s.style.transform = `rotate(${q.sun.azimuth}deg)`;
   }, 120));
+  if (q.compass) { S.qibla = b; nativeUi('compass', 1); }
 };
 
 // ---------- Tracker ----------
@@ -892,6 +1039,7 @@ VIEWS.tasbih = async (tok) => {
   if (!live(tok)) return;
   TB.totals = tot.totals; TB.today = tot.today;
   drawTasbih();
+  nativeUi('volumeTasbih', 1); nativeUi('keepScreenOn', 1);
 };
 
 function drawTasbih() {
@@ -921,6 +1069,7 @@ function drawTasbih() {
 }
 
 function countTasbih(e) {
+  nativeUi('haptic');
   const dz = DHIKR[TB.i];
   TB.count++;
   TB.history.push(TB.i);
@@ -1001,7 +1150,7 @@ VIEWS.settings = async (tok) => {
   const row = (label, help, control) => `<div class="srow"><div class="lab"><b>${esc(label)}</b>${help ? `<small>${esc(help)}</small>` : ''}</div>${control}</div>`;
   const sel = (path, opts, val) => `<select class="input" data-act="select" data-path="${path}">${opts.map(([v, l]) => `<option value="${esc(v)}" ${String(v) === String(val) ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>`;
   const step = (path, val, unit = '') => `<span class="stepper"><button data-act="step" data-path="${path}" data-d="-1">−</button><span>${N(val > 0 ? '+' + val : val)}${unit}</span><button data-act="step" data-path="${path}" data-d="1">+</button></span>`;
-  const soundOpts = S.sounds.map((s) => [s.id, L() === 'bn' ? s.name_bn : s.name]);
+  const soundOpts = S.sounds.map((s) => [s.id, (L() === 'bn' ? s.name_bn : s.name) + (s.available === false ? ` (${t('not_downloaded')} ${(s.size / 1048576).toFixed(1)} MB)` : '')]);
   const modeOpts = [['adhan', t('mode_adhan')], ['chime', t('mode_chime')], ['notify', t('mode_notify')], ['off', t('mode_off')]];
   const remOpts = [[0, t('none')], [5, `5 ${t('min')}`], [10, `10 ${t('min')}`], [15, `15 ${t('min')}`], [20, `20 ${t('min')}`], [30, `30 ${t('min')}`]];
   const loc = c.location;
@@ -1013,7 +1162,7 @@ VIEWS.settings = async (tok) => {
   const hijriPreview = S.day ? hijriText(S.day.hijri_now) : '';
 
   view.innerHTML = `<h1>${esc(t('settings'))} <span class="saved" id="saved">${esc(t('saved'))}</span></h1><p class="sub">${esc(d_path(c))}</p>
-  <div class="settings"><nav class="snav">${[['location', 's_location'], ['calc', 's_calc'], ['hijri', 's_hijri'], ['adhan', 's_adhan'], ['display', 's_display'], ['system', 's_system'], ['about', 's_about']].map(([id, k]) => `<a data-act="sjump" data-id="${id}">${esc(t(k))}</a>`).join('')}</nav>
+  <div class="settings"><nav class="snav">${[['location', 's_location'], ['calc', 's_calc'], ['hijri', 's_hijri'], ['adhan', 's_adhan'], ...(S.android ? [['phone', 's_phone']] : []), ['display', 's_display'], ...(S.android ? [] : [['system', 's_system']]), ['about', 's_about']].map(([id, k]) => `<a data-act="sjump" data-id="${id}">${esc(t(k))}</a>`).join('')}</nav>
   <div>
     ${sec('location', 'pin', t('s_location'), `<div class="loc-card"><div class="pin">${icon('pin')}</div><div style="flex:1"><b>${esc(loc.name)}</b><div class="muted">${esc(loc.country)} · ${N(loc.lat.toFixed(4))}, ${N(loc.lng.toFixed(4))} · ${esc(loc.timezone || 'system time zone')}</div></div><button class="btn small" data-act="detect">${icon('locate')}${esc(t('detect'))}</button></div>
       <div class="search-box">${icon('search')}<input class="input" id="city-q" placeholder="${esc(t('search_city'))}" autocomplete="off" spellcheck="false"></div><div class="results" id="city-r"></div>`)}
@@ -1034,8 +1183,8 @@ VIEWS.settings = async (tok) => {
       row(t('jumuah_rem'), '', tog('alerts.jumuah', c.alerts.jumuah)) + row(t('tahajjud_rem'), '', tog('alerts.tahajjud', c.alerts.tahajjud)))}
     ${sec('display', 'palette', t('s_display'), row(t('language'), '', `<div class="seg"><button class="${L() === 'en' ? 'on' : ''}" data-act="set" data-path="language" data-v="en">English</button><button class="${L() === 'bn' ? 'on' : ''}" data-act="set" data-path="language" data-v="bn">বাংলা</button></div>`) +
       row(t('clock'), '', `<div class="seg"><button class="${c.clock === 12 ? 'on' : ''}" data-act="set" data-path="clock" data-v="12" data-num="1">12h</button><button class="${c.clock === 24 ? 'on' : ''}" data-act="set" data-path="clock" data-v="24" data-num="1">24h</button></div>`) +
-      row(t('bn_digits'), '০১২৩', tog('bangla_digits', c.bangla_digits)))}
-    ${sec('system', 'power', t('s_system'), row(t('autostart'), t('autostart_help'), tog('startup.autostart', c.startup.autostart)) + row(t('close_tray'), '', tog('startup.close_to_tray', c.startup.close_to_tray)))}
+      row(t('bn_digits'), '০১২৩', tog('bangla_digits', c.bangla_digits)) + themeRow())}
+    ${S.android ? phoneSettings(c, sec, tog, row, sel) : sec('system', 'power', t('s_system'), row(t('autostart'), t('autostart_help'), tog('startup.autostart', c.startup.autostart)) + row(t('close_tray'), '', tog('startup.close_to_tray', c.startup.close_to_tray)) + row(t('overlay'), t('overlay_help'), tog('overlay.enabled', c.overlay.enabled)) + row(t('overlay_lock'), t('overlay_lock_help'), tog('overlay.locked', c.overlay.locked)))}
     ${sec('about', 'info', t('s_about'), `<p class="muted" style="margin:0">${esc(t('about'))}</p>`)}
   </div></div>`;
   let timer;
@@ -1189,7 +1338,8 @@ async function showWelcome() {
 
 function drawWelcome() {
   const c = S.cfg, box = $('#wbox');
-  const steps = `<div class="steps">${[0, 1, 2, 3, 4].map((i) => `<i class="${i <= W.step ? 'on' : ''}"></i>`).join('')}</div>`;
+  const last = welcomeLast();
+  const steps = `<div class="steps">${Array.from({ length: last + 1 }, (_, i) => `<i class="${i <= W.step ? 'on' : ''}"></i>`).join('')}</div>`;
   const foot = (next, back = true) => `<div class="wfoot">${back && W.step > 0 ? `<button class="btn ghost" data-act="w-back">${esc(t('back'))}</button>` : '<span></span>'}<button class="btn gold" data-act="w-next">${esc(next)}</button></div>`;
   let body = '';
   if (W.step === 0) {
@@ -1207,10 +1357,13 @@ function drawWelcome() {
       <div class="srow"><div class="lab"><b>${esc(t('hijri_rule'))}</b></div><select class="input" data-act="select" data-path="calc.hijri_rule"><option value="sighting" ${c.calc.hijri_rule === 'sighting' ? 'selected' : ''}>${esc(t('rule_sighting'))}</option><option value="umm_al_qura" ${c.calc.hijri_rule === 'umm_al_qura' ? 'selected' : ''}>${esc(t('rule_uaq'))}</option><option value="arithmetic" ${c.calc.hijri_rule === 'arithmetic' ? 'selected' : ''}>${esc(t('rule_arith'))}</option></select></div>
       ${S.day ? `<div class="prayers" style="grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px">${SIX.map((k) => `<div class="pcard" style="padding:10px;text-align:center"><div class="muted" style="font-size:12px">${esc(pname(k))}</div><b>${fmtTime(S.day.today.times[k], S.day.today.tz_offset, { bare: true })}</b></div>`).join('')}</div>` : ''}${foot(t('continue'))}`;
   } else if (W.step === 3) {
-    const voice = (id, s, sel) => `<div class="voice ${sel ? 'on' : ''}" data-act="w-voice" data-id="${s.id}" data-for="${id}"><button class="play-btn" data-act="w-play" data-id="${s.id}">${icon('play')}</button><span>${esc(L() === 'bn' ? s.name_bn : s.name)}</span>${sel ? icon('check') : ''}</div>`;
+    const voice = (id, s, sel) => s.available === false ? '' : `<div class="voice ${sel ? 'on' : ''}" data-act="w-voice" data-id="${s.id}" data-for="${id}"><button class="play-btn" data-act="w-play" data-id="${s.id}">${icon('play')}</button><span>${esc(L() === 'bn' ? s.name_bn : s.name)}</span>${sel ? icon('check') : ''}</div>`;
     body = `<h1>${esc(t('voice'))}</h1>
       <h2 style="font-size:14px;color:var(--muted);margin-top:16px">${esc(t('voice_reg'))}</h2><div class="voices">${S.sounds.filter((s) => !s.fajr && !s.custom).map((s) => voice('reg', s, c.adhan.dhuhr.sound === s.id)).join('')}</div>
       <h2 style="font-size:14px;color:var(--muted);margin-top:16px">${esc(t('voice_fajr'))}</h2><div class="voices">${S.sounds.filter((s) => s.fajr).map((s) => voice('fajr', s, c.adhan.fajr.sound === s.id)).join('')}</div>${foot(t('continue'))}`;
+  } else if (W.step === 4 && S.android) {
+    body = `<h1>${esc(t('permissions_title'))}</h1><p class="sub">${esc(t('permissions_sub'))}</p><div id="w-health">${esc(t('loading'))}</div>${foot(t('continue'))}`;
+    api('/api/health').then((h) => { const el = $('#w-health'); if (el) el.innerHTML = healthItems(h, true); }).catch(() => {});
   } else {
     body = `<div class="salam">بِسْمِ اللَّهِ</div><h1>${esc(t('all_set'))}</h1><p class="sub">${esc(t('all_set_sub'))}</p>
       ${S.desktop ? `<div class="srow"><div class="lab"><b>${esc(t('autostart'))}</b><small>${esc(t('autostart_help'))}</small></div><button class="toggle ${c.startup.autostart ? 'on' : ''}" data-act="toggle" data-path="startup.autostart"></button></div>` : ''}${foot(t('finish'))}`;
@@ -1230,6 +1383,170 @@ async function finishWelcome() {
   render();
 }
 
+// ---------- Phone (Android) ----------
+function banglaText(b) {
+  return `${N(b.d)} ${L() === 'bn' ? b.month_bn : b.month_en} ${N(b.y)}${L() === 'bn' ? ' বঙ্গাব্দ' : ' BS'}`;
+}
+const welcomeLast = () => (S.android ? 5 : 4);
+
+/// Today's warnings: the adhan might not ring, or the user is traveling.
+async function renderBanners(tok) {
+  const box = $('#banners');
+  if (!box || !S.android) return;
+  const parts = [];
+  if (S.day.health_failing) {
+    parts.push(`<a class="banner warn" href="#/health">${icon('shield')}<div><b>${esc(t('hc_banner'))}</b><small>${esc(t('hc_bad').replace('{n}', N(S.day.health_failing)))}</small></div><span class="btn small">${esc(t('check_now'))}</span></a>`);
+  }
+  box.innerHTML = parts.join('');
+  if (!S.cfg.phone?.travel || !S.cfg.phone?.home) return;
+  try {
+    const tr = await api('/api/travel');
+    if (!live(tok) || !$('#banners')) return;
+    if (tr.traveler) {
+      parts.push(`<div class="banner travel">${icon('plane')}<div><b>${esc(t('travel_on'))}</b><small>${esc(t('travel_d').replace('{km}', N(Math.round(tr.distance_km))))}</small></div></div>`);
+    }
+    if (tr.away_from_times_km > 30) {
+      parts.push(`<div class="banner">${icon('pin')}<div><small>${esc(t('travel_update').replace('{city}', S.cfg.location.name))}</small></div><button class="btn small" data-act="travel-update">${esc(t('update'))}</button></div>`);
+    }
+    $('#banners').innerHTML = parts.join('');
+  } catch { /* location unavailable */ }
+}
+
+function phoneSettings(c, sec, tog, row, sel) {
+  const p = c.phone || {};
+  const mins = (list) => list.map((m) => [m, `${N(m)} ${t('min')}`]);
+  const jam = PRAYERS.map((k) => `<label class="jam"><span>${esc(pname(k))}</span><input class="input" data-act="text" data-path="phone.jamaat.${k}" value="${esc(p.jamaat?.[k] || '')}" placeholder="15" inputmode="text"></label>`).join('') +
+    `<label class="jam"><span>${esc(t('jumuah_t'))}</span><input class="input" data-act="text" data-path="phone.jamaat.jumuah" value="${esc(p.jamaat?.jumuah || '')}" placeholder="13:30"></label>`;
+  return sec('phone', 'shield', t('s_phone'),
+    `<a class="banner" href="#/health" style="margin:0 0 6px">${icon('shield')}<div><b>${esc(t('health'))}</b><small>${esc(t('hc_sub'))}</small></div></a>` +
+    row(t('in_silent'), t('in_silent_d'), tog('phone.adhan_in_silent', p.adhan_in_silent)) +
+    `<div class="srow" style="flex-wrap:wrap"><div class="lab" style="flex-basis:100%"><b>${esc(t('jamaat_times'))}</b><small>${esc(t('jamaat_help'))}</small></div><div class="jams">${jam}</div></div>` +
+    row(t('walk'), t('walk_d'), sel('phone.walk_minutes', [[0, t('off')], ...mins([3, 5, 10, 15, 20, 30])], p.walk_minutes)) +
+    row(t('auto_silent'), t('auto_silent_d'), tog('phone.auto_silent', p.auto_silent)) +
+    (p.auto_silent ? row(t('silent_for'), '', sel('phone.silent_minutes', mins([15, 20, 25, 30, 45, 60]), p.silent_minutes)) : '') +
+    row(t('travel'), t('travel_help'), tog('phone.travel', p.travel)) +
+    (p.travel ? row(`${t('home')}: ${p.home?.name || '—'}`, '', `<button class="btn small" data-act="set-home">${icon('pin')}${esc(t('set_home'))}</button>`) : '') +
+    row(t('fajr_wake'), t('fajr_wake_d'), tog('phone.fajr_wake', p.fajr_wake)) +
+    row(t('volume_tasbih'), '', tog('phone.volume_tasbih', p.volume_tasbih)));
+}
+
+// ---------- Adhan check ----------
+const HC_ICON = { notifications: 'bell', exact_alarm: 'today', battery: 'power', oem: 'shield', alarm_volume: 'speaker', dnd: 'off' };
+
+function healthItems(h, compact = false) {
+  return `<div class="hc-list">${h.items.map((it) => {
+    const ok = it.ok === true;
+    const desc = it.id === 'oem' ? t('oem_' + it.family) : t(`hc_${it.id}_d`);
+    const actions = ok ? '' : it.id === 'oem'
+      ? `${it.can_open ? `<button class="btn small" data-act="hc-fix" data-id="oem">${esc(t('open_settings'))}</button>` : ''}<button class="btn small ghost" data-act="hc-confirm">${esc(t('done_it'))}</button>`
+      : `<button class="btn small gold" data-act="hc-fix" data-id="${it.id}">${esc(t('fix'))}</button>`;
+    return `<div class="hc-item ${ok ? 'ok' : 'bad'}"><div class="hc-ico">${icon(ok ? 'check' : HC_ICON[it.id] || 'info')}</div>
+      <div class="t"><b>${esc(t('hc_' + it.id))}</b>${!ok ? `<small>${esc(desc)}</small>` : ''}</div><div class="hc-act">${actions}</div></div>`;
+  }).join('')}</div>`;
+}
+
+VIEWS.health = async (tok) => {
+  const h = await api('/api/health');
+  if (!live(tok)) return;
+  const off = S.day?.today.tz_offset ?? 0;
+  const good = h.failing === 0;
+  const dl = h.deliveries.length ? h.deliveries.map((d) => {
+    const late = Math.round((d.played - d.due) / 1000);
+    const name = d.key === 'test' ? t('test_btn') : pname(String(d.key).split('|')[0]);
+    const err = String(d.how).startsWith('error');
+    return `<div class="li"><span class="dot ${err ? 'k-season' : late <= 60 ? 'k-fast' : 'k-eid'}"></span><div class="t"><b>${esc(name)}</b><small>${esc(fmtGDate(new Date(d.due + off * 60000).toISOString().slice(0, 10), false))} · ${fmtTime(d.due, off)}</small></div>
+      <span class="v">${err ? esc(d.how) : late <= 60 ? `✓ ${esc(t('on_time'))}` : `${esc(t('late_by'))} ${fmtDur(late * 1000)}`}</span></div>`;
+  }).join('') : `<p class="muted">${esc(t('no_deliveries'))}</p>`;
+  const na = h.next_alarm;
+  const testIn = h.test_at ? Math.max(0, Math.round((h.test_at - Date.now()) / 1000)) : 0;
+  view.innerHTML = `<h1>${esc(t('health'))}</h1><p class="sub">${esc(t('hc_sub'))}</p>
+    <div class="hc-hero ${good ? 'good' : 'bad'}"><div class="hc-ring">${icon(good ? 'shield' : 'info')}</div>
+      <div><b>${esc(good ? t('hc_ok') : t('hc_bad').replace('{n}', N(h.failing)))}</b><small>${esc(h.device.brand)} ${esc(h.device.model)} · Android ${esc(h.device.android)}</small></div></div>
+    ${healthItems(h)}
+    <div class="widgets" style="grid-template-columns:1fr 1fr">
+      <div class="card"><h3>${icon('play')}${esc(t('test_title'))}</h3><p class="muted" style="margin-top:0">${esc(t('test_d'))}</p>
+        ${testIn > 0 ? `<div class="test-count" id="test-count" data-at="${h.test_at}">${esc(t('test_wait'))} ${N(testIn)}s</div>` : `<button class="btn gold" data-act="hc-test">${icon('play')}${esc(t('test_btn'))}</button>`}
+        ${na ? `<p class="faint" style="margin:14px 0 0;font-size:13px">${esc(t('next_alarm'))}: ${fmtTime(na.at, off)} · ${esc(na.exact ? t('exact') : t('inexact'))}</p>` : ''}</div>
+      <div class="card"><h3>${icon('tracker')}${esc(t('deliveries'))}</h3><div class="list">${dl}</div></div>
+    </div>`;
+};
+
+async function refreshHealth() {
+  if (route() === 'health') render();
+  const wh = $('#w-health');
+  if (wh) { try { wh.innerHTML = healthItems(await api('/api/health'), true); } catch { /* ignore */ } }
+}
+
+// ---------- Fajr wake-up task ----------
+const WK = { n: 0 };
+VIEWS.wake = async () => {
+  WK.n = 0;
+  const need = S.cfg.phone?.wake_taps || 33;
+  view.innerHTML = `<div class="wake"><div class="takbir ar">الصَّلَاةُ خَيْرٌ مِنَ النَّوْمِ</div><h1>${esc(t('wake_title'))}</h1>
+    <p class="sub">${esc(t('wake_d').replace('{n}', N(need)))}</p>
+    <button class="wake-btn" data-act="wake-tap"><span id="wake-n">${N(need)}</span></button></div>`;
+  nativeUi('keepScreenOn', 1);
+};
+async function wakeTap() {
+  const need = S.cfg.phone?.wake_taps || 33;
+  WK.n++;
+  nativeUi('haptic');
+  const left = Math.max(0, need - WK.n);
+  const el = $('#wake-n'); if (el) el.textContent = N(left);
+  if (left === 0) {
+    await post('/api/wake/done');
+    const d = S.day;
+    view.innerHTML = `<div class="wake"><div class="takbir ar">الْحَمْدُ لِلَّهِ</div><h1>${esc(t('wake_done'))}</h1>
+      <p class="sub">${esc(pname('fajr'))} · ${esc(t('ends'))} ${fmtTime(d.today.times.sunrise, d.today.tz_offset)}</p>
+      <div class="card dua" style="max-width:640px;margin:0 auto;text-align:left"><div class="arabic">${DUAS.find((x) => x.k === 'wake').ar}</div><div class="mn">${esc(L() === 'bn' ? DUAS.find((x) => x.k === 'wake').bn : DUAS.find((x) => x.k === 'wake').en)}</div></div>
+      <a class="btn gold" href="#/today" style="margin-top:20px">${esc(t('today'))}</a></div>`;
+  }
+}
+
+// ---------- "More" sheet (phones) ----------
+function openSheet() {
+  const sh = $('#sheet');
+  const items = navRoutes().filter((k) => !tabs().includes(k));
+  sh.innerHTML = `<div class="sheet-bg" data-act="sheet-close"></div><div class="sheet-box">${items.map((k) => `<a href="#/${k}">${icon(ROUTE_ICON[k])}<span>${esc(t(k))}</span>${k === 'health' && S.day?.health_failing ? `<span class="badge">${N(S.day.health_failing)}</span>` : ''}</a>`).join('')}</div>`;
+  sh.hidden = false;
+}
+function closeSheet() { const sh = $('#sheet'); if (sh) sh.hidden = true; }
+
+// ---------- Native callbacks ----------
+/// The phone's compass: the dial turns so N points north; the gold needle
+/// then points at the Qibla.
+window.onHeading = (deg, accuracy) => {
+  const dial = $('#dial'), f = $('#facing');
+  if (!dial || S.qibla == null) return;
+  if (deg == null) { if (f) f.hidden = true; return; }
+  dial.style.transform = `rotate(${-deg}deg)`;
+  const diff = ((S.qibla - deg + 540) % 360) - 180;
+  const facing = Math.abs(diff) < 4;
+  if (facing && !S.wasFacing) nativeUi('haptic', 'long');
+  S.wasFacing = facing;
+  if (f) {
+    f.className = `facing ${facing ? 'yes' : ''}`;
+    f.textContent = accuracy < 2 ? t('calibrate') : facing ? `🕋 ${t('facing')}` : `${diff > 0 ? t('turn_right') : t('turn_left')} ${N(Math.abs(Math.round(diff)))}°`;
+  }
+};
+window.onVolumeKey = (d) => {
+  if (route() !== 'tasbih') return;
+  if (d > 0) countTasbih(null);
+  else if (TB.count > 0) { TB.count--; drawTasbih(); }
+};
+window.onNativeResume = async () => {
+  try { await loadToday(); renderChrome(); } catch { /* ignore */ }
+  if (route() === 'health') render();
+  refreshHealth();
+};
+setInterval(() => {
+  const el = $('#test-count');
+  if (!el) return;
+  const left = Math.round((+el.dataset.at - Date.now()) / 1000);
+  if (left <= 0) { render(); return; }
+  el.textContent = `${t('test_wait')} ${N(left)}s`;
+}, 1000);
+
 // ---------- Events ----------
 document.addEventListener('click', async (e) => {
   const go = e.target.closest('[data-go]');
@@ -1241,7 +1558,8 @@ document.addEventListener('click', async (e) => {
   const act = a.dataset.act;
   const c = S.cfg;
   switch (act) {
-    case 'goto-loc': location.hash = '#/settings'; setTimeout(() => $('#sg-location')?.scrollIntoView({ behavior: 'smooth' }), 400); break;
+    case 'goto-loc': if (S.android) { location.hash = '#/settings/location'; break; } location.hash = '#/settings'; setTimeout(() => $('#sg-location')?.scrollIntoView({ behavior: 'smooth' }), 400); break;
+    case 'theme': setTheme(a.dataset.v); render(); break;
     case 'mute': await post('/api/mute', { on: !S.live?.muted }); await refreshLive(); renderChrome(); if (route() === 'today') tickToday(true); toast(S.live?.muted ? t('muted') : '🔊'); break;
     case 'mini': toNative('mini:1'); break;
     case 'mini-off': toNative('mini:0'); break;
@@ -1295,7 +1613,7 @@ document.addEventListener('click', async (e) => {
       break;
     }
     case 'w-lang': S.cfg.language = a.dataset.v; await saveCfg(false); drawWelcome(); renderChrome(); break;
-    case 'w-next': if (W.step >= 4) { finishWelcome(); } else { W.step++; post('/api/stop').catch(() => {}); drawWelcome(); } break;
+    case 'w-next': if (W.step >= welcomeLast()) { finishWelcome(); } else { W.step++; post('/api/stop').catch(() => {}); drawWelcome(); } break;
     case 'w-back': W.step = Math.max(0, W.step - 1); drawWelcome(); break;
     case 'w-play': e.stopPropagation(); await post('/api/play', { sound: a.dataset.id }); break;
     case 'w-voice': {
@@ -1306,12 +1624,33 @@ document.addEventListener('click', async (e) => {
     }
     case 'adhan-stop': await post('/api/stop'); await refreshLive(); break;
     case 'adhan-close': closeAdhan(); break;
+    case 'more': openSheet(); break;
+    case 'sheet-close': closeSheet(); break;
+    case 'hc-fix': try { await post('/api/health/fix', { id: a.dataset.id }); } catch (err) { toast(err.message); } break;
+    case 'hc-confirm': await post('/api/health/confirm'); refreshHealth(); break;
+    case 'hc-test': await post('/api/health/test', { in: 60 }); refreshHealth(); toast(t('test_wait')); break;
+    case 'travel-update': {
+      try { const r = await api('/api/geo/detect'); applyPlace(r); await saveCfg(); toast(`${t('found')} ${r.place.name}`); render(); } catch (err) { toast(err.message); }
+      break;
+    }
+    case 'set-home': try { await post('/api/travel/home'); await loadSettings(); toast('✓'); render(); } catch (err) { toast(err.message); } break;
+    case 'wake-tap': wakeTap(); break;
   }
 });
 
 document.addEventListener('change', async (e) => {
+  const tx = e.target.closest('[data-act="text"]');
+  if (tx) { setPath(S.cfg, tx.dataset.path, tx.value.trim()); await saveCfg(); return; }
   const a = e.target.closest('[data-act="select"]');
   if (!a) return;
+  if (a.dataset.path.endsWith('.sound')) {
+    const snd = S.sounds.find((x) => x.id === a.value);
+    if (snd && snd.available === false) {
+      toast(t('downloading'), 60000);
+      try { const r = await post('/api/sounds/download', { id: snd.id }); S.sounds = r.sounds; toast('✓'); }
+      catch (err) { toast(err.message, 5000); render(); return; }
+    }
+  }
   const cur = getPath(S.cfg, a.dataset.path);
   setPath(S.cfg, a.dataset.path, typeof cur === 'number' ? +a.value : a.value);
   await saveCfg();
@@ -1355,10 +1694,33 @@ setInterval(async () => {
 }, 1000);
 setInterval(refreshLive, 2000);
 
+/// The Quran and Hadith (phones only) live in their own scripts and stylesheet.
+async function loadQuran() {
+  for (const href of ['/quran.css', '/phone.css', '/hero.css', '/salah.css']) {
+    const css = document.createElement('link');
+    css.rel = 'stylesheet'; css.href = href;
+    document.head.appendChild(css);
+  }
+  const script = (src) => new Promise((res) => {
+    const js = document.createElement('script');
+    js.src = src;
+    js.onload = res; js.onerror = res;
+    document.body.appendChild(js);
+  });
+  await script('/quran.js');
+  await script('/hadith.js');
+  // Phone layouts of the timetable, settings and tasbih.
+  await script('/phone.js');
+  await script('/hero.js');
+  await script('/illus.js');
+  await script('/salah.js');
+}
+
 // ---------- Start ----------
 (async function start() {
   try {
     await loadSettings();
+    if (S.android) await loadQuran();
     await loadToday();
     await refreshLive();
     if (S.live?.alert) S.lastAlert = S.live.alert.fired;
