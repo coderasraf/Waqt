@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Waqt</title>
+<link rel="icon" href="/logo.png">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<div class="pattern-bg" aria-hidden="true"></div>
+<div class="app" id="app">
+  <aside class="rail">
+    <a class="brand" href="#/today">
+      <img src="/logo.png" alt="">
+      <span><b>Waqt</b><i>ওয়াক্ত · وقت</i></span>
+    </a>
+    <nav id="nav"></nav>
+    <div class="rail-foot" id="rail-foot"></div>
+  </aside>
+  <main class="main">
+    <header class="top" id="top"></header>
+    <div class="scroll" id="scroll"><div id="view" class="view"></div></div>
+  </main>
+</div>
+
+<!-- Compact always-on-top widget (desktop mini mode). -->
+<div class="mini" id="mini" hidden></div>
+
+<!-- Full-screen adhan moment. -->
+<div class="adhan" id="adhan" hidden></div>
+
+<!-- First-run setup. -->
+<div class="welcome" id="welcome" hidden></div>
+
+<div id="pop" class="pop" hidden></div>
+<div id="toast" class="toast" hidden></div>
+<script src="/app.js"></script>
+</body>
+</html>
